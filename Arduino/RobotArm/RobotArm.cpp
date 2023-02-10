@@ -8,6 +8,7 @@
 #define FS5115M_SERVOMAX  2333
 #define shoulder_rotation_servonum 0
 #define elbow_servonum 3
+#define wrist_rotation_servonum 5
 // shoulder servos (us)
 #define BB_SERVOMIN 525
 #define BB_SERVOMAX 2250
@@ -19,11 +20,11 @@
 // Hand Servos
 #define LFD_01_SERVOMIN  500
 #define LFD_01_SERVOMAX  2500
-#define Finger1_servonum 5
-#define Finger2_servonum 6
-#define Finger3_servonum 7
-#define Finger4_servonum 8
-#define Finger5_servonum 9
+#define Finger1_servonum 6
+#define Finger2_servonum 7
+#define Finger3_servonum 8
+#define Finger4_servonum 9
+#define Finger5_servonum 10
 
 RobotArm::RobotArm()
 {
@@ -41,6 +42,7 @@ void RobotArm::init()
     this->setShoulder(90);
     this->setElbow(90);
     this->setWrist(90);
+    this->setWristRotation(90);
     this->setFinger1(90);
     this->setFinger2(90);
     this->setFinger3(90);
@@ -74,6 +76,13 @@ void RobotArm::setWrist(int theta)
     int pwmVal = (theta/180.0)*(FS5103B_SERVOMAX-FS5103B_SERVOMIN)+FS5103B_SERVOMIN;
     Serial.print("usVal: "); Serial.println(pwmVal);
     this->setServoMicroseconds(wrist_servonum, pwmVal);
+}
+
+void RobotArm::setWristRotation(int theta)
+{
+    int pwmVal = (theta / 180.0) * (FS5115M_SERVOMAX - FS5115M_SERVOMIN) + FS5115M_SERVOMIN;
+    Serial.print("usVal: "); Serial.println(pwmVal);
+    this->setServoMicroseconds(wrist_rotation_servonum, pwmVal);
 }
 
 void RobotArm::setFinger1(int theta)

@@ -13,6 +13,7 @@ class RobotArm
     void setShoulder(int);
     void setElbow(int);
     void setWrist(int);
+    void setWristRotation(int);
     void setFinger1(int);
     void setFinger2(int);
     void setFinger3(int);

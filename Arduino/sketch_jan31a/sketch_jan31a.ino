@@ -52,12 +52,12 @@ void setup() {
 //  pwm.setOscillatorFrequency(27000000);
 //  pwm.setPWMFreq(SERVO_FREQ);  // Analog servos run at ~50 Hz updates
 //
-  delay(10);
+  delay(1000);
 }
 
 void loop() {
   // Drive each servo one at a time using setPWM()
-  
+  //arm.setWrist(90);
   if (testElbow == 1) {
     for(int i=0;i<=180; i+=30)
     {
@@ -77,6 +77,7 @@ void loop() {
       arm.setFinger3(i);
       arm.setFinger4(i);
       arm.setFinger5(i);
+      arm.setWristRotation(i);
       delay(20);
     }
       for(int i=180;i>=0; i-=5)  {
@@ -85,6 +86,7 @@ void loop() {
       arm.setFinger3(i);
       arm.setFinger4(i);
       arm.setFinger5(i);
+      arm.setWristRotation(i);
       delay(20);
     }
   }
