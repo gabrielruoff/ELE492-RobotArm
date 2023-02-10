@@ -43,7 +43,8 @@ RobotArm arm = RobotArm();
 // our servo # counter
 uint8_t servonum = 0;
 int testElbow = 0;
-int testHand = 1;
+int testHand = 0;
+int testWrist = 1;
 
 void setup() {
   Serial.begin(9600);
@@ -57,7 +58,6 @@ void setup() {
 
 void loop() {
   // Drive each servo one at a time using setPWM()
-  //arm.setWrist(90);
   if (testElbow == 1) {
     for(int i=0;i<=180; i+=30)
     {
@@ -90,6 +90,25 @@ void loop() {
       delay(20);
     }
   }
+  if (testWrist == 1) {
+    //arm.setWrist(90);
+    
+    for(int i=0;i<=180; i+=5)
+    {
+      arm.setWrist(i);
+      delay(20);
+    }
+      for(int i=180;i>=0; i-=5)
+    {
+      arm.setWrist(i);
+      delay(20);
+    }
+    if(Serial.available())
+    {
+      arm.setWrist(Serial.parseInt());
+    }
+  }
+  
 //  int i = 0;
 //  if(Serial.available())
 //  {

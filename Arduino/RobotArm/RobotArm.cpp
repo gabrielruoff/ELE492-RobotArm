@@ -15,7 +15,7 @@
 #define shoulder_servonum 1
 // shoulder rotation and wrist servo
 #define FS5103B_SERVOMIN  500
-#define FS5103B_SERVOMAX  2231
+#define FS5103B_SERVOMAX  2400
 #define wrist_servonum 4
 // Hand Servos
 #define LFD_01_SERVOMIN  500
