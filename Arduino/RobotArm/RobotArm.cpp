@@ -16,6 +16,14 @@
 #define FS5103B_SERVOMIN  500
 #define FS5103B_SERVOMAX  2231
 #define wrist_servonum 4
+// Hand Servos
+#define LFD_01_SERVOMIN  500
+#define LFD_01_SERVOMAX  2500
+#define Finger1_servonum 5
+#define Finger2_servonum 6
+#define Finger3_servonum 7
+#define Finger4_servonum 8
+#define Finger5_servonum 9
 
 RobotArm::RobotArm()
 {
@@ -57,6 +65,41 @@ void RobotArm::setWrist(int theta)
     int pwmVal = (theta/180.0)*(FS5103B_SERVOMAX-FS5103B_SERVOMIN)+FS5103B_SERVOMIN;
     Serial.print("usVal: "); Serial.println(pwmVal);
     this->setServoMicroseconds(wrist_servonum, pwmVal);
+}
+
+void RobotArm::setFinger1(int theta)
+{
+    int pwmVal = (theta / 180.0) * (LFD_01_SERVOMAX - LFD_01_SERVOMIN) + LFD_01_SERVOMIN;
+    Serial.print("usVal: "); Serial.println(pwmVal);
+    this->setServoMicroseconds(Finger1_servonum, pwmVal);
+}
+
+void RobotArm::setFinger2(int theta)
+{
+    int pwmVal = (theta / 180.0) * (LFD_01_SERVOMAX - LFD_01_SERVOMIN) + LFD_01_SERVOMIN;
+    Serial.print("usVal: "); Serial.println(pwmVal);
+    this->setServoMicroseconds(Finger2_servonum, pwmVal);
+}
+
+void RobotArm::setFinger3(int theta)
+{
+    int pwmVal = (theta / 180.0) * (LFD_01_SERVOMAX - LFD_01_SERVOMIN) + LFD_01_SERVOMIN;
+    Serial.print("usVal: "); Serial.println(pwmVal);
+    this->setServoMicroseconds(Finger3_servonum, pwmVal);
+}
+
+void RobotArm::setFinger4(int theta)
+{
+    int pwmVal = (theta / 180.0) * (LFD_01_SERVOMAX - LFD_01_SERVOMIN) + LFD_01_SERVOMIN;
+    Serial.print("usVal: "); Serial.println(pwmVal);
+    this->setServoMicroseconds(Finger4_servonum, pwmVal);
+}
+
+void RobotArm::setFinger5(int theta)
+{
+    int pwmVal = (theta / 180.0) * (LFD_01_SERVOMAX - LFD_01_SERVOMIN) + LFD_01_SERVOMIN;
+    Serial.print("usVal: "); Serial.println(pwmVal);
+    this->setServoMicroseconds(Finger5_servonum, pwmVal);
 }
 
 void RobotArm::setServoPwm(int servoNum, int pwmVal)
