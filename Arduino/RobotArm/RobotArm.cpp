@@ -69,6 +69,7 @@ void RobotArm::setWrist(int theta)
 
 void RobotArm::setFinger1(int theta)
 {
+    int theta = 180 - theta;
     int pwmVal = (theta / 180.0) * (LFD_01_SERVOMAX - LFD_01_SERVOMIN) + LFD_01_SERVOMIN;
     Serial.print("usVal: "); Serial.println(pwmVal);
     this->setServoMicroseconds(Finger1_servonum, pwmVal);

@@ -42,10 +42,11 @@ RobotArm arm = RobotArm();
 
 // our servo # counter
 uint8_t servonum = 0;
+int testElbow = 0;
+int testHand = 1;
 
 void setup() {
   Serial.begin(9600);
-
   arm.init();
 //  pwm.begin();
 //  pwm.setOscillatorFrequency(27000000);
@@ -56,15 +57,36 @@ void setup() {
 
 void loop() {
   // Drive each servo one at a time using setPWM()
-  for(int i=0;i<=180; i+=30)
-  {
-    arm.setElbow(i);
-    delay(500);
+  
+  if (testElbow == 1) {
+    for(int i=0;i<=180; i+=30)
+    {
+      arm.setElbow(i);
+      delay(500);
+    }
+      for(int i=180;i>=0; i-=30)
+    {
+      arm.setElbow(i);
+      delay(500);
+    }
   }
-    for(int i=180;i>=0; i-=30)
-  {
-    arm.setElbow(i);
-    delay(500);
+  if (testHand == 1) {
+    for(int i=0;i<=180; i+=5)  {
+      arm.setFinger1(i);
+      //arm.setFinger2(i);
+      //arm.setFinger3(i);
+      //arm.setFinger4(i);
+      //arm.setFinger5(i);
+      delay(500);
+    }
+      for(int i=180;i>=0; i-=5)  {
+      //arm.setFinger1(i);
+      //arm.setFinger2(i);
+      //arm.setFinger3(i);
+      //arm.setFinger4(i);
+      //arm.setFinger5(i);
+      delay(500);
+    }
   }
 //  int i = 0;
 //  if(Serial.available())

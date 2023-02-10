@@ -13,6 +13,12 @@ class RobotArm
     void setShoulder(int);
     void setElbow(int);
     void setWrist(int);
+    void setFinger1(int);
+    void setFinger2(int);
+    void setFinger3(int);
+    void setFinger4(int);
+    void setFinger5(int);
+
 //    setWristRotation(int theta);
   private:
     Adafruit_PWMServoDriver pwm;
