@@ -73,19 +73,19 @@ void loop() {
   if (testHand == 1) {
     for(int i=0;i<=180; i+=5)  {
       arm.setFinger1(i);
-      //arm.setFinger2(i);
-      //arm.setFinger3(i);
-      //arm.setFinger4(i);
-      //arm.setFinger5(i);
-      delay(500);
+      arm.setFinger2(i);
+      arm.setFinger3(i);
+      arm.setFinger4(i);
+      arm.setFinger5(i);
+      delay(20);
     }
       for(int i=180;i>=0; i-=5)  {
-      //arm.setFinger1(i);
-      //arm.setFinger2(i);
-      //arm.setFinger3(i);
-      //arm.setFinger4(i);
-      //arm.setFinger5(i);
-      delay(500);
+      arm.setFinger1(i);
+      arm.setFinger2(i);
+      arm.setFinger3(i);
+      arm.setFinger4(i);
+      arm.setFinger5(i);
+      delay(20);
     }
   }
 //  int i = 0;

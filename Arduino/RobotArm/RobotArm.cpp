@@ -37,6 +37,15 @@ void RobotArm::init()
     pwm.setOscillatorFrequency(27000000);
     pwm.setPWMFreq(SERVO_FREQ);
     delay(10);
+    this->setShoulderRotation(90);
+    this->setShoulder(90);
+    this->setElbow(90);
+    this->setWrist(90);
+    this->setFinger1(90);
+    this->setFinger2(90);
+    this->setFinger3(90);
+    this->setFinger4(90);
+    this->setFinger5(90);
 }
 
 void RobotArm::setShoulderRotation(int theta)
@@ -69,7 +78,7 @@ void RobotArm::setWrist(int theta)
 
 void RobotArm::setFinger1(int theta)
 {
-    int theta = 180 - theta;
+    theta = 180 - theta;
     int pwmVal = (theta / 180.0) * (LFD_01_SERVOMAX - LFD_01_SERVOMIN) + LFD_01_SERVOMIN;
     Serial.print("usVal: "); Serial.println(pwmVal);
     this->setServoMicroseconds(Finger1_servonum, pwmVal);
@@ -78,28 +87,28 @@ void RobotArm::setFinger1(int theta)
 void RobotArm::setFinger2(int theta)
 {
     int pwmVal = (theta / 180.0) * (LFD_01_SERVOMAX - LFD_01_SERVOMIN) + LFD_01_SERVOMIN;
-    Serial.print("usVal: "); Serial.println(pwmVal);
+    //Serial.print("usVal: "); Serial.println(pwmVal);
     this->setServoMicroseconds(Finger2_servonum, pwmVal);
 }
 
 void RobotArm::setFinger3(int theta)
 {
     int pwmVal = (theta / 180.0) * (LFD_01_SERVOMAX - LFD_01_SERVOMIN) + LFD_01_SERVOMIN;
-    Serial.print("usVal: "); Serial.println(pwmVal);
+    //Serial.print("usVal: "); Serial.println(pwmVal);
     this->setServoMicroseconds(Finger3_servonum, pwmVal);
 }
 
 void RobotArm::setFinger4(int theta)
 {
     int pwmVal = (theta / 180.0) * (LFD_01_SERVOMAX - LFD_01_SERVOMIN) + LFD_01_SERVOMIN;
-    Serial.print("usVal: "); Serial.println(pwmVal);
+    //Serial.print("usVal: "); Serial.println(pwmVal);
     this->setServoMicroseconds(Finger4_servonum, pwmVal);
 }
 
 void RobotArm::setFinger5(int theta)
 {
     int pwmVal = (theta / 180.0) * (LFD_01_SERVOMAX - LFD_01_SERVOMIN) + LFD_01_SERVOMIN;
-    Serial.print("usVal: "); Serial.println(pwmVal);
+    //Serial.print("usVal: "); Serial.println(pwmVal);
     this->setServoMicroseconds(Finger5_servonum, pwmVal);
 }
 
