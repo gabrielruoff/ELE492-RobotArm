@@ -20,6 +20,8 @@ class RobotArm
     void setFinger4(int);
     void setFinger5(int);
 
+    void waitForPacket(void);
+
 //    setWristRotation(int theta);
   private:
     Adafruit_PWMServoDriver pwm;

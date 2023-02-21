@@ -26,6 +26,10 @@
 #define Finger4_servonum 9
 #define Finger5_servonum 10
 
+char PACKET_DELIMITER = '!';
+char PACKET_START = 's';
+char PACKET_STOP = 'e';
+
 RobotArm::RobotArm()
 {
     Serial.begin(9600);
@@ -141,4 +145,15 @@ int RobotArm::clipAngle(int theta)
         return 0;
     }
     return theta;
+}
+
+void RobotArm::waitForPacket()
+{
+    while(true)
+    {
+        if(Serial.available()>0 && Serial.read() == PACKET_START)
+        {
+            return;
+        }
+    }
 }
