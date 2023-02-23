@@ -7,7 +7,8 @@
 class RobotArm
 {
   public:
-    RobotArm(void);
+  int PACKET_LENGTH = 10;
+    RobotArm(int);
     void setShoulderRotation(int);
     void init(void);
     void setShoulder(int);
@@ -21,8 +22,8 @@ class RobotArm
     void setFinger5(int);
 
     void waitForPacket(void);
-
-//    setWristRotation(int theta);
+    int* readPacket(void);
+    void waitForPacketEnd(void);
   private:
     Adafruit_PWMServoDriver pwm;
     void setServoPwm(int servoNum, int pwmVal);

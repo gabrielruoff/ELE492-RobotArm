@@ -26,13 +26,16 @@
 #define Finger4_servonum 9
 #define Finger5_servonum 10
 
+// int shoulderRotation = 0, shoulder = 0, elbow = 0, wirstRotation=0, wrist=0;
+// int finger1 = 0, int finger2 = 0; int finger3 = 0; int finger4 = 0; int finger5 = 0;
+
 char PACKET_DELIMITER = '!';
 char PACKET_START = 's';
 char PACKET_STOP = 'e';
 
-RobotArm::RobotArm()
+RobotArm::RobotArm(int baudRate)
 {
-    Serial.begin(9600);
+    Serial.begin(baudRate);
 }
 
 void RobotArm::init()
@@ -42,16 +45,16 @@ void RobotArm::init()
     pwm.setOscillatorFrequency(27000000);
     pwm.setPWMFreq(SERVO_FREQ);
     delay(10);
-    this->setShoulderRotation(90);
-    this->setShoulder(90);
-    this->setElbow(90);
-    this->setWrist(90);
-    this->setWristRotation(90);
-    this->setFinger1(90);
-    this->setFinger2(90);
-    this->setFinger3(90);
-    this->setFinger4(90);
-    this->setFinger5(90);
+    this->setShoulderRotation(Serial.read());
+    this->setShoulder(Serial.read());
+    this->setElbow(Serial.read());
+    this->setWrist(Serial.read());
+    this->setWristRotation(Serial.read());
+    this->setFinger1(Serial.read());
+    this->setFinger2(Serial.read());
+    this->setFinger3(Serial.read());
+    this->setFinger4(Serial.read());
+    this->setFinger5(Serial.read());
 }
 
 void RobotArm::setShoulderRotation(int theta)
@@ -152,6 +155,46 @@ void RobotArm::waitForPacket()
     while(true)
     {
         if(Serial.available()>0 && Serial.read() == PACKET_START)
+        {
+            return;
+        }
+    }
+}
+
+int* RobotArm::readPacket()
+{
+    int* values = new int[PACKET_LENGTH];
+    for(int i=0;i<PACKET_LENGTH;i++)
+    {
+        while(true)
+        {
+            if(Serial.available()>0)
+            {
+                // int val =  Serial.read();
+                // Serial.write(val);
+                values[i] = Serial.read();
+                break;
+            }
+        }
+    };
+    return values;
+    // this->setShoulderRotation(Serial.read());
+    //     this->setShoulder(Serial.read());
+    //     this->setElbow(Serial.read());
+    //     this->setWrist(Serial.read());
+    //     this->setWristRotation(Serial.read());
+    //     this->setFinger1(Serial.read());
+    //     this->setFinger2(Serial.read());
+    //     this->setFinger3(Serial.read());
+    //     this->setFinger4(Serial.read());
+    //     this->setFinger5(Serial.read());
+}
+
+void RobotArm::waitForPacketEnd()
+{
+    while(true)
+    {
+        if(Serial.available()>0 && Serial.read() == PACKET_STOP)
         {
             return;
         }

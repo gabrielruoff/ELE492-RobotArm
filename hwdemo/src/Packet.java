@@ -2,7 +2,7 @@
 public class Packet {
 	private static final byte START = 's';
 	private static final byte STOP = 'e';
-	private static final byte DELIMITER = '!';
+	public static final int PACKET_LENGTH = 10;
 	private int shoulderRotation;
 	private int shoulder;
 	private int elbow;
@@ -46,23 +46,34 @@ public class Packet {
 	
 	public byte[] compile()
 	{
-		byte bytes[] = new byte[21];
-		for(int i=2;i<21;i+=2)
-		{
-			bytes[i] = DELIMITER;
-		}
+		byte bytes[] = new byte[PACKET_LENGTH+2];
+//		for(int i=2;i<21;i+=2)
+//		{
+//			bytes[i] = DELIMITER;
+//		}
 		bytes[0] = START;
 		bytes[1] = (byte) shoulderRotation;
-		bytes[3] = (byte) shoulder;
-		bytes[5] = (byte) elbow;
-		bytes[7] = (byte) wrist;
-		bytes[9] = (byte) wristRotation;
-		for(int i=0;i<fingers.length;i+=2)
+		bytes[2] = (byte) shoulder;
+		bytes[3] = (byte) elbow;
+		bytes[4] = (byte) wrist;
+		bytes[5] = (byte) wristRotation;
+		for(int i=0;i<fingers.length;i++)
 		{
-			bytes[11+i] = (byte) fingers[i];
+			bytes[6+i] = (byte) fingers[i];
 		}
-		bytes[20] = STOP;
+		bytes[11] = STOP;
 		return bytes;
+	}
+	
+	@Override
+	public String toString()
+	{
+		String s = "";
+		for(byte b:this.compile())
+		{
+			s+=b+",";
+		}
+		return s;
 	}
 	
 }

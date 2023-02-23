@@ -1,15 +1,23 @@
 #include <RobotArm.h>
 
-RobotArm arm = RobotArm();
+#define BAUD_RATE 115200
+
+RobotArm arm = RobotArm(BAUD_RATE);
+int* packet;
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(9600);
   // arm.init();
+  Serial.begin(BAUD_RATE);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
   arm.waitForPacket();
-  Serial.println("begin pcket");
+  packet = arm.readPacket();
+  arm.waitForPacketEnd();
+  for(int i=0;i<arm.PACKET_LENGTH;i++)
+  {
+    Serial.write(*(packet+(i)));
+  }
 }

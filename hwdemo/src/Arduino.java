@@ -4,7 +4,6 @@ import com.fazecast.jSerialComm.SerialPort;
 
 public class Arduino {
 	private static final String PORT_ID = "Arduino Uno";
-	private static final int BAUD_RATE = 9600;
 	private SerialPort serialPort;
 	
 	public Arduino(SerialPort serialPort)
@@ -25,12 +24,12 @@ public class Arduino {
 		throw new Exception("Unable to detect Arduino");
 	}
 	
-	public void open() throws InterruptedException
+	public void open(int baudRate) throws InterruptedException
 	{
-		serialPort.openPort();
-		Thread.sleep(1000);
 		serialPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 0, 0);
-		serialPort.setBaudRate(BAUD_RATE);
+		serialPort.setBaudRate(baudRate);
+		serialPort.openPort();
+		Thread.sleep(2000);
 	}
 	
 	public void write(byte[] message)
