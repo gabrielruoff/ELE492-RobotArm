@@ -28,13 +28,14 @@
 #define Finger4_servonum 9
 #define Finger5_servonum 10
 
-int values = new int[PACKET_LENGTH];
+int values[10];
 
 // int shoulderRotation = 0, shoulder = 0, elbow = 0, wirstRotation=0, wrist=0;
 // int finger1 = 0, int finger2 = 0; int finger3 = 0; int finger4 = 0; int finger5 = 0;
 
 RobotArm::RobotArm(int baudRate)
 {
+//    values = new int[PACKET_LENGTH];
     Serial.begin(baudRate);
 }
 
@@ -178,7 +179,7 @@ int* RobotArm::readPacket()
             }
         }
     };
-    return &values;
+    return values;
 }
 
 void RobotArm::waitForPacketEnd()
