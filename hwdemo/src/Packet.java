@@ -8,8 +8,8 @@ public class Packet {
 	private int shoulderRotation = 0;
 	private int shoulder = 1;
 	private int elbow = 2;
-	private int wristRotation = 3;
-	private int wrist = 4;
+	private int wristRotation = 4;
+	private int wrist = 3;
 	
 	public Packet()
 	{
@@ -59,28 +59,28 @@ public class Packet {
 	}
 	
 	public void setShoulderRotation(int val) {
-		this.positions[shoulderRotation] = (byte) val;
+		this.positions[shoulderRotation] = (byte) (val);
 	}
 
 	public void setShoulder(int val) {
-		this.positions[shoulder] = (byte) val;
+		this.positions[shoulder] = (byte) (val);
 	}
 
 	public void setElbow(int val) {
-		this.positions[elbow] = (byte) val;
+		this.positions[elbow] = (byte) (val);
 	}
 
 	public void setWristRotation(int val) {
-		this.positions[wristRotation] = (byte) val;
+		this.positions[wristRotation] = (byte) (val);
 	}
 
 	public void setWrist(int val) {
-		this.positions[wrist] = (byte) val;
+		this.positions[wrist] = (byte) (val);
 	}
 	
 	public void setFinger(int index, int val)
 	{
-		positions[FINGERS_OFFSET+index] = (byte) val;
+		positions[FINGERS_OFFSET+index] = (byte) (val);
 	}
 	
 }

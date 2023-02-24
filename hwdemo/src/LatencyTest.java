@@ -1,3 +1,5 @@
+import java.time.*;
+
 public class LatencyTest {
 	private static final int BAUD_RATE = 115200;
 	
@@ -6,22 +8,30 @@ public class LatencyTest {
 		String returnedPacket;
 		Packet p = new Packet();
 		p.setShoulderRotation(90);
-		p.setFinger(1,90);
-		p.setFinger(2, 15);
+                p.setShoulder(90);
+                p.setWrist(180);
+		p.setFinger(1,180);
+		p.setFinger(2, 0);
+                p.setFinger(3, 0);
+                p.setFinger(4, 0);
+                p.setFinger(5, 0);
 		
+                Clock clock = Clock.systemDefaultZone();
 		Arduino a = new Arduino(Arduino.detectArduino());
 		a.open(BAUD_RATE);
 		int c = 0;
-		while(true)
+		//long startTime = clock.millis();
+                while(true)
 		{
-			a.writePacket(p);
+                        a.writePacket(p);
 			c++;
 			System.out.println("wrote packet "+c+". listening..");
 			byte rpacket[] = a.listenForAndReadPacket();
-			System.out.println("got packet back: ");
-			for(byte b : rpacket)
+                        System.out.println("got packet back: ");
+			
+                        for(byte b : rpacket)
 			{
-				System.out.print(b+", ");
+				System.out.print((b & 0xFF)+", ");
 			}
 			if(!Packet.equals(p, new Packet(rpacket)))
 			{
@@ -29,7 +39,12 @@ public class LatencyTest {
 				break;
 			}
 			System.out.println();
-			Thread.sleep(1);
+			//Thread.sleep(1);
+                        
 		}
+                //long endTime = clock.millis();
+                //long diff = (endTime - startTime)/5000;
+                //System.out.println("Packet ms: " + diff);
+                
 	}
 }
