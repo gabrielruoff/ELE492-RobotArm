@@ -19,19 +19,19 @@
 #define wrist_servonum 4
 // Hand Servos
 #define LFD_01_SERVOMIN  500
-#define LFD_01_SERVOMAX  2500
+#define LFD_01_SERVOMAX  2388
+#define LFD_01_SERVOMIN_F1  500
+#define LFD_01_SERVOMAX_F1  2100
 #define Finger1_servonum 6
 #define Finger2_servonum 7
 #define Finger3_servonum 8
 #define Finger4_servonum 9
 #define Finger5_servonum 10
 
+int values = new int[PACKET_LENGTH];
+
 // int shoulderRotation = 0, shoulder = 0, elbow = 0, wirstRotation=0, wrist=0;
 // int finger1 = 0, int finger2 = 0; int finger3 = 0; int finger4 = 0; int finger5 = 0;
-
-char PACKET_DELIMITER = '!';
-char PACKET_START = 's';
-char PACKET_STOP = 'e';
 
 RobotArm::RobotArm(int baudRate)
 {
@@ -45,86 +45,88 @@ void RobotArm::init()
     pwm.setOscillatorFrequency(27000000);
     pwm.setPWMFreq(SERVO_FREQ);
     delay(10);
-    this->setShoulderRotation(Serial.read());
-    this->setShoulder(Serial.read());
-    this->setElbow(Serial.read());
-    this->setWrist(Serial.read());
-    this->setWristRotation(Serial.read());
-    this->setFinger1(Serial.read());
-    this->setFinger2(Serial.read());
-    this->setFinger3(Serial.read());
-    this->setFinger4(Serial.read());
-    this->setFinger5(Serial.read());
+    
+    this->setShoulderRotation(90);
+    this->setShoulder(90);
+    this->setElbow(90);
+    this->setWrist(90);
+    this->setWristRotation(90);
+    
+    this->setFinger1(180);
+    this->setFinger2(180);
+    this->setFinger3(180);
+    this->setFinger4(180);
+    this->setFinger5(180);
 }
 
 void RobotArm::setShoulderRotation(int theta)
 {
     int pwmVal = (theta/180.0)*(FS5115M_SERVOMAX-FS5115M_SERVOMIN)+FS5115M_SERVOMIN;
-    Serial.print("usVal: "); Serial.println(pwmVal);
+    // Serial.print("usVal: "); // Serial.println(pwmVal);
     this->setServoMicroseconds(shoulder_rotation_servonum, pwmVal);
 }
 
 void RobotArm::setShoulder(int theta)
 {
     int pwmVal = (clipAngle(theta)/180.0)*(BB_SERVOMAX-BB_SERVOMIN)+BB_SERVOMIN;
-    Serial.print("usVal: "); Serial.println(pwmVal);
+    // Serial.print("usVal: "); // Serial.println(pwmVal);
     this->setServoMicroseconds(shoulder_servonum, pwmVal);
 }
 
 void RobotArm::setElbow(int theta)
 {
     int pwmVal = (theta/180.0)*(FS5115M_SERVOMAX-FS5115M_SERVOMIN)+FS5115M_SERVOMIN;
-    Serial.print("usVal: "); Serial.println(pwmVal);
+    // Serial.print("usVal: "); // Serial.println(pwmVal);
     this->setServoMicroseconds(elbow_servonum, pwmVal);
 }
 
 void RobotArm::setWrist(int theta)
 {
     int pwmVal = (theta/180.0)*(FS5103B_SERVOMAX-FS5103B_SERVOMIN)+FS5103B_SERVOMIN;
-    Serial.print("usVal: "); Serial.println(pwmVal);
+    // Serial.print("usVal: "); // Serial.println(pwmVal);
     this->setServoMicroseconds(wrist_servonum, pwmVal);
 }
 
 void RobotArm::setWristRotation(int theta)
 {
     int pwmVal = (theta / 180.0) * (FS5115M_SERVOMAX - FS5115M_SERVOMIN) + FS5115M_SERVOMIN;
-    Serial.print("usVal: "); Serial.println(pwmVal);
+    // Serial.print("usVal: "); // Serial.println(pwmVal);
     this->setServoMicroseconds(wrist_rotation_servonum, pwmVal);
 }
 
 void RobotArm::setFinger1(int theta)
 {
     theta = 180 - theta;
-    int pwmVal = (theta / 180.0) * (LFD_01_SERVOMAX - LFD_01_SERVOMIN) + LFD_01_SERVOMIN;
-    Serial.print("usVal: "); Serial.println(pwmVal);
+    int pwmVal = (theta / 180.0) * (LFD_01_SERVOMAX_F1 - LFD_01_SERVOMIN_F1) + LFD_01_SERVOMIN_F1;
+//     Serial.print("usVal: "); Serial.println(pwmVal);
     this->setServoMicroseconds(Finger1_servonum, pwmVal);
 }
 
 void RobotArm::setFinger2(int theta)
 {
     int pwmVal = (theta / 180.0) * (LFD_01_SERVOMAX - LFD_01_SERVOMIN) + LFD_01_SERVOMIN;
-    //Serial.print("usVal: "); Serial.println(pwmVal);
+//    Serial.print("usVal: "); Serial.println(pwmVal);
     this->setServoMicroseconds(Finger2_servonum, pwmVal);
 }
 
 void RobotArm::setFinger3(int theta)
 {
     int pwmVal = (theta / 180.0) * (LFD_01_SERVOMAX - LFD_01_SERVOMIN) + LFD_01_SERVOMIN;
-    //Serial.print("usVal: "); Serial.println(pwmVal);
+    //// Serial.print("usVal: "); // Serial.println(pwmVal);
     this->setServoMicroseconds(Finger3_servonum, pwmVal);
 }
 
 void RobotArm::setFinger4(int theta)
 {
     int pwmVal = (theta / 180.0) * (LFD_01_SERVOMAX - LFD_01_SERVOMIN) + LFD_01_SERVOMIN;
-    //Serial.print("usVal: "); Serial.println(pwmVal);
+    //// Serial.print("usVal: "); // Serial.println(pwmVal);
     this->setServoMicroseconds(Finger4_servonum, pwmVal);
 }
 
 void RobotArm::setFinger5(int theta)
 {
     int pwmVal = (theta / 180.0) * (LFD_01_SERVOMAX - LFD_01_SERVOMIN) + LFD_01_SERVOMIN;
-    //Serial.print("usVal: "); Serial.println(pwmVal);
+    //// Serial.print("usVal: "); // Serial.println(pwmVal);
     this->setServoMicroseconds(Finger5_servonum, pwmVal);
 }
 
@@ -163,7 +165,6 @@ void RobotArm::waitForPacket()
 
 int* RobotArm::readPacket()
 {
-    int* values = new int[PACKET_LENGTH];
     for(int i=0;i<PACKET_LENGTH;i++)
     {
         while(true)
@@ -177,17 +178,7 @@ int* RobotArm::readPacket()
             }
         }
     };
-    return values;
-    // this->setShoulderRotation(Serial.read());
-    //     this->setShoulder(Serial.read());
-    //     this->setElbow(Serial.read());
-    //     this->setWrist(Serial.read());
-    //     this->setWristRotation(Serial.read());
-    //     this->setFinger1(Serial.read());
-    //     this->setFinger2(Serial.read());
-    //     this->setFinger3(Serial.read());
-    //     this->setFinger4(Serial.read());
-    //     this->setFinger5(Serial.read());
+    return &values;
 }
 
 void RobotArm::waitForPacketEnd()
@@ -199,4 +190,33 @@ void RobotArm::waitForPacketEnd()
             return;
         }
     }
+}
+
+void RobotArm::updateFromPacket(int* packet)
+{
+//    for(int i=0;i<PACKET_LENGTH;i++)
+//    {
+//      Serial.write(packet[i]);
+//    }
+        this->setShoulderRotation(packet[0]);
+        this->setShoulder(packet[1]);
+        this->setElbow(packet[2]);
+        this->setWrist(packet[3]);
+        this->setWristRotation(packet[4]);
+        this->setFinger1(packet[5]);
+        this->setFinger2(packet[6]);
+        this->setFinger3(packet[7]);
+        this->setFinger4(packet[8]);
+        this->setFinger5(packet[9]);
+}
+
+void RobotArm::sendPacket(int* packet)
+{
+    Serial.write(PACKET_START);
+    for(int i=0;i<PACKET_LENGTH;i++)
+    {
+      Serial.write(packet[i]);
+    }
+    Serial.write(PACKET_STOP);
+    Serial.flush();
 }

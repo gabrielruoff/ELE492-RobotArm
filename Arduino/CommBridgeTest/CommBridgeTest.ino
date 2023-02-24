@@ -7,8 +7,8 @@ int* packet;
 
 void setup() {
   // put your setup code here, to run once:
-  // arm.init();
   Serial.begin(BAUD_RATE);
+  arm.init();
 }
 
 void loop() {
@@ -16,8 +16,13 @@ void loop() {
   arm.waitForPacket();
   packet = arm.readPacket();
   arm.waitForPacketEnd();
-  for(int i=0;i<arm.PACKET_LENGTH;i++)
-  {
-    Serial.write(*(packet+(i)));
-  }
+//  Serial.print("Received packet: ");
+//  for(int i=0;i<arm.PACKET_LENGTH;i++)
+//  {
+//    Serial.write(packet[i]);
+//  }
+//  Serial.println();
+  arm.updateFromPacket(packet);
+  arm.sendPacket(packet);
+//   delay(100);
 }

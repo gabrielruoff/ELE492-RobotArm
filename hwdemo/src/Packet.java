@@ -1,65 +1,37 @@
 
 public class Packet {
-	private static final byte START = 's';
-	private static final byte STOP = 'e';
+	public static final byte START = (byte) 200;
+	public static final byte STOP = (byte) 300;
 	public static final int PACKET_LENGTH = 10;
-	private int shoulderRotation;
-	private int shoulder;
-	private int elbow;
-	private int wristRotation;
-	private int wrist;
-	private int[] fingers;
+	private static final int FINGERS_OFFSET = 4;
+	private byte positions[];
+	private int shoulderRotation = 0;
+	private int shoulder = 1;
+	private int elbow = 2;
+	private int wristRotation = 3;
+	private int wrist = 4;
 	
 	public Packet()
 	{
-		fingers = new int[5];
-	}
-
-	public void setShoulderRotation(int shoulderRotation) {
-		this.shoulderRotation = shoulderRotation;
-	}
-
-	public void setShoulder(int shoulder) {
-		this.shoulder = shoulder;
-	}
-
-	public void setElbow(int elbow) {
-		this.elbow = elbow;
-	}
-
-	public void setWristRotation(int wristRotation) {
-		this.wristRotation = wristRotation;
-	}
-
-	public void setWrist(int wrist) {
-		this.wrist = wrist;
-	}
-
-	public void setFingers(int[] fingers) {
-		this.fingers = fingers;
+		positions = new byte[PACKET_LENGTH];
+		for(int i=0;i<positions.length;i++)
+		{
+			positions[i] = 0;
+		}
 	}
 	
-	public void setFinger(int index, int val)
+	public Packet(byte packetData[])
 	{
-		fingers[index] = val;
+		this.positions = packetData;
 	}
 	
 	public byte[] compile()
 	{
 		byte bytes[] = new byte[PACKET_LENGTH+2];
-//		for(int i=2;i<21;i+=2)
-//		{
-//			bytes[i] = DELIMITER;
-//		}
 		bytes[0] = START;
-		bytes[1] = (byte) shoulderRotation;
-		bytes[2] = (byte) shoulder;
-		bytes[3] = (byte) elbow;
-		bytes[4] = (byte) wrist;
-		bytes[5] = (byte) wristRotation;
-		for(int i=0;i<fingers.length;i++)
+		for(int i=0;i<positions.length;i++)
 		{
-			bytes[6+i] = (byte) fingers[i];
+			bytes[i+1] = (byte) positions[i];
 		}
 		bytes[11] = STOP;
 		return bytes;
@@ -74,6 +46,41 @@ public class Packet {
 			s+=b+",";
 		}
 		return s;
+	}
+	
+	public static boolean equals(Packet p1, Packet p2)
+	{
+		for(int i=0;i<PACKET_LENGTH;i++)
+		{
+			if(p1.positions[i] != p2.positions[i])
+				return false;
+		}
+		return true;
+	}
+	
+	public void setShoulderRotation(int val) {
+		this.positions[shoulderRotation] = (byte) val;
+	}
+
+	public void setShoulder(int val) {
+		this.positions[shoulder] = (byte) val;
+	}
+
+	public void setElbow(int val) {
+		this.positions[elbow] = (byte) val;
+	}
+
+	public void setWristRotation(int val) {
+		this.positions[wristRotation] = (byte) val;
+	}
+
+	public void setWrist(int val) {
+		this.positions[wrist] = (byte) val;
+	}
+	
+	public void setFinger(int index, int val)
+	{
+		positions[FINGERS_OFFSET+index] = (byte) val;
 	}
 	
 }

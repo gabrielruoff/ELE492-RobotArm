@@ -8,6 +8,8 @@ class RobotArm
 {
   public:
   int PACKET_LENGTH = 10;
+    byte PACKET_START = (byte)200;
+    byte PACKET_STOP = (byte)300;
     RobotArm(int);
     void setShoulderRotation(int);
     void init(void);
@@ -24,6 +26,8 @@ class RobotArm
     void waitForPacket(void);
     int* readPacket(void);
     void waitForPacketEnd(void);
+    void updateFromPacket(int*);
+    void sendPacket(int*);
   private:
     Adafruit_PWMServoDriver pwm;
     void setServoPwm(int servoNum, int pwmVal);

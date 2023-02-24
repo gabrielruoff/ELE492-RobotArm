@@ -21,7 +21,9 @@
 #include <Adafruit_PWMServoDriver.h>
 #include <RobotArm.h>
 
-RobotArm arm = RobotArm();
+#define BAUD_RATE 115200
+
+RobotArm arm = RobotArm(BAUD_RATE);
 
 // called this way, it uses the default address 0x40
 //Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(0x40);
@@ -43,11 +45,11 @@ RobotArm arm = RobotArm();
 // our servo # counter
 uint8_t servonum = 0;
 int testElbow = 0;
-int testHand = 0;
-int testWrist = 1;
+int testHand = 1;
+int testWrist = 0;
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   arm.init();
 //  pwm.begin();
 //  pwm.setOscillatorFrequency(27000000);
@@ -71,24 +73,34 @@ void loop() {
     }
   }
   if (testHand == 1) {
-    for(int i=0;i<=180; i+=5)  {
+    if(Serial.available()>0)
+    {
+      int i =Serial.parseInt();
+      Serial.println(i);
       arm.setFinger1(i);
       arm.setFinger2(i);
       arm.setFinger3(i);
       arm.setFinger4(i);
       arm.setFinger5(i);
-      arm.setWristRotation(i);
-      delay(20);
     }
-      for(int i=180;i>=0; i-=5)  {
-      arm.setFinger1(i);
-      arm.setFinger2(i);
-      arm.setFinger3(i);
-      arm.setFinger4(i);
-      arm.setFinger5(i);
-      arm.setWristRotation(i);
-      delay(20);
-    }
+//    for(int i=0;i<=180; i+=5)  {
+//      arm.setFinger1(i);
+//      arm.setFinger2(i);
+//      arm.setFinger3(i);
+//      arm.setFinger4(i);
+//      arm.setFinger5(i);
+//      arm.setWristRotation(i);
+//      delay(20);
+//    }
+//      for(int i=180;i>=0; i-=5)  {
+//      arm.setFinger1(i);
+//      arm.setFinger2(i);
+//      arm.setFinger3(i);
+//      arm.setFinger4(i);
+//      arm.setFinger5(i);
+//      arm.setWristRotation(i);
+//      delay(20);
+//    }
   }
   if (testWrist == 1) {
     //arm.setWrist(90);
