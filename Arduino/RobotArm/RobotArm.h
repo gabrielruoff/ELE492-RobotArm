@@ -4,6 +4,7 @@
 #include "Arduino.h"
 #include <Adafruit_PWMServoDriver.h>
 
+
 class RobotArm
 {
   public:
@@ -39,6 +40,18 @@ class RobotArm
     void setServoPwm(int servoNum, int pwmVal);
     void setServoMicroseconds(int servoNum, int us);
     int clipAngle(int);
+    int clipAngleShoulder(int);
+
+    void shoulderRotationHandler(int);
+    void shoulderHandler(int);
+    void elbowHandler(int);
+    void wristHandler(int);
+    void wristRotationHandler(int);
+    void finger1Handler(int);
+    void finger2Handler(int);
+    void finger3Handler(int);
+    void finger4Handler(int);
+    void finger5Handler(int);
 };
 
 #endif

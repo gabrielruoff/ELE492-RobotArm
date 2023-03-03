@@ -30,7 +30,6 @@ void loop() {
   
   packet = arm.readPacket();
   arm.updateFromPacket(packet);
-  //packet[10] = 12;
   arm.sendPacket(packet);
   
   /*
