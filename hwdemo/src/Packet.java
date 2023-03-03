@@ -4,7 +4,7 @@ public class Packet {
         public static final byte BADCRC = (byte) 240;
 	public static final int PACKET_LENGTH = 10;
 	private static final int FINGERS_OFFSET = 4;
-	private byte positions[];
+	public byte positions[];
         private byte CRC;
 	private int shoulderRotation = 0;
 	private int shoulder = 1;
@@ -65,6 +65,11 @@ public class Packet {
                 crc = CRC8_TABLE[(positions[i] & 0xFF) ^ (crc & 0xFF)];
             }
             return (byte)crc;
+        }
+        
+        public void setCRC()
+        {
+        	CRC = computeCRC();
         }
         
         public byte getCRC() {

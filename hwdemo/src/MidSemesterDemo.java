@@ -4,8 +4,7 @@ public class MidSemesterDemo {
 	private static final int BAUD_RATE = 115200;
 
 	public static void main(String[] args) throws Exception {
-		Packet neutral = new Packet(
-				new byte[] { 90, 90, 90, 90, 90, (byte) 180, (byte) 180, (byte) 180, (byte) 180, (byte) 180 });
+		Packet neutral = new Packet(new byte[] { 90, 97, 90, 90, 90, (byte) 180, (byte) 180, (byte) 180, (byte) 180, (byte) 180 });
 		byte[] packetArray = { 90, 97, 45, 90, (byte) 180, (byte) 180, (byte) 180, (byte) 180, (byte) 180, (byte) 180 };
 		byte[] packetArray1 = { 90, 97, 0, 90, 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0 };
 		// byte[] packetArray =
