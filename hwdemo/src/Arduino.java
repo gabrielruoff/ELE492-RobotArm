@@ -36,13 +36,13 @@ public class Arduino {
                 serialPort.writeBytes(message, message.length);
 	}
 
-	public void writePacket(CRCPacket packet) {
+	public void writePacket(Packet packet) {
 		this.write(packet.compile());
 	}
 
 	public void waitForPacketStart() throws IOException {
             while (true) {
-		if (inputStream.available() > 0 && (byte)inputStream.read() == CRCPacket.START) {
+		if (inputStream.available() > 0 && (byte)inputStream.read() == Packet.START) {
                     return;
                 }	
             }
@@ -52,7 +52,7 @@ public class Arduino {
             int c = 0;
             while (true) {
 		c++;
-                if (inputStream.available() > 0 && (byte)inputStream.read() == CRCPacket.STOP) {
+                if (inputStream.available() > 0 && (byte)inputStream.read() == Packet.STOP) {
                     break;
                 }
                 if (c > 1000) {
@@ -62,8 +62,8 @@ public class Arduino {
 	}
 
 	public byte[] digestPacket() throws IOException {
-		byte inputPackets[] = new byte[CRCPacket.PACKET_LENGTH+1];
-                for (int i = 0; i < CRCPacket.PACKET_LENGTH+1; i++) {
+		byte inputPackets[] = new byte[Packet.PACKET_LENGTH+1];
+                for (int i = 0; i < Packet.PACKET_LENGTH+1; i++) {
                     while(true) {
                         if (inputStream.available() > 0) {
                             inputPackets[i] = (byte)inputStream.read();
@@ -78,7 +78,7 @@ public class Arduino {
 		byte readCRC = inputPackets[10];
                 byte packetData[] = new byte[10];
                 System.arraycopy(inputPackets, 0, packetData, 0, 10);
-                CRCPacket crosscheck  = new CRCPacket(packetData);
+                Packet crosscheck  = new Packet(packetData);
                 byte calcCRC = crosscheck.getCRC();
                 //System.out.println("Got CRC: "+readCRC+" Calced CRC: "+calcCRC);
                 return readCRC == calcCRC;
@@ -92,7 +92,8 @@ public class Arduino {
                     //System.out.println("CRC GOOD");
                 }
                 else {
-                    //System.out.println("CRC BAD");
+//                    System.out.println("CRC BAD");
+                    throw new Exception("BAD CRC");
                 }
 		return inputPackets;
 	}

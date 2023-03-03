@@ -30,7 +30,7 @@
 #define Finger5_servonum 10
 //Servo Speed
 #define Servo_Speed 100
-#define Servo_Angle_Step 10
+#define Servo_Angle_Steps 10
 
 //CRC Hash Table
 int CRC8_TABLE [] = { 0x00, 0x5e, 0xbc, 0xe2, 0x61, 0x3f, 0xdd, 0x83, 0xc2, 0x9c, 0x7e,
@@ -90,17 +90,7 @@ void RobotArm::init()
     }
 
     //Move Servos to intial angles
-    this->setShoulderRotation(90);
-    this->setShoulder(90);
-    this->setElbow(90);
-    this->setWrist(90);
-    this->setWristRotation(90);
-    
-    this->setFinger1(180);
-    this->setFinger2(180);
-    this->setFinger3(180);
-    this->setFinger4(180);
-    this->setFinger5(180);
+    updateArm();
 
     //Flush Serial Buffer
 	Serial.flush();
@@ -151,7 +141,8 @@ void RobotArm::setWristRotation(int theta)
 void RobotArm::setFinger1(int theta)
 {
     theta = 180 - theta;
-    int pwmVal = (theta / 180.0) * (LFD_01_SERVOMAX - LFD_01_SERVOMIN) + LFD_01_SERVOMIN;
+//    int pwmVal = (theta / 180.0) * (LFD_01_SERVOMAX - LFD_01_SERVOMIN) + LFD_01_SERVOMIN;
+    int pwmVal = (theta / 180.0) * (LFD_01_SERVOMAX_F1 - LFD_01_SERVOMIN_F1) + LFD_01_SERVOMIN_F1;
     // Serial.print("usVal: "); // Serial.println(pwmVal);
     this->setServoMicroseconds(Finger1_servonum, pwmVal);
 }
@@ -221,137 +212,21 @@ int RobotArm::clipAngleShoulder(int theta)
     return theta;
 }
 
-//Handlers for Servos
-void RobotArm::shoulderRotationHandler(int i)
+
+void RobotArm::jointHandler(int index, int i, void (RobotArm::*func)(int))
 {
-    if (prevvalues[0] > values[0]) {
-        this->setShoulderRotation(prevvalues[0] - i);
+    if (prevvalues[index] > values[index]) {
+        (this->*func)(prevvalues[index] - i);
+        prevvalues[index] = prevvalues[index] - i;
     }
-    else if (prevvalues[0] < values[0]) {
-        this->setShoulderRotation(prevvalues[0] + i);
+    else if (prevvalues[index] < values[index]) {
+        (this->*func)(prevvalues[index] + i);
+        prevvalues[index] = prevvalues[index] - i;
     }
-    else if (prevvalues[0] == values[0]) {
-        this->setShoulderRotation(values[0]);
+    else if (prevvalues[index] == values[index]) {
+        (this->*func)(values[index]);
     }
 }
-
-void RobotArm::shoulderHandler(int i)
-{
-    if (prevvalues[1] > values[1]) {
-        this->setShoulder(prevvalues[1] - i);
-    }
-    else if (prevvalues[1] < values[1]) {
-        this->setShoulder(prevvalues[1] + i);
-    }
-    else if (prevvalues[1] == values[1]) {
-        this->setShoulder(values[1]);
-    }
-}
-
-void RobotArm::elbowHandler(int i)
-{
-    if (prevvalues[2] > values[2]) {
-        this->setElbow(prevvalues[2] - i);
-    }
-    else if (prevvalues[2] < values[2]) {
-        this->setElbow(prevvalues[2] + i);
-    }
-    else if (prevvalues[2] == values[2]) {
-        this->setElbow(values[2]);
-    }
-}
-
-void RobotArm::wristHandler(int i)
-{
-    if (prevvalues[3] > values[3]) {
-        this->setWrist(prevvalues[3] - i);
-    }
-    else if (prevvalues[3] < values[3]) {
-        this->setWrist(prevvalues[3] + i);
-    }
-    else if (prevvalues[3] == values[3]) {
-        this->setWrist(values[3]);
-    }
-}
-
-void RobotArm::wristRotationHandler(int i)
-{
-    if (prevvalues[4] > values[4]) {
-        this->setWristRotation(prevvalues[4] - i);
-    }
-    else if (prevvalues[4] < values[4]) {
-        this->setWristRotation(prevvalues[4] + i);
-    }
-    else if (prevvalues[4] == values[4]) {
-        this->setWristRotation(values[4]);
-    }
-}
-
-void RobotArm::finger1Handler(int i)
-{
-    if (prevvalues[5] > values[5]) {
-        this->setFinger1(prevvalues[5] - i);
-    }
-    else if (prevvalues[5] < values[5]) {
-        this->setFinger1(prevvalues[5] + i);
-    }
-    else if (prevvalues[5] == values[5]) {
-        this->setFinger1(values[5]);
-    }
-}
-
-void RobotArm::finger2Handler(int i)
-{
-    if (prevvalues[6] > values[6]) {
-        this->setFinger2(prevvalues[6] - i);
-    }
-    else if (prevvalues[6] < values[6]) {
-        this->setFinger2(prevvalues[6] + i);
-    }
-    else if (prevvalues[6] == values[6]) {
-        this->setFinger2(values[6]);
-    }
-}
-
-void RobotArm::finger3Handler(int i)
-{
-    if (prevvalues[7] > values[7]) {
-        this->setFinger3(prevvalues[7] - i);
-    }
-    else if (prevvalues[7] < values[7]) {
-        this->setFinger3(prevvalues[7] + i);
-    }
-    else if (prevvalues[7] == values[7]) {
-        this->setFinger3(values[7]);
-    }
-}
-
-void RobotArm::finger4Handler(int i)
-{
-    if (prevvalues[8] > values[8]) {
-        this->setFinger4(prevvalues[8] - i);
-    }
-    else if (prevvalues[8] < values[8]) {
-        this->setFinger4(prevvalues[8] + i);
-    }
-    else if (prevvalues[8] == values[8]) {
-        this->setFinger4(values[8]);
-    }
-}
-
-void RobotArm::finger5Handler(int i)
-{
-    if (prevvalues[9] > values[9]) {
-        this->setFinger5(prevvalues[9] - i);
-    }
-    else if (prevvalues[9] < values[9]) {
-        this->setFinger5(prevvalues[9] + i);
-    }
-    else if (prevvalues[9] == values[9]) {
-        this->setFinger5(values[9]);
-    }
-}
-
 
 
 // Packet Functions
@@ -457,30 +332,47 @@ int* RobotArm::readPacket()
 
 void RobotArm::updateFromPacket(int* packet)
 {
+    for (int i = 0; i < 10; i++) {
+        prevvalues[i] = values[i];
+    }
         //Update Angle Values from packet
-        for (int i = 0; i < 11; i++) {
+        for (int i = 0; i < 10; i++) {
             values[i] = packet[i];
         }
-        //Loop to update Angles at Servo Speed
-        for (int i = 0; i < 181; i+=Servo_Angle_Step) {
-            this->shoulderRotationHandler(i);
-            this->shoulderHandler(i);
-            this->elbowHandler(i);
-            this->wristHandler(i);
-            this->wristRotationHandler(i);
-            this->finger1Handler(i);
-            this->finger2Handler(i);
-            this->finger3Handler(i);
-            this->finger4Handler(i);
-            this->finger5Handler(i);   
+    updateArm();
+}
 
-            //Delay that controls Speed
-            delay(Servo_Speed);
-        }
-        //Update previous values with values
-        for (int i = 0; i < 11; i++) {
-            prevvalues[i] = values[i];
-        }
+void RobotArm::updateArm()
+{
+    int deltas[10];
+    void (RobotArm::*functions[])(int) = {
+        &setShoulderRotation,
+        &setShoulder,
+        &setElbow,
+        &setWrist,
+        &setWristRotation,
+        &setFinger1,
+        &setFinger2,
+        &setFinger3,
+        &setFinger4,
+        &setFinger5
+    };
+    for(int j=0;j<10;j++)
+    {
+        (this->*functions[j])(values[j]);
+    }
+//    for(int i=0;i<10;i++)
+//    {
+//        deltas[i] = (values[i]-prevvalues[i])/Servo_Angle_Steps;
+//    }
+//    for(int i=1;i<=Servo_Angle_Steps;i++)
+//    {
+//        for(int j=0;j<10;j++)
+//        {
+//            (this->*functions[j])(prevvalues[j]+(i*deltas[j]));
+//        }
+//        delay(1000);
+//    }
 }
 
 void RobotArm::sendPacket(int* packetData)

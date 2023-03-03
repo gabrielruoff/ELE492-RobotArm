@@ -42,11 +42,11 @@ public class Packet {
 	public Packet(byte packetData[])
 	{
 		this.positions = packetData;
-                CRC = computeCRC();
 	}
         
 	public byte[] compile()
 	{
+		CRC = computeCRC();
 		byte bytes[] = new byte[PACKET_LENGTH+3];
 		bytes[0] = START;
 		for(int i=0;i<positions.length;i++)

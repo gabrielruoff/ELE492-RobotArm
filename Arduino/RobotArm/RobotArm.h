@@ -24,6 +24,7 @@ class RobotArm
     void setFinger3(int);
     void setFinger4(int);
     void setFinger5(int);
+    void updateArm();
 
     void waitForPacketStart(void);
 	void digestPacket(void);
@@ -42,16 +43,7 @@ class RobotArm
     int clipAngle(int);
     int clipAngleShoulder(int);
 
-    void shoulderRotationHandler(int);
-    void shoulderHandler(int);
-    void elbowHandler(int);
-    void wristHandler(int);
-    void wristRotationHandler(int);
-    void finger1Handler(int);
-    void finger2Handler(int);
-    void finger3Handler(int);
-    void finger4Handler(int);
-    void finger5Handler(int);
+    void jointHandler(int, int, void (RobotArm::*)(int));
 };
 
 #endif
