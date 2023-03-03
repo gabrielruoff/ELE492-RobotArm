@@ -71,6 +71,7 @@ void RobotArm::init()
     pwm.setPWMFreq(SERVO_FREQ);
     delay(10);
 
+    //Initialize Angles
     values[0] = 90;
     values[1] = 90;
     values[2] = 90;
@@ -81,11 +82,14 @@ void RobotArm::init()
     values[7] = 180;
     values[8] = 180;
     values[9] = 180;
+    //CRC Bit
     values[10] = 202;
+    //Initialize previous values to intial angles
     for (int i = 0; i < 11; i++) {
         prevvalues[i] = values[i];
     }
 
+    //Move Servos to intial angles
     this->setShoulderRotation(90);
     this->setShoulder(90);
     this->setElbow(90);
@@ -98,6 +102,7 @@ void RobotArm::init()
     this->setFinger4(180);
     this->setFinger5(180);
 
+    //Flush Serial Buffer
 	Serial.flush();
 }
 
