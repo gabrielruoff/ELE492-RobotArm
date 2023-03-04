@@ -29,8 +29,8 @@
 #define Finger4_servonum 9
 #define Finger5_servonum 10
 //Servo Speed
-#define Servo_Speed 100
-#define Servo_Angle_Step 10
+#define Servo_Speed 1
+#define Servo_Angle_Step 1
 
 //CRC Hash Table
 int CRC8_TABLE [] = { 0x00, 0x5e, 0xbc, 0xe2, 0x61, 0x3f, 0xdd, 0x83, 0xc2, 0x9c, 0x7e,
@@ -50,9 +50,10 @@ int CRC8_TABLE [] = { 0x00, 0x5e, 0xbc, 0xe2, 0x61, 0x3f, 0xdd, 0x83, 0xc2, 0x9c
 			0x2b, 0x75, 0x97, 0xc9, 0x4a, 0x14, 0xf6, 0xa8, 0x74, 0x2a, 0xc8, 0x96, 0x15, 0x4b, 0xa9, 0xf7, 0xb6,
 			0xe8, 0x0a, 0x54, 0xd7, 0x89, 0x6b, 0x35 };
 
-//Current Value and Previous Value Holders
+//Setpoint Value, Current Value, and Previous Value Holders
 int values[11];
 int prevvalues[11];
+int currentvalues[11];
 
 // int shoulderRotation = 0, shoulder = 0, elbow = 0, wirstRotation=0, wrist=0;
 // int finger1 = 0, int finger2 = 0; int finger3 = 0; int finger4 = 0; int finger5 = 0;
@@ -87,7 +88,10 @@ void RobotArm::init()
     //Initialize previous values to intial angles
     for (int i = 0; i < 11; i++) {
         prevvalues[i] = values[i];
+        currentvalues[i] = values[i];
     }
+    prevvalues[10] = 202;
+    currentvalues[10] = 202;
 
     //Move Servos to intial angles
     this->setShoulderRotation(90);
@@ -224,131 +228,151 @@ int RobotArm::clipAngleShoulder(int theta)
 //Handlers for Servos
 void RobotArm::shoulderRotationHandler(int i)
 {
-    if (prevvalues[0] > values[0]) {
-        this->setShoulderRotation(prevvalues[0] - i);
+    if (currentvalues[0] > values[0]) {
+        currentvalues[0] = currentvalues[0] - i;
+        this->setFinger1(currentvalues[0]);
     }
-    else if (prevvalues[0] < values[0]) {
-        this->setShoulderRotation(prevvalues[0] + i);
+    else if (currentvalues[0] < values[0]) {
+        currentvalues[0] = currentvalues[0] + i;
+            this->setFinger1(currentvalues[0]);
     }
-    else if (prevvalues[0] == values[0]) {
-        this->setShoulderRotation(values[0]);
+    else if (currentvalues[0] == values[0]) {
+        this->setFinger1(values[0]);
     }
 }
 
 void RobotArm::shoulderHandler(int i)
 {
-    if (prevvalues[1] > values[1]) {
-        this->setShoulder(prevvalues[1] - i);
+    if (currentvalues[1] > values[1]) {
+        currentvalues[1] = currentvalues[1] - i;
+        this->setFinger1(currentvalues[1]);
     }
-    else if (prevvalues[1] < values[1]) {
-        this->setShoulder(prevvalues[1] + i);
+    else if (currentvalues[1] < values[1]) {
+        currentvalues[1] = currentvalues[1] + i;
+            this->setFinger1(currentvalues[1]);
     }
-    else if (prevvalues[1] == values[1]) {
-        this->setShoulder(values[1]);
+    else if (currentvalues[1] == values[1]) {
+        this->setFinger1(values[1]);
     }
 }
 
 void RobotArm::elbowHandler(int i)
 {
-    if (prevvalues[2] > values[2]) {
-        this->setElbow(prevvalues[2] - i);
+    if (currentvalues[2] > values[2]) {
+        currentvalues[2] = currentvalues[2] - i;
+        this->setFinger1(currentvalues[2]);
     }
-    else if (prevvalues[2] < values[2]) {
-        this->setElbow(prevvalues[2] + i);
+    else if (currentvalues[2] < values[2]) {
+        currentvalues[2] = currentvalues[2] + i;
+            this->setFinger1(currentvalues[2]);
     }
-    else if (prevvalues[2] == values[2]) {
-        this->setElbow(values[2]);
+    else if (currentvalues[2] == values[2]) {
+        this->setFinger1(values[2]);
     }
 }
 
 void RobotArm::wristHandler(int i)
 {
-    if (prevvalues[3] > values[3]) {
-        this->setWrist(prevvalues[3] - i);
+    if (currentvalues[3] > values[3]) {
+        currentvalues[3] = currentvalues[3] - i;
+        this->setFinger1(currentvalues[3]);
     }
-    else if (prevvalues[3] < values[3]) {
-        this->setWrist(prevvalues[3] + i);
+    else if (currentvalues[3] < values[3]) {
+        currentvalues[3] = currentvalues[3] + i;
+            this->setFinger1(currentvalues[3]);
     }
-    else if (prevvalues[3] == values[3]) {
-        this->setWrist(values[3]);
+    else if (currentvalues[3] == values[3]) {
+        this->setFinger1(values[3]);
     }
 }
 
 void RobotArm::wristRotationHandler(int i)
 {
-    if (prevvalues[4] > values[4]) {
-        this->setWristRotation(prevvalues[4] - i);
+    if (currentvalues[4] > values[4]) {
+        currentvalues[4] = currentvalues[4] - i;
+        this->setFinger1(currentvalues[4]);
     }
-    else if (prevvalues[4] < values[4]) {
-        this->setWristRotation(prevvalues[4] + i);
+    else if (currentvalues[4] < values[4]) {
+        currentvalues[4] = currentvalues[4] + i;
+            this->setFinger1(currentvalues[4]);
     }
-    else if (prevvalues[4] == values[4]) {
-        this->setWristRotation(values[4]);
+    else if (currentvalues[4] == values[4]) {
+        this->setFinger1(values[4]);
     }
 }
 
 void RobotArm::finger1Handler(int i)
 {
-    if (prevvalues[5] > values[5]) {
-        this->setFinger1(prevvalues[5] - i);
+    if (currentvalues[5] > values[5]) {
+        currentvalues[5] = currentvalues[5] - i;
+        this->setFinger1(currentvalues[5]);
     }
-    else if (prevvalues[5] < values[5]) {
-        this->setFinger1(prevvalues[5] + i);
+    else if (currentvalues[5] < values[5]) {
+        currentvalues[5] = currentvalues[5] + i;
+        this->setFinger1(currentvalues[5]);
     }
-    else if (prevvalues[5] == values[5]) {
+    else if (currentvalues[5] == values[5]) {
         this->setFinger1(values[5]);
     }
 }
 
 void RobotArm::finger2Handler(int i)
 {
-    if (prevvalues[6] > values[6]) {
-        this->setFinger2(prevvalues[6] - i);
+    if (currentvalues[6] > values[6]) {
+        currentvalues[6] = currentvalues[6] - i;
+        this->setFinger1(currentvalues[6]);
     }
-    else if (prevvalues[6] < values[6]) {
-        this->setFinger2(prevvalues[6] + i);
+    else if (currentvalues[6] < values[6]) {
+        currentvalues[6] = currentvalues[6] + i;
+        this->setFinger1(currentvalues[6]);
     }
-    else if (prevvalues[6] == values[6]) {
-        this->setFinger2(values[6]);
+    else if (currentvalues[6] == values[6]) {
+        this->setFinger1(values[6]);
     }
 }
 
 void RobotArm::finger3Handler(int i)
 {
-    if (prevvalues[7] > values[7]) {
-        this->setFinger3(prevvalues[7] - i);
+    if (currentvalues[7] > values[7]) {
+        currentvalues[7] = currentvalues[7] - i;
+        this->setFinger1(currentvalues[7]);
     }
-    else if (prevvalues[7] < values[7]) {
-        this->setFinger3(prevvalues[7] + i);
+    else if (currentvalues[7] < values[7]) {
+        currentvalues[7] = currentvalues[7] + i;
+        this->setFinger1(currentvalues[7]);
     }
-    else if (prevvalues[7] == values[7]) {
-        this->setFinger3(values[7]);
+    else if (currentvalues[7] == values[7]) {
+        this->setFinger1(values[7]);
     }
 }
 
 void RobotArm::finger4Handler(int i)
 {
-    if (prevvalues[8] > values[8]) {
-        this->setFinger4(prevvalues[8] - i);
+    if (currentvalues[8] > values[8]) {
+        currentvalues[8] = currentvalues[8] - i;
+        this->setFinger1(currentvalues[8]);
     }
-    else if (prevvalues[8] < values[8]) {
-        this->setFinger4(prevvalues[8] + i);
+    else if (currentvalues[8] < values[8]) {
+        currentvalues[8] = currentvalues[8] + i;
+        this->setFinger1(currentvalues[8]);
     }
-    else if (prevvalues[8] == values[8]) {
-        this->setFinger4(values[8]);
+    else if (currentvalues[8] == values[8]) {
+        this->setFinger1(values[8]);
     }
 }
 
 void RobotArm::finger5Handler(int i)
 {
-    if (prevvalues[9] > values[9]) {
-        this->setFinger5(prevvalues[9] - i);
+    if (currentvalues[9] > values[9]) {
+        currentvalues[9] = currentvalues[9] - i;
+        this->setFinger1(currentvalues[9]);
     }
-    else if (prevvalues[9] < values[9]) {
-        this->setFinger5(prevvalues[9] + i);
+    else if (currentvalues[9] < values[9]) {
+        currentvalues[9] = currentvalues[9] + i;
+        this->setFinger1(currentvalues[9]);
     }
-    else if (prevvalues[9] == values[9]) {
-        this->setFinger5(values[9]);
+    else if (currentvalues[9] == values[9]) {
+        this->setFinger1(values[9]);
     }
 }
 
@@ -460,6 +484,10 @@ void RobotArm::updateFromPacket(int* packet)
         //Update Angle Values from packet
         for (int i = 0; i < 11; i++) {
             values[i] = packet[i];
+        }
+        //Update Current Angles with Previous Angles
+        for (int i = 0; i < 11; i++) {
+            currentvalues[i] = prevvalues[i];
         }
         //Loop to update Angles at Servo Speed
         for (int i = 0; i < 181; i+=Servo_Angle_Step) {
