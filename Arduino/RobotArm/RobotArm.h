@@ -6,13 +6,14 @@
 
 class RobotArm
 {
-  public:
-  int PACKET_LENGTH = 10;
+public:
+    int PACKET_LENGTH = 10;
     byte PACKET_START = (byte)200;
-    byte PACKET_STOP = (byte)300;
+    byte PACKET_STOP = (byte)250;
+    byte PACKET_BADCRC = (byte)240;
     RobotArm(int);
-    void setShoulderRotation(int);
     void init(void);
+    void setShoulderRotation(int);
     void setShoulder(int);
     void setElbow(int);
     void setWrist(int);
@@ -23,15 +24,21 @@ class RobotArm
     void setFinger4(int);
     void setFinger5(int);
 
-    void waitForPacket(void);
-    int* readPacket(void);
+    void waitForPacketStart(void);
+    void digestPacket(void);
     void waitForPacketEnd(void);
-    void updateFromPacket(int*);
+    int* readPacket(void);
+    bool verifyPacketCRC(void);
+    int calculateCRC(void);
+    int calculateCRC(int*);
+    void updateValues(int*);
+    void updateFromPacket();
     void sendPacket(int*);
-  private:
+private:
     Adafruit_PWMServoDriver pwm;
     void setServoPwm(int servoNum, int pwmVal);
     void setServoMicroseconds(int servoNum, int us);
     int clipAngle(int);
+    int clipAngleShoulder(int);
 };
 #endif
