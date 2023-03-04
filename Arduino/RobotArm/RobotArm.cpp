@@ -51,9 +51,6 @@ int CRC8_TABLE[] = { 0x00, 0x5e, 0xbc, 0xe2, 0x61, 0x3f, 0xdd, 0x83, 0xc2, 0x9c,
 int values[11];
 int prevvalues[11];
 
-// int shoulderRotation = 0, shoulder = 0, elbow = 0, wirstRotation=0, wrist=0;
-// int finger1 = 0, int finger2 = 0; int finger3 = 0; int finger4 = 0; int finger5 = 0;
-
 RobotArm::RobotArm(int baudRate)
 {
     Serial.begin(baudRate);
@@ -68,16 +65,16 @@ void RobotArm::init()
     delay(10);
 
     //Initialize Angles
-    values[0] = 90;
-    values[1] = 90;
-    values[2] = 90;
-    values[3] = 90;
-    values[4] = 90;
-    values[5] = 180;
-    values[6] = 180;
-    values[7] = 180;
-    values[8] = 180;
-    values[9] = 180;
+    values[0] = 90;  //Shoulder Rotation
+    values[1] = 90;  //Shoulder
+    values[2] = 90;  //Elbow
+    values[3] = 90;  //Wrist
+    values[4] = 90;  //Wrist Rotation
+    values[5] = 180; //Finger 1
+    values[6] = 180; //Finger 2
+    values[7] = 180; //Finger 3
+    values[8] = 180; //Finger 4
+    values[9] = 180; //Finger 5
     //CRC Bit
     values[10] = 202;
     //Initialize previous values to intial angles
@@ -86,7 +83,16 @@ void RobotArm::init()
     }
 
     //Move Servos to intial angles
-    updateArm();
+    this->setShoulderRotation(values[0]);
+    this->setShoulder(values[1]);
+    this->setElbow(values[2]);
+    this->setWrist(values[3]);
+    this->setWristRotation(values[4]);
+    this->setFinger1(values[5]);
+    this->setFinger2(values[6]);
+    this->setFinger3(values[7]);
+    this->setFinger4(values[8]);
+    this->setFinger5(values[9]);
 
     //Flush Serial Buffer
     Serial.flush();
@@ -209,22 +215,7 @@ int RobotArm::clipAngleShoulder(int theta)
     return theta;
 }
 
-/*
-void RobotArm::jointHandler(int index, int i, void (RobotArm::*func)(int))
-{
-    if (prevvalues[index] > values[index]) {
-        (this->*func)(prevvalues[index] - i);
-        prevvalues[index] = prevvalues[index] - i;
-    }
-    else if (prevvalues[index] < values[index]) {
-        (this->*func)(prevvalues[index] + i);
-        prevvalues[index] = prevvalues[index] - i;
-    }
-    else if (prevvalues[index] == values[index]) {
-        (this->*func)(values[index]);
-    }
-}
-*/
+
 
 // Packet Functions
 // Packet Debugging Functions
@@ -323,56 +314,37 @@ int* RobotArm::readPacket()
         //CRC for BAD_PACKET
         values[10] = (byte)169;
     }
-    //Else CRC is GOOD, return values
+    //Else Values is unaltered, returns values from digestPacket
+    //Return values
     return values;
 }
 
-void RobotArm::updateFromPacket(int* packet)
+void RobotArm::updateFromPacket()
 {
-    //Update Angle Values from packet
-    for (int i = 0; i < 10; i++) {
-        values[i] = packet[i];
+    if (values[0] == PACKET_BADCRC) {
+        //Update Angle Values from Previous (valid) Packet
+        for (int i = 0; i < 10; i++) {
+            values[i] = previousvalues[i];
+        }
     }
-
-    updateArm();
+    else {}
+ 
+    //Set Servos
+    this->setShoulderRotation(values[0]);
+    this->setShoulder(values[1]);
+    this->setElbow(values[2]);
+    this->setWrist(values[3]);
+    this->setWristRotation(values[4]);
+    this->setFinger1(values[5]);
+    this->setFinger2(values[6]);
+    this->setFinger3(values[7]);
+    this->setFinger4(values[8]);
+    this->setFinger5(values[9]);
 
     //Update Previous Angle Values
     for (int i = 0; i < 10; i++) {
         prevvalues[i] = values[i];
     }
-}
-
-void RobotArm::updateArm()
-{
-    //int deltas[10];
-    void (RobotArm:: * functions[])(int) = {
-        &setShoulderRotation,
-        &setShoulder,
-        &setElbow,
-        &setWrist,
-        &setWristRotation,
-        &setFinger1,
-        &setFinger2,
-        &setFinger3,
-        &setFinger4,
-        &setFinger5
-    };
-    for (int j = 0; j < 10; j++)
-    {
-        (this->*functions[j])(values[j]);
-    }
-    //    for(int i=0;i<10;i++)
-    //    {
-    //        deltas[i] = (values[i]-prevvalues[i])/Servo_Angle_Steps;
-    //    }
-    //    for(int i=1;i<=Servo_Angle_Steps;i++)
-    //    {
-    //        for(int j=0;j<10;j++)
-    //        {
-    //            (this->*functions[j])(prevvalues[j]+(i*deltas[j]));
-    //        }
-    //        delay(1000);
-    //    }
 }
 
 void RobotArm::sendPacket(int* packetData)

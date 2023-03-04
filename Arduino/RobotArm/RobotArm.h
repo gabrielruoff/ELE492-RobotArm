@@ -34,5 +34,4 @@ class RobotArm
     void setServoMicroseconds(int servoNum, int us);
     int clipAngle(int);
 };
-
 #endif
