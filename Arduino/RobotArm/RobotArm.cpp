@@ -212,7 +212,7 @@ int RobotArm::clipAngleShoulder(int theta)
     return theta;
 }
 
-
+/*
 void RobotArm::jointHandler(int index, int i, void (RobotArm::*func)(int))
 {
     if (prevvalues[index] > values[index]) {
@@ -227,7 +227,7 @@ void RobotArm::jointHandler(int index, int i, void (RobotArm::*func)(int))
         (this->*func)(values[index]);
     }
 }
-
+*/
 
 // Packet Functions
 // Packet Debugging Functions
@@ -332,19 +332,22 @@ int* RobotArm::readPacket()
 
 void RobotArm::updateFromPacket(int* packet)
 {
+    //Update Angle Values from packet
+    for (int i = 0; i < 10; i++) {
+        values[i] = packet[i];
+    }
+
+    updateArm();
+
+    //Update Previous Angle Values
     for (int i = 0; i < 10; i++) {
         prevvalues[i] = values[i];
     }
-        //Update Angle Values from packet
-        for (int i = 0; i < 10; i++) {
-            values[i] = packet[i];
-        }
-    updateArm();
 }
 
 void RobotArm::updateArm()
 {
-    int deltas[10];
+    //int deltas[10];
     void (RobotArm::*functions[])(int) = {
         &setShoulderRotation,
         &setShoulder,
