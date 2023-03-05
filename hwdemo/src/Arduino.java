@@ -2,16 +2,18 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.fazecast.jSerialComm.SerialPort;
+import java.util.Arrays;
 
 public class Arduino {
 	private static final String PORT_ID = "Arduino Uno";
 	private static final String OSX_PORT_PATH = "/dev/cu.usbmodem11301";
+        private static final int MAX_READ_ATTEMPTS = 1000;
 	public SerialPort serialPort;
 	public InputStream inputStream;
-	public Packet oldPacket;
+        public Packet prevPacket;
 
 	public Arduino(SerialPort serialPort) {
-		this.oldPacket = new Packet(new byte[] {90,97,90,90,90,(byte)180,(byte)180,(byte)180,(byte)180,(byte)180});
+                this.prevPacket = new Packet(Packet.startingPositions);
 		this.serialPort = serialPort;
 	}
 
@@ -38,36 +40,8 @@ public class Arduino {
                 serialPort.writeBytes(message, message.length);
 	}
 
-	@Deprecated
 	public void writePacket(Packet packet) {
 		this.write(packet.compile());
-	}
-	
-	public void writePacketVarSpeed(Packet packet, int steps, int delay) throws Exception {
-		int deltas[] = new int[Packet.PACKET_LENGTH];
-		for(int i=0;i<deltas.length;i++)
-		{
-			deltas[i] = (packet.positions[i]-oldPacket.positions[i])/steps;
-		}
-		for(int i=1;i<=steps;i++)
-		{
-			for(int j=0;j<Packet.PACKET_LENGTH;j++)
-			{
-				packet.positions[i] = (byte)(oldPacket.positions[i]+(i*deltas[j]));
-			}
-			System.out.println("packet: "+packet.toString());
-			this.write(packet.compile());
-			System.out.println("wrote packet. listening..");
-			byte rpacket[] = this.listenForAndReadPacket();
-			System.out.println("got packet back: ");
-			for (byte b : rpacket) {
-				System.out.print((b & 0xFF) + ", ");
-			}
-			System.out.println();
-			Thread.sleep(delay);
-		}
-		oldPacket = packet;
-//		this.write(packet.compile());
 	}
 
 	public void waitForPacketStart() throws IOException {
@@ -85,7 +59,7 @@ public class Arduino {
                 if (inputStream.available() > 0 && (byte)inputStream.read() == Packet.STOP) {
                     break;
                 }
-                if (c > 1000) {
+                if (c > MAX_READ_ATTEMPTS) {
                     throw new Exception("Expected packed stop");
                 }
             }
@@ -109,9 +83,8 @@ public class Arduino {
                 byte packetData[] = new byte[10];
                 System.arraycopy(inputPackets, 0, packetData, 0, 10);
                 Packet crosscheck  = new Packet(packetData);
-                crosscheck.setCRC();
                 byte calcCRC = crosscheck.getCRC();
-                System.out.println("Got CRC: "+readCRC+" Calced CRC: "+calcCRC);
+                //System.out.println("Got CRC: "+readCRC+" Calced CRC: "+calcCRC);
                 return readCRC == calcCRC;
 	}
 
@@ -120,13 +93,66 @@ public class Arduino {
 		byte inputPackets[] = this.digestPacket();
                 this.waitForPacketStop();
                 if (validateCRC(inputPackets)) {
-                    //System.out.println("CRC GOOD");
+                    System.out.println("CRC GOOD");
                 }
                 else {
-//                    System.out.println("CRC BAD");
-                    throw new Exception("BAD CRC");
+                    System.out.println("CRC BAD");
                 }
 		return inputPackets;
 	}
-
+        
+        public void sendCommand(Packet packet, int steps, int delay) throws Exception {
+		int[] deltas = new int[Packet.PACKET_LENGTH];
+                //System.out.println(Arrays.toString(packet.positions));
+                //System.out.println(Arrays.toString(prevPacket.positions));
+                if (!Arrays.equals(packet.positions, prevPacket.positions)) {
+                    //This current implementation does not work without utilizing rounding (Math.Round() etc) which will slow down procesisng
+                    //Branching off for implementaiton with full 180 degree sweep each time isntea dof step-wise sweep
+                    for(int i=0;i<deltas.length;i++) {
+                        deltas[i] = ( ((int)packet.positions[i] & 0xFF) - ((int)prevPacket.positions[i] & 0xFF) ) / steps;
+                    }
+            
+                    for(int i=0;i<steps;i++) {
+                        for(int j=0;j<Packet.PACKET_LENGTH;j++) {
+                            packet.positions[j] = (byte)(((int)prevPacket.positions[j])+(i*deltas[j]));
+                        }
+                        System.out.println("sending packet: " + packet.toString());
+                        this.write(packet.compile());
+                        System.out.println("wrote packet. listening..");
+                        byte rpacket[] = this.listenForAndReadPacket();
+                        System.out.print("got packet back: ");
+                        for (byte b : rpacket) {
+                            System.out.print((b & 0xFF) + ", ");
+                        }
+                        System.out.println();
+                        Thread.sleep(delay);
+                    }
+                }
+                else {
+                    System.out.println("Packet same as previous");
+                    System.out.println("sending packet: " + packet.toString());
+                    this.write(packet.compile());
+                    System.out.println("wrote packet. listening..");
+                    byte rpacket[] = this.listenForAndReadPacket();
+                    System.out.print("got packet back: ");
+                    for (byte b : rpacket) {
+                        System.out.print((b & 0xFF) + ", ");
+                    }
+                    System.out.println();
+                }
+                System.arraycopy(prevPacket.positions, 0, packet.positions, 0, 10);
+	}
+        
+        public void sendCommand(Packet packet) throws Exception {
+            System.out.println("packet: " + packet.toString());
+            this.write(packet.compile());
+            System.out.println("wrote packet. listening..");
+            byte rpacket[] = this.listenForAndReadPacket();
+            System.out.println("got packet back: ");
+            for (byte b : rpacket) {
+                System.out.print((b & 0xFF) + ", ");
+            }
+            System.out.println();
+            prevPacket = packet;
+        }
 }

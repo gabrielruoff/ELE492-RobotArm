@@ -1,8 +1,11 @@
+import java.util.Arrays;
+
 public class Packet {
 	public static final byte START = (byte) 200;
 	public static final byte STOP = (byte) 250;
         public static final byte BADCRC = (byte) 240;
 	public static final int PACKET_LENGTH = 10;
+        public static final byte startingPositions[] = {90,90,90,90,90,(byte)180,(byte)180,(byte)180,(byte)180,(byte)180}; //Starting Positions Must match Starting positons in RobotArm.cpp
 	private static final int FINGERS_OFFSET = 4;
 	public byte positions[];
         private byte CRC;
@@ -42,18 +45,19 @@ public class Packet {
 	public Packet(byte packetData[])
 	{
 		this.positions = packetData;
+                CRC = computeCRC();
 	}
         
 	public byte[] compile()
 	{
-		CRC = computeCRC();
 		byte bytes[] = new byte[PACKET_LENGTH+3];
 		bytes[0] = START;
 		for(int i=0;i<positions.length;i++)
 		{
 			bytes[i+1] = (byte)positions[i];
 		}
-		bytes[11] = CRC;
+		CRC = this.computeCRC();
+                bytes[11] = CRC;
                 bytes[12] = STOP;
 		return bytes;
 	}
@@ -67,13 +71,12 @@ public class Packet {
             return (byte)crc;
         }
         
-        public void setCRC()
-        {
-        	CRC = computeCRC();
-        }
-        
         public byte getCRC() {
             return CRC;
+        }
+        
+        public byte[] getPositions() {
+            return positions;
         }
 	
 	@Override
@@ -82,43 +85,49 @@ public class Packet {
 		String s = "";
 		for(byte b:this.compile())
 		{
-			s+=b+",";
+			s+=(b & 0xFF)+",";
 		}
 		return s;
 	}
 	
-	public static boolean equals(Packet p1, Packet p2)
-	{
-		for(int i=0;i<PACKET_LENGTH;i++)
-		{
-			if(p1.positions[i] != p2.positions[i] || p1.CRC != p2.CRC)
-				return false;
-		}
-		return true;
-	}
+	public boolean equals(Packet p1) {
+            //Note: this method is currently working incorrectly
+            if (!Arrays.equals(this.positions, p1.positions) || p1.getCRC() != this.CRC) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
 	
 	public void setShoulderRotation(int val) {
 		this.positions[shoulderRotation] = (byte) (val);
+                CRC = this.computeCRC();
 	}
 
 	public void setShoulder(int val) {
 		this.positions[shoulder] = (byte) (val);
+                CRC = this.computeCRC();
 	}
 
 	public void setElbow(int val) {
 		this.positions[elbow] = (byte) (val);
+                CRC = this.computeCRC();
 	}
 
 	public void setWristRotation(int val) {
 		this.positions[wristRotation] = (byte) (val);
+                CRC = this.computeCRC();
 	}
 
 	public void setWrist(int val) {
 		this.positions[wrist] = (byte) (val);
+                CRC = this.computeCRC();
 	}
 	
 	public void setFinger(int index, int val)
 	{
 		positions[FINGERS_OFFSET+index] = (byte) (val);
+                CRC = this.computeCRC();
 	}
 }
