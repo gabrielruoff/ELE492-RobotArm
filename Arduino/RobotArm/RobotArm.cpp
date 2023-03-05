@@ -307,10 +307,6 @@ int* RobotArm::readPacket()
     bool checkCRC = this->verifyPacketCRC();
     //If CRC Bad set packet to BADCRC value;
     if (checkCRC == false) {
-        for (int i = 0; i < PACKET_LENGTH; i++)
-        {
-            values[i] = PACKET_BADCRC;
-        }
         //CRC for BAD_PACKET
         values[10] = (byte)169;
     }
@@ -324,7 +320,7 @@ void RobotArm::updateFromPacket()
     if (values[0] == PACKET_BADCRC) {
         //Update Angle Values from Previous (valid) Packet
         for (int i = 0; i < 10; i++) {
-            values[i] = previousvalues[i];
+            values[i] = prevvalues[i];
         }
     }
     else {}
@@ -349,12 +345,23 @@ void RobotArm::updateFromPacket()
 
 void RobotArm::sendPacket(int* packetData)
 {
-    Serial.write(PACKET_START);
-    for (int i = 0; i < PACKET_LENGTH + 1; i++)
-    {
-        Serial.write(packetData[i]);
+    if (packetData[10] == 169) {
+        Serial.write(PACKET_START);
+        for (int i = 0; i < PACKET_LENGTH; i++)
+        {
+            Serial.write(PACKET_BADCRC);
+        }
+        Serial.write(packetData[10]);
+        Serial.write(PACKET_STOP);
     }
-    Serial.write(PACKET_STOP);
+    else {
+        Serial.write(PACKET_START);
+        for (int i = 0; i < PACKET_LENGTH + 1; i++)
+        {
+            Serial.write(packetData[i]);
+        }
+        Serial.write(PACKET_STOP);
+    }
     Serial.flush();
 }
 
