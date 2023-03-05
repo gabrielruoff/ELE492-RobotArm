@@ -317,7 +317,7 @@ int* RobotArm::readPacket()
 
 void RobotArm::updateFromPacket()
 {
-    if (values[0] == PACKET_BADCRC) {
+    if (values[10] == 169) {
         //Update Angle Values from Previous (valid) Packet
         for (int i = 0; i < 10; i++) {
             values[i] = prevvalues[i];
