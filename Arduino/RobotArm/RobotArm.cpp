@@ -102,6 +102,7 @@ void RobotArm::init()
 // Servo Angle-Sets
 void RobotArm::setShoulderRotation(int theta)
 {
+    theta = theta - 90;
     int pwmVal = (theta/180.0)*(FS5115M_SERVOMAX-FS5115M_SERVOMIN)+FS5115M_SERVOMIN;
     // Serial.print("usVal: "); // Serial.println(pwmVal);
     this->setServoMicroseconds(shoulder_rotation_servonum, pwmVal);
