@@ -44,26 +44,35 @@ public class Arduino {
 	}
 	
 	public void writePacketVarSpeed(Packet packet, int steps, int delay) throws Exception {
+		System.out.println(oldPacket.toString()+" -> "+packet.toString());
 		int deltas[] = new int[Packet.PACKET_LENGTH];
+		int deltaSum = 0;
+		System.out.print("deltas: ");
 		for(int i=0;i<deltas.length;i++)
 		{
 			deltas[i] = (packet.positions[i]-oldPacket.positions[i])/steps;
+			System.out.print(deltas[i]+", ");
+			deltaSum+=deltas[i];
 		}
+		System.out.println();
+		if(deltaSum==0)
+			return;
 		for(int i=1;i<=steps;i++)
 		{
 			for(int j=0;j<Packet.PACKET_LENGTH;j++)
 			{
-				packet.positions[i] = (byte)(oldPacket.positions[i]+(i*deltas[j]));
+				packet.positions[j] = (byte)(oldPacket.positions[j]+(i*deltas[j]));
+//				System.out.print(i)
 			}
 			System.out.println("packet: "+packet.toString());
 			this.write(packet.compile());
-			System.out.println("wrote packet. listening..");
+//			System.out.println("wrote packet. listening..");
 			byte rpacket[] = this.listenForAndReadPacket();
-			System.out.println("got packet back: ");
-			for (byte b : rpacket) {
-				System.out.print((b & 0xFF) + ", ");
-			}
-			System.out.println();
+//			System.out.println("got packet back: ");
+//			for (byte b : rpacket) {
+//				System.out.print((b & 0xFF) + ", ");
+//			}
+//			System.out.println();
 			Thread.sleep(delay);
 		}
 		oldPacket = packet;
@@ -111,7 +120,7 @@ public class Arduino {
                 Packet crosscheck  = new Packet(packetData);
                 crosscheck.setCRC();
                 byte calcCRC = crosscheck.getCRC();
-                System.out.println("Got CRC: "+readCRC+" Calced CRC: "+calcCRC);
+//                System.out.println("Got CRC: "+readCRC+" Calced CRC: "+calcCRC);
                 return readCRC == calcCRC;
 	}
 

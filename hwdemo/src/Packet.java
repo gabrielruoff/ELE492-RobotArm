@@ -82,7 +82,7 @@ public class Packet {
 		String s = "";
 		for(byte b:this.compile())
 		{
-			s+=b+",";
+			s+=(b & 0xFF)+", ";
 		}
 		return s;
 	}

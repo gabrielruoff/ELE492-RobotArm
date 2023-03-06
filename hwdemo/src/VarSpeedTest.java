@@ -10,8 +10,18 @@ public class VarSpeedTest {
 		Arduino a = new Arduino(Arduino.detectArduino());
 		a.open(BAUD_RATE);
 		
+		
+		a.writePacketVarSpeed(neutral, 10, 100);
+		
+		// move wrist
 		neutral.setWrist(0);
 		a.writePacketVarSpeed(neutral, 10, 100);
+		neutral.setWrist(180);
+		a.writePacketVarSpeed(neutral, 10, 100);
+//		neutral.setWrist(90);
+//		a.writePacketVarSpeed(neutral, 10,100);
+		
+		
 
 	}
 }
