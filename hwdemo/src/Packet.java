@@ -87,11 +87,11 @@ public class Packet {
 		return s;
 	}
 	
-	public static boolean equals(Packet p1, Packet p2)
+	public boolean equals(Packet p2)
 	{
 		for(int i=0;i<PACKET_LENGTH;i++)
 		{
-			if(p1.positions[i] != p2.positions[i] || p1.CRC != p2.CRC)
+			if(this.positions[i] != p2.positions[i] || this.CRC != p2.CRC)
 				return false;
 		}
 		return true;

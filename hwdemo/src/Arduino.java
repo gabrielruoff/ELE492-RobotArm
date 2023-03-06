@@ -6,6 +6,7 @@ import com.fazecast.jSerialComm.SerialPort;
 public class Arduino {
 	private static final String PORT_ID = "Arduino Uno";
 	private static final String OSX_PORT_PATH = "/dev/cu.usbmodem11301";
+	public static final int MAX_READ_ATTEMPTS = 5000;
 	public SerialPort serialPort;
 	public InputStream inputStream;
 	public Packet oldPacket;
@@ -45,25 +46,26 @@ public class Arduino {
 	
 	public void writePacketVarSpeed(Packet packet, int steps, int delay) throws Exception {
 		System.out.println(oldPacket.toString()+" -> "+packet.toString());
-		int deltas[] = new int[Packet.PACKET_LENGTH];
+		if(packet.equals(oldPacket))
+			return;
+		float deltas[] = new float[Packet.PACKET_LENGTH];
 		int deltaSum = 0;
-		System.out.print("deltas: ");
+//		System.out.print("deltas: ");
 		for(int i=0;i<deltas.length;i++)
 		{
-			deltas[i] = (packet.positions[i]-oldPacket.positions[i])/steps;
-			System.out.print(deltas[i]+", ");
-			deltaSum+=deltas[i];
+//			System.out.println(byteToInt(packet.positions[i])+"-"+byteToInt(oldPacket.positions[i])+")/(float)"+steps);
+			deltas[i] = (byteToInt(packet.positions[i])-byteToInt(oldPacket.positions[i]))/(float)steps;
+//			System.out.print(deltas[i]+", ");
+			deltaSum+=Math.abs(deltas[i]);
 		}
 		System.out.println();
-		if(deltaSum==0)
-			return;
 		for(int i=1;i<=steps;i++)
 		{
 			for(int j=0;j<Packet.PACKET_LENGTH;j++)
 			{
 				packet.positions[j] = (byte)(oldPacket.positions[j]+(i*deltas[j]));
-//				System.out.print(i)
 			}
+			System.out.print("Step #"+i+" ");
 			System.out.println("packet: "+packet.toString());
 			this.write(packet.compile());
 //			System.out.println("wrote packet. listening..");
@@ -94,7 +96,7 @@ public class Arduino {
                 if (inputStream.available() > 0 && (byte)inputStream.read() == Packet.STOP) {
                     break;
                 }
-                if (c > 1000) {
+                if (c > MAX_READ_ATTEMPTS) {
                     throw new Exception("Expected packed stop");
                 }
             }
@@ -136,6 +138,11 @@ public class Arduino {
                     throw new Exception("BAD CRC");
                 }
 		return inputPackets;
+	}
+	
+	private int byteToInt(byte b)
+	{
+		return (b & 0xFF);
 	}
 
 }

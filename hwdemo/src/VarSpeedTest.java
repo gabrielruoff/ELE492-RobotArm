@@ -16,8 +16,10 @@ public class VarSpeedTest {
 		// move wrist
 		neutral.setWrist(0);
 		a.writePacketVarSpeed(neutral, 10, 100);
+//		
+//		neutral.setShoulder(103);
 		neutral.setWrist(180);
-		a.writePacketVarSpeed(neutral, 10, 100);
+		a.writePacketVarSpeed(neutral, 20, 0);
 //		neutral.setWrist(90);
 //		a.writePacketVarSpeed(neutral, 10,100);
 		
