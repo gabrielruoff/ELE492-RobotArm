@@ -43,7 +43,7 @@ class RobotArm
     int clipAngle(int);
     int clipAngleShoulder(int);
 
-    void jointHandler(int, int, void (RobotArm::*)(int));
+    //void jointHandler(int, int, void (RobotArm::*)(int));
 };
 
 #endif
