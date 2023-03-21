@@ -310,24 +310,21 @@ int RobotArm::calculateCRC(int* packet)
 
 int* RobotArm::readPacket()
 {
-	//Wait for Packet Start
-	this->waitForPacketStart();
-	//Digest Packet
-	this->digestPacket();
-	//Wait for Packet End
-	this->waitForPacketEnd();
-	//Verify CRC
-	bool checkCRC = this->verifyPacketCRC();
-	//If CRC Bad set packet to BADCRC value;
-	if (checkCRC == false) {
-		for (int i = 0; i < PACKET_LENGTH; i++)
-		{
-			values[i] = PACKET_BADCRC;
-		}
-		//CRC for BAD_PACKET
-		values[10] = (byte)169;
-	}
-	//Else CRC is GOOD, return values
+    //Wait for Packet Start
+    this->waitForPacketStart();
+    //Digest Packet
+    this->digestPacket();
+    //Wait for Packet End
+    this->waitForPacketEnd();
+    //Verify CRC
+    bool checkCRC = this->verifyPacketCRC();
+    //If CRC Bad set packet to BADCRC value;
+    if (checkCRC == false) {
+        //CRC for BAD_PACKET
+        values[10] = (byte)169;
+    }
+    //Else Values is unaltered, returns values from digestPacket
+    //Return values
     return values;
 }
 
