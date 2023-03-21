@@ -244,7 +244,7 @@ void RobotArm::waitForPacketStart()
 {
     while(true)
     {
-        if(Serial.available()>0 && Serial.read() == PACKET_START)
+        if (Serial.available() > 0 && Serial.read() == PACKET_START)
         {
             return;
         }
