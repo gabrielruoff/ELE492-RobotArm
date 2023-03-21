@@ -9,10 +9,10 @@ public class Arduino {
 	public static final int MAX_READ_ATTEMPTS = 5000;
 	public SerialPort serialPort;
 	public InputStream inputStream;
-	public Packet oldPacket;
+	public Packet prevPacket;
 
 	public Arduino(SerialPort serialPort) {
-		this.oldPacket = new Packet(new byte[] {90,97,90,90,90,(byte)180,(byte)180,(byte)180,(byte)180,(byte)180});
+		this.prevPacket = new Packet(Packet.startingPositions);
 		this.serialPort = serialPort;
 	}
 
