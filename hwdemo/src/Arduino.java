@@ -39,57 +39,19 @@ public class Arduino {
                 serialPort.writeBytes(message, message.length);
 	}
 
-	@Deprecated
 	public void writePacket(Packet packet) {
 		this.write(packet.compile());
 	}
-	
-	public void writePacketVarSpeed(Packet packet, int steps, int delay) throws Exception {
-		System.out.println(oldPacket.toString()+" -> "+packet.toString());
-		if(packet.equals(oldPacket))
-			return;
-		float deltas[] = new float[Packet.PACKET_LENGTH];
-		int deltaSum = 0;
-//		System.out.print("deltas: ");
-		for(int i=0;i<deltas.length;i++)
-		{
-//			System.out.println(byteToInt(packet.positions[i])+"-"+byteToInt(oldPacket.positions[i])+")/(float)"+steps);
-			deltas[i] = (byteToInt(packet.positions[i])-byteToInt(oldPacket.positions[i]))/(float)steps;
-//			System.out.print(deltas[i]+", ");
-			deltaSum+=Math.abs(deltas[i]);
-		}
-		System.out.println();
-		for(int i=1;i<=steps;i++)
-		{
-			for(int j=0;j<Packet.PACKET_LENGTH;j++)
-			{
-				packet.positions[j] = (byte)(oldPacket.positions[j]+(i*deltas[j]));
-			}
-			System.out.print("Step #"+i+" ");
-			System.out.println("packet: "+packet.toString());
-			this.write(packet.compile());
-//			System.out.println("wrote packet. listening..");
-			byte rpacket[] = this.listenForAndReadPacket();
-//			System.out.println("got packet back: ");
-//			for (byte b : rpacket) {
-//				System.out.print((b & 0xFF) + ", ");
-//			}
-//			System.out.println();
-			Thread.sleep(delay);
-		}
-		java.lang.System.arraycopy(packet.positions, 0, oldPacket.positions, 0, Packet.PACKET_LENGTH);
-//		this.write(packet.compile());
-	}
-
-	public void waitForPacketStart() throws IOException {
+        
+        public void waitForPacketStart() throws IOException {
             while (true) {
 		if (inputStream.available() > 0 && (byte)inputStream.read() == Packet.START) {
                     return;
                 }	
             }
 	}
-
-	public void waitForPacketStop() throws Exception {
+        
+        public void waitForPacketStop() throws Exception {
             int c = 0;
             while (true) {
 		c++;
@@ -101,8 +63,8 @@ public class Arduino {
                 }
             }
 	}
-
-	public byte[] digestPacket() throws IOException {
+        
+        public byte[] digestPacket() throws IOException {
 		byte inputPackets[] = new byte[Packet.PACKET_LENGTH+1];
                 for (int i = 0; i < Packet.PACKET_LENGTH+1; i++) {
                     while(true) {
@@ -120,13 +82,12 @@ public class Arduino {
                 byte packetData[] = new byte[10];
                 System.arraycopy(inputPackets, 0, packetData, 0, 10);
                 Packet crosscheck  = new Packet(packetData);
-                crosscheck.setCRC();
                 byte calcCRC = crosscheck.getCRC();
-//                System.out.println("Got CRC: "+readCRC+" Calced CRC: "+calcCRC);
+                //System.out.println("Got CRC: "+readCRC+" Calced CRC: "+calcCRC);
                 return readCRC == calcCRC;
 	}
-
-	public byte[] listenForAndReadPacket() throws Exception {
+        
+        public byte[] listenForAndReadPacket() throws Exception {
                 this.waitForPacketStart();
 		byte inputPackets[] = this.digestPacket();
                 this.waitForPacketStop();
@@ -138,6 +99,43 @@ public class Arduino {
                     throw new Exception("BAD CRC");
                 }
 		return inputPackets;
+	}
+	
+	public void writePacketVarSpeed(Packet packet, int steps, int delay) throws Exception {
+		System.out.println(prevPacket.toString()+" -> "+packet.toString());
+		if(packet.equals(prevPacket))
+			return;
+		float deltas[] = new float[Packet.PACKET_LENGTH];
+		int deltaSum = 0;
+//		System.out.print("deltas: ");
+		for(int i=0;i<deltas.length;i++)
+		{
+//			System.out.println(byteToInt(packet.positions[i])+"-"+byteToInt(oldPacket.positions[i])+")/(float)"+steps);
+			deltas[i] = (byteToInt(packet.positions[i])-byteToInt(prevPacket.positions[i]))/(float)steps;
+//			System.out.print(deltas[i]+", ");
+			deltaSum+=Math.abs(deltas[i]);
+		}
+		System.out.println();
+		for(int i=1;i<=steps;i++)
+		{
+			for(int j=0;j<Packet.PACKET_LENGTH;j++)
+			{
+				packet.positions[j] = (byte)(prevPacket.positions[j]+(i*deltas[j]));
+			}
+			System.out.print("Step #"+i+" ");
+			System.out.println("packet: "+packet.toString());
+			this.write(packet.compile());
+//			System.out.println("wrote packet. listening..");
+			byte rpacket[] = this.listenForAndReadPacket();
+//			System.out.println("got packet back: ");
+//			for (byte b : rpacket) {
+//				System.out.print((b & 0xFF) + ", ");
+//			}
+//			System.out.println();
+			Thread.sleep(delay);
+		}
+		java.lang.System.arraycopy(packet.positions, 0, prevPacket.positions, 0, Packet.PACKET_LENGTH);
+//		this.write(packet.compile());
 	}
 	
 	private int byteToInt(byte b)
