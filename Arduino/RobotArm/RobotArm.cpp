@@ -331,36 +331,31 @@ int* RobotArm::readPacket()
     return values;
 }
 
-void RobotArm::updateFromPacket(int* packet)
+void RobotArm::updateFromPacket()
 {
+    if (values[10] == 169) {
+        //Update Angle Values from Previous (valid) Packet
+        for (int i = 0; i < 10; i++) {
+            values[i] = prevvalues[i];
+        }
+    }
+    else {}
+
+    //Set Servos
+    this->setShoulderRotation(values[0]);
+    this->setShoulder(values[1]);
+    this->setElbow(values[2]);
+    this->setWrist(values[3]);
+    this->setWristRotation(values[4]);
+    this->setFinger1(values[5]);
+    this->setFinger2(values[6]);
+    this->setFinger3(values[7]);
+    this->setFinger4(values[8]);
+    this->setFinger5(values[9]);
+
+    //Update Previous Angle Values
     for (int i = 0; i < 10; i++) {
         prevvalues[i] = values[i];
-    }
-        //Update Angle Values from packet
-        for (int i = 0; i < 10; i++) {
-            values[i] = packet[i];
-        }
-    updateArm();
-}
-
-void RobotArm::updateArm()
-{
-    int deltas[10];
-    void (RobotArm::*functions[])(int) = {
-        &setShoulderRotation,
-        &setShoulder,
-        &setElbow,
-        &setWrist,
-        &setWristRotation,
-        &setFinger1,
-        &setFinger2,
-        &setFinger3,
-        &setFinger4,
-        &setFinger5
-    };
-    for(int j=0;j<10;j++)
-    {
-        (this->*functions[j])(values[j]);
     }
 }
 
