@@ -362,30 +362,28 @@ void RobotArm::updateArm()
     {
         (this->*functions[j])(values[j]);
     }
-//    for(int i=0;i<10;i++)
-//    {
-//        deltas[i] = (values[i]-prevvalues[i])/Servo_Angle_Steps;
-//    }
-//    for(int i=1;i<=Servo_Angle_Steps;i++)
-//    {
-//        for(int j=0;j<10;j++)
-//        {
-//            (this->*functions[j])(prevvalues[j]+(i*deltas[j]));
-//        }
-//        delay(1000);
-//    }
 }
 
 void RobotArm::sendPacket(int* packetData)
 {
-    Serial.write(PACKET_START);
-    for(int i=0;i<PACKET_LENGTH+1;i++)
-    {
-      Serial.write(packetData[i]);
+    if (packetData[10] == 169) {
+        Serial.write(PACKET_START);
+        for (int i = 0; i < PACKET_LENGTH; i++)
+        {
+            Serial.write(PACKET_BADCRC);
+        }
+        Serial.write(packetData[10]);
+        Serial.write(PACKET_STOP);
     }
-    Serial.write(PACKET_STOP);
+    else {
+        Serial.write(PACKET_START);
+        for (int i = 0; i < PACKET_LENGTH + 1; i++)
+        {
+            Serial.write(packetData[i]);
+        }
+        Serial.write(PACKET_STOP);
+    }
     Serial.flush();
 }
-
 
 
