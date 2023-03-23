@@ -15,18 +15,21 @@ public class FloatingTargetTest extends ArmTest {
 			a.open(BAUD_RATE);
 		}
 		
-		neutral.setWrist(0);
-		a.setFloatingTarget(neutral);
-//		a.moveToFloatingTarget(9, true);
-		for(int i =0;i<10;i++) {
-			a.moveToFloatingTarget(20, true);
-		}
-		
-		System.in.read();
-		neutral.setWrist(180);
-		a.setFloatingTarget(neutral);
-		for(int i =0;i<10;i++) {
-			a.moveToFloatingTarget(10, true);
+		String input;
+		while(true)
+		{
+			if(System.in.available()>0)
+			{
+				input = new String(System.in.readNBytes(System.in.available()-1));
+				System.in.read();
+				if(input.equals("x"))
+					break;
+				else
+					neutral.setWrist(Integer.parseInt(input));
+			}
+			a.setFloatingTarget(neutral);
+			a.moveToFloatingTarget(1, true);
+//			Thread.sleep(1500);
 		}
 	}
 }

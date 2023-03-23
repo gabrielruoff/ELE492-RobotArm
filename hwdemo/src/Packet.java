@@ -98,7 +98,8 @@ public class Packet {
 	
 	public boolean equals(Packet p2)
 	{
-		syncPositions();
+		this.syncPositions();
+		p2.syncPositions();
 		for(int i=0;i<PACKET_LENGTH;i++)
 		{
 			if(this.positions[i] != p2.positions[i] || this.CRC != p2.CRC)
@@ -107,7 +108,7 @@ public class Packet {
 		return true;
 	}
 	
-	private void syncPositions()
+	protected void syncPositions()
 	{
 		for(int i=0;i<PACKET_LENGTH;i++)
 		{
