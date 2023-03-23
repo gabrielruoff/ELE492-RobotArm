@@ -33,7 +33,7 @@ public class LatencyTest {
 			{
 				System.out.print((b & 0xFF)+", ");
 			}
-			if(!Packet.equals(p, new Packet(rpacket)))
+			if(!p.equals(new Packet(rpacket)))
 			{
 				System.out.println("Malformed packet");
 				break;

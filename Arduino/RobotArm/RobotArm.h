@@ -4,12 +4,14 @@
 #include "Arduino.h"
 #include <Adafruit_PWMServoDriver.h>
 
+
 class RobotArm
 {
   public:
-  int PACKET_LENGTH = 10;
+	int PACKET_LENGTH = 10;
     byte PACKET_START = (byte)200;
-    byte PACKET_STOP = (byte)300;
+    byte PACKET_STOP = (byte)250;
+	byte PACKET_BADCRC = (byte)240;
     RobotArm(int);
     void setShoulderRotation(int);
     void init(void);
@@ -22,10 +24,16 @@ class RobotArm
     void setFinger3(int);
     void setFinger4(int);
     void setFinger5(int);
+    void updateArm();
 
-    void waitForPacket(void);
+    void waitForPacketStart(void);
+	void digestPacket(void);
+	void waitForPacketEnd(void);
     int* readPacket(void);
-    void waitForPacketEnd(void);
+	bool verifyPacketCRC(void);
+	int calculateCRC(void);
+	int calculateCRC(int*);
+	void updateValues(int*);
     void updateFromPacket(int*);
     void sendPacket(int*);
   private:
@@ -33,6 +41,9 @@ class RobotArm
     void setServoPwm(int servoNum, int pwmVal);
     void setServoMicroseconds(int servoNum, int us);
     int clipAngle(int);
+    int clipAngleShoulder(int);
+
+    void jointHandler(int, int, void (RobotArm::*)(int));
 };
 
 #endif
