@@ -45,9 +45,16 @@ class SampleListener1 extends Listener {
 
             // Get arm bone
             Arm arm = hand.arm();
+            double wristAngle = Math.toDegrees(arm.direction().angleTo(hand.direction()));
+
+            // Create filter for wrist angle
+            AlphaBetaFilter wristFilter = new AlphaBetaFilter(0.85, 0.05, wristAngle);
+            double filteredWristAngle = wristFilter.filter(wristAngle, 0.1);
             System.out.println("  Arm direction: " + arm.direction()
                              + ", wrist position: " + arm.wristPosition()
-                             + ", elbow position: " + arm.elbowPosition());
+                             + ", elbow position: " + arm.elbowPosition()
+                             + ", wrist angle: " + wristAngle
+                             + ", filtered wrist angle: " + filteredWristAngle);
 
             // Get fingers
             for (Finger finger : hand.fingers()) {
@@ -55,13 +62,39 @@ class SampleListener1 extends Listener {
                                  + ", length: " + finger.length()
                                  + "mm, width: " + finger.width() + "mm");
 
-                //Get Bones
+                // Get Bones
+                double fingerJointAngle = 0;
                 for(Bone.Type boneType : Bone.Type.values()) {
                     Bone bone = finger.bone(boneType);
+
+                    // Label bones for visibility
+                    Bone metacarpal = finger.bone(boneType.TYPE_METACARPAL);
+                    Bone proximal = finger.bone(boneType.TYPE_PROXIMAL);
+                    Bone intermediate = finger.bone(boneType.TYPE_INTERMEDIATE);
+                    Bone distal = finger.bone(boneType.TYPE_DISTAL);
+
+                    // Determine joint angle based on finger bone
+                    if (bone.type() == Bone.Type.TYPE_METACARPAL) {
+                        fingerJointAngle = Math.toDegrees(metacarpal.direction().angleTo(proximal.direction()));
+                    }
+                    else if (bone.type() == Bone.Type.TYPE_PROXIMAL ) {
+                        fingerJointAngle = Math.toDegrees(proximal.direction().angleTo(intermediate.direction()));
+                    }
+                    else if (bone.type() == Bone.Type.TYPE_INTERMEDIATE) {
+                        fingerJointAngle = Math.toDegrees(intermediate.direction().angleTo(distal.direction()));
+                    }
+                    else if (bone.type() == Bone.Type.TYPE_DISTAL) {
+                        fingerJointAngle = 0;
+                    }
+
+                    // Create filter for finger joint angles
+                    AlphaBetaFilter fingerJointFilter = new AlphaBetaFilter(0.85, 0.05, fingerJointAngle);
+                    double filteredFingerJointAngle = fingerJointFilter.filter(fingerJointAngle, 0.1);
                     System.out.println("      " + bone.type()
                                      + " bone, start: " + bone.prevJoint()
                                      + ", end: " + bone.nextJoint()
-                                     + ", direction: " + bone.direction());
+                                     + ", direction: " + bone.direction()
+                                     + ", angle: " + fingerJointAngle);
                 }
             }
         }
@@ -75,6 +108,34 @@ class SampleListener1 extends Listener {
         if (!frame.hands().isEmpty()) {
             System.out.println();
         }
+    }
+}
+
+class AlphaBetaFilter {
+    private double alpha;
+    private double beta;
+    private double filteredValue;
+    private double prevFilteredValue;
+
+    public AlphaBetaFilter(double alpha, double beta, double initialValue) {
+        this.alpha = alpha;
+        this.beta = beta;
+        this.filteredValue = initialValue;
+        this.prevFilteredValue = initialValue;
+    }
+
+    public double filter(double measurement, double dt) {
+        // Calculate the predicted value
+        double predictedValue = filteredValue + dt * (prevFilteredValue + dt * (measurement - filteredValue));
+
+        // Update the filtered value using the alpha-beta filter
+        filteredValue = alpha * measurement + (1 - alpha) * predictedValue;
+        filteredValue = beta * filteredValue + (1 - beta) * prevFilteredValue;
+
+        // Update the previous filtered value for the next iteration
+        prevFilteredValue = filteredValue;
+
+        return filteredValue;
     }
 }
 
