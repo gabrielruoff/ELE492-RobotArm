@@ -1,3 +1,5 @@
+package OperatingClasses;
+
 public class Packet {
 	public static final byte START = (byte) 200;
 	public static final byte STOP = (byte) 250;
