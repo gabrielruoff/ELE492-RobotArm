@@ -44,5 +44,4 @@ public class Pose {
 	public String toString() {
 		return "Elbow angle: "+elbowAngle+"\nWrist angle: "+wristAngle;
 	}
-
 }

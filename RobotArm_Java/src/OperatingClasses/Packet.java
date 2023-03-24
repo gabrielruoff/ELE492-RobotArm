@@ -52,6 +52,7 @@ public class Packet {
 		{
 			realPositions[i] = (float) positions[i];
 		}
+                CRC = computeCRC();
 	}
         
 	public byte[] compile()
@@ -120,26 +121,31 @@ public class Packet {
 	
 	public void setShoulderRotation(float val) {
 		this.realPositions[shoulderRotation] = val;
+                this.CRC = computeCRC();
 	}
 
 	public void setShoulder(float val) {
 		this.realPositions[shoulder] = val;
+                this.CRC = computeCRC();
 	}
 
 	public void setElbow(float val) {
 		this.realPositions[elbow] = val;
+                this.CRC = computeCRC();
 	}
 
 	public void setWristRotation(float val) {
 		this.realPositions[wristRotation] = val;
+                this.CRC = computeCRC();
 	}
 
 	public void setWrist(float val) {
 		this.realPositions[wrist] = val;
+                this.CRC = computeCRC();
 	}
 	
-	public void setFinger(int index, float val)
-	{
+	public void setFinger(int index, float val) {
 		realPositions[FINGERS_OFFSET+index] = val;
+                this.CRC = computeCRC();
 	}
 }
