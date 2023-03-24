@@ -10,6 +10,7 @@ public class ConstantSpeedTest extends ArmTest {
         Packet neutral = new Packet(new byte[]{90, 97, 0, 90, 90, (byte) 180, (byte) 180, (byte) 180, (byte) 180, (byte) 180});
         Clock clock = Clock.systemDefaultZone();
         Arduino a;
+       
         if (sim) {
             a = new Arduino(null);
         } 
