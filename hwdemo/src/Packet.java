@@ -5,6 +5,7 @@ public class Packet {
 	public static final int PACKET_LENGTH = 10;
 	private static final int FINGERS_OFFSET = 4;
 	public byte positions[];
+	public float realPositions[];
         private byte CRC;
 	private int shoulderRotation = 0;
 	private int shoulder = 1;
@@ -32,8 +33,10 @@ public class Packet {
 	public Packet()
 	{
 		positions = new byte[PACKET_LENGTH];
+		realPositions = new float[PACKET_LENGTH];
 		for(int i=0;i<positions.length;i++)
 		{
+			realPositions[i] = 0;
 			positions[i] = 0;
 		}
                 CRC = 0;
@@ -42,10 +45,16 @@ public class Packet {
 	public Packet(byte packetData[])
 	{
 		this.positions = packetData;
+		realPositions = new float[PACKET_LENGTH];
+		for(int i =0;i<positions.length;i++)
+		{
+			realPositions[i] = (float) positions[i];
+		}
 	}
         
 	public byte[] compile()
 	{
+		syncPositions();
 		CRC = computeCRC();
 		byte bytes[] = new byte[PACKET_LENGTH+3];
 		bytes[0] = START;
@@ -89,6 +98,8 @@ public class Packet {
 	
 	public boolean equals(Packet p2)
 	{
+		this.syncPositions();
+		p2.syncPositions();
 		for(int i=0;i<PACKET_LENGTH;i++)
 		{
 			if(this.positions[i] != p2.positions[i] || this.CRC != p2.CRC)
@@ -97,28 +108,36 @@ public class Packet {
 		return true;
 	}
 	
-	public void setShoulderRotation(int val) {
-		this.positions[shoulderRotation] = (byte) (val);
-	}
-
-	public void setShoulder(int val) {
-		this.positions[shoulder] = (byte) (val);
-	}
-
-	public void setElbow(int val) {
-		this.positions[elbow] = (byte) (val);
-	}
-
-	public void setWristRotation(int val) {
-		this.positions[wristRotation] = (byte) (val);
-	}
-
-	public void setWrist(int val) {
-		this.positions[wrist] = (byte) (val);
+	protected void syncPositions()
+	{
+		for(int i=0;i<PACKET_LENGTH;i++)
+		{
+			this.positions[i] = (byte) this.realPositions[i];
+		}
 	}
 	
-	public void setFinger(int index, int val)
+	public void setShoulderRotation(float val) {
+		this.realPositions[shoulderRotation] = val;
+	}
+
+	public void setShoulder(float val) {
+		this.realPositions[shoulder] = val;
+	}
+
+	public void setElbow(float val) {
+		this.realPositions[elbow] = val;
+	}
+
+	public void setWristRotation(float val) {
+		this.realPositions[wristRotation] = val;
+	}
+
+	public void setWrist(float val) {
+		this.realPositions[wrist] = val;
+	}
+	
+	public void setFinger(int index, float val)
 	{
-		positions[FINGERS_OFFSET+index] = (byte) (val);
+		realPositions[FINGERS_OFFSET+index] = val;
 	}
 }
