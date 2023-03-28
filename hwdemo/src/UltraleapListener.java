@@ -99,11 +99,11 @@ public class UltraleapListener extends Listener {
 		}
         
         // Sleep to allow for easier readability of output
-        try {
-            Thread.sleep(10);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+//        try {
+//            Thread.sleep(10);
+//        } catch (InterruptedException e) {
+//            Thread.currentThread().interrupt();
+//        }
 
 //        if (!frame.hands().isEmpty()) {
 //        	System.out.println();

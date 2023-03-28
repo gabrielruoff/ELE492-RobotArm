@@ -3,6 +3,8 @@ package lib;
 import org.ejml.simple.SimpleMatrix;
 
 public class CollisionAvoidance {
+	public static final int PADDING = 0;
+	public static final int bicepR = 30;
 	public static final int bicepL = 300;
 	public static final int forearmL = 250;
 	public static boolean validatePosision(TransformedPose p) {
@@ -32,7 +34,7 @@ public class CollisionAvoidance {
 //		System.out.println(shoulderT.toString());
 		SimpleMatrix wristPosition = shoulderR.mult(shoulderT).mult(elbowR).mult(elbowT);
 		System.out.println(wristPosition.toString());
-		if(wristPosition.get(1,2)<0) {
+		if(wristPosition.get(1,2)<PADDING) {
 			return false;
 		}
 		return true;

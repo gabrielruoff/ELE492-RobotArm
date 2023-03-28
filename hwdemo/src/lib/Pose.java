@@ -8,12 +8,16 @@ public class Pose {
 	public static final double dt = 0.1;
 	double elbowAngle;
 	double wristAngle;
+	// for logging
+	double rawElbowAngle;
+	double rawWristAngle;
 	AlphaBetaFilter elbowAngleFilter = null;
 	AlphaBetaFilter wristAngleFilter = null;
 	public Pose(Hand h) {
 		Arm arm = h.arm();
     	elbowAngle = Math.toDegrees(arm.direction().pitch());
     	wristAngle = Math.toDegrees(arm.direction().angleTo(h.palmNormal()));
+    	setRawAngles();
     	elbowAngleFilter =  new AlphaBetaFilter(alpha, beta, elbowAngle);
     	wristAngleFilter =  new AlphaBetaFilter(alpha, beta, wristAngle);
 	}
@@ -22,6 +26,7 @@ public class Pose {
 		Arm arm = h.arm();
     	elbowAngle = Math.toDegrees(arm.direction().pitch());
     	wristAngle = Math.toDegrees(arm.direction().angleTo(h.palmNormal()));
+    	setRawAngles();
     	elbowAngle = elbowAngleFilter.filter(elbowAngle, dt);
     	wristAngle = wristAngleFilter.filter(wristAngle, dt);
 	}
@@ -44,4 +49,9 @@ public class Pose {
 		return "Elbow angle: "+elbowAngle+"\nWrist angle: "+wristAngle;
 	}
 
+	private void setRawAngles() {
+		rawElbowAngle = elbowAngle;
+		rawWristAngle = wristAngle;
+	}
+	
 }

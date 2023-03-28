@@ -75,4 +75,8 @@ class UltraLeapTesting extends ArmTest {
         // Remove the sample listener when done
         controller.removeListener(listener);
     }
+    
+    public static void logData(int joint, TransformedPose p, Arduino a) {
+    	
+    }
 }
