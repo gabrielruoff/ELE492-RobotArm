@@ -1,3 +1,4 @@
+package lib;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -125,7 +126,7 @@ public class Arduino {
 		if(floatingTarget.equals(oldPacket))
 			return;
 		float steps[] = new float[Packet.PACKET_LENGTH];
-		System.out.print("steps: ");
+//		System.out.print("steps: ");
 		for(int i=0;i<steps.length;i++)
 		{
 			float diff = byteToInt(floatingTarget.positions[i])-byteToInt(oldPacket.positions[i]);
@@ -139,9 +140,9 @@ public class Arduino {
 			} else {
 				oldPacket.realPositions[i] += steps[i];
 			}
-			System.out.print(steps[i]+", ");
+//			System.out.print(steps[i]+", ");
 		}
-		System.out.println();
+//		System.out.println();
 		System.out.println("writing "+oldPacket.toString());
 		if(!sim) {
 			this.write(oldPacket.compile());

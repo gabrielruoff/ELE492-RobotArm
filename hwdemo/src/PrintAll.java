@@ -1,6 +1,15 @@
 import java.io.IOException;
-import java.lang.Math;
-import com.leapmotion.leap.*;
+
+import com.leapmotion.leap.Arm;
+import com.leapmotion.leap.Bone;
+import com.leapmotion.leap.Controller;
+import com.leapmotion.leap.Finger;
+import com.leapmotion.leap.Frame;
+import com.leapmotion.leap.Hand;
+import com.leapmotion.leap.Listener;
+import com.leapmotion.leap.Vector;
+
+import lib.AlphaBetaFilter;
 
 class SampleListener1 extends Listener {
     public void onInit(Controller controller) {

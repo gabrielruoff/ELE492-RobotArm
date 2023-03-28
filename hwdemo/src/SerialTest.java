@@ -1,4 +1,5 @@
-import java.io.InputStream;
+import lib.Arduino;
+import lib.Packet;
 
 public class SerialTest {
 	private static final int BAUD_RATE = 115200;

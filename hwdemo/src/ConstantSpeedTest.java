@@ -1,5 +1,8 @@
 import java.time.Clock;
 
+import lib.Arduino;
+import lib.Packet;
+
 public class ConstantSpeedTest extends ArmTest {
 
 	public static void main(String[] args) throws Exception {

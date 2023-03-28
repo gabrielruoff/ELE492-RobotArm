@@ -1,8 +1,9 @@
 // Testing SDK Compatibility
-import java.io.*;
-import com.leapmotion.leap.*;
+import java.io.IOException;
 
-import static java.lang.Thread.sleep;
+import com.leapmotion.leap.Controller;
+import com.leapmotion.leap.Frame;
+import com.leapmotion.leap.Listener;
 
 class Sample {
     public static void main(String[] args) {

@@ -1,3 +1,4 @@
+package lib;
 
 public class AlphaBetaFilter {
     private double alpha;

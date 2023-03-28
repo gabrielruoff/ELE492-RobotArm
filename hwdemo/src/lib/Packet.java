@@ -1,4 +1,6 @@
+package lib;
 public class Packet {
+	public static final float defaultPositions[] = {90,97,0,90,90,180,180,180,180,180};
 	public static final byte START = (byte) 200;
 	public static final byte STOP = (byte) 250;
         public static final byte BADCRC = (byte) 240;
@@ -36,8 +38,8 @@ public class Packet {
 		realPositions = new float[PACKET_LENGTH];
 		for(int i=0;i<positions.length;i++)
 		{
-			realPositions[i] = 0;
-			positions[i] = 0;
+			realPositions[i] = defaultPositions[i];
+			positions[i] = (byte)defaultPositions[i];
 		}
                 CRC = 0;
 	}
@@ -49,6 +51,15 @@ public class Packet {
 		for(int i =0;i<positions.length;i++)
 		{
 			realPositions[i] = (float) positions[i];
+		}
+	}
+	
+	public Packet(TransformedPose p) {
+		positions = new byte[PACKET_LENGTH];
+		realPositions = new float[PACKET_LENGTH];
+		for(int i =0;i<positions.length;i++)
+		{
+			realPositions[i] = p.positions[i];
 		}
 	}
         

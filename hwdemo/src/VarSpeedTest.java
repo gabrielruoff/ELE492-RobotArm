@@ -1,5 +1,8 @@
 import java.time.Clock;
 
+import lib.Arduino;
+import lib.Packet;
+
 public class VarSpeedTest {
 	private static final int BAUD_RATE = 115200;
 
