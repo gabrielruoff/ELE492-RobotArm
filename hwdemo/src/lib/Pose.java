@@ -11,6 +11,7 @@ public class Pose {
 	// for logging
 	double rawElbowAngle;
 	double rawWristAngle;
+	int missedFrames = 0;
 	AlphaBetaFilter elbowAngleFilter = null;
 	AlphaBetaFilter wristAngleFilter = null;
 	public Pose(Hand h) {
@@ -29,6 +30,7 @@ public class Pose {
     	setRawAngles();
     	elbowAngle = elbowAngleFilter.filter(elbowAngle, dt);
     	wristAngle = wristAngleFilter.filter(wristAngle, dt);
+    	missedFrames = 0;
 	}
 	
 	public double getElbowAngle() {

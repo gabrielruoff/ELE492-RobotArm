@@ -18,8 +18,8 @@ public class CollisionAvoidance {
 //		System.out.println(shoulderR.toString());
 //		System.out.println(shoulderT.toString());
 		SimpleMatrix wristPosition = shoulderR.mult(shoulderT).mult(elbowR).mult(elbowT);
-		System.out.println(wristPosition.toString());
-		return false;
+//		System.out.println(wristPosition.toString());
+		return wristPosition.get(1,2)>PADDING;
 	}
 	
 	public static boolean validatePosision(byte positions[]) {
@@ -34,10 +34,7 @@ public class CollisionAvoidance {
 //		System.out.println(shoulderT.toString());
 		SimpleMatrix wristPosition = shoulderR.mult(shoulderT).mult(elbowR).mult(elbowT);
 		System.out.println(wristPosition.toString());
-		if(wristPosition.get(1,2)<PADDING) {
-			return false;
-		}
-		return true;
+		return wristPosition.get(1,2)>PADDING;
 	}
 	
 	private static SimpleMatrix createRMatrix(double theta) {

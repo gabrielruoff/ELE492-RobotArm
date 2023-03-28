@@ -13,6 +13,7 @@ import lib.LRPose;
 import lib.Pose;
 
 public class UltraleapListener extends Listener {
+	private static final int MAX_MISSED_FRAMES = 1000;
 	Hand leftHand, rightHand;
 	Pose lPose = null;
     Pose rPose = null;
@@ -73,7 +74,9 @@ public class UltraleapListener extends Listener {
         	}
 //        	System.out.println("Left:\n"+lPose.toString());
         } else {
-        	lPose = null;
+//        	lPose.missedFrames+=1;
+//        	if(lPose.missedFrames>MAX_MISSED_FRAMES)
+        		lPose = null;
         }
         if(rightHand!=null) {
         	if(rPose==null)
@@ -82,7 +85,9 @@ public class UltraleapListener extends Listener {
         		rPose.update(rightHand);
 //        	System.out.println("Right:\n"+rPose.toString());
         } else {
-        	rPose = null;
+//        	rPose.missedFrames+=1;
+//        	if(rPose.missedFrames>MAX_MISSED_FRAMES)
+        		rPose = null;
         }
         
         try {

@@ -6,6 +6,7 @@ import com.leapmotion.leap.Controller;
 import com.leapmotion.leap.Listener;
 
 import lib.Arduino;
+import lib.CollisionAvoidance;
 import lib.LRPose;
 import lib.LogFile;
 import lib.Packet;
@@ -58,18 +59,23 @@ class UltraLeapTesting extends ArmTest {
 //        			System.out.println(item.right.toString());
         		TransformedPose newPose = new TransformedPose(item);
 //        		System.out.println(newPose.toString());
-        		target = new Packet(newPose);
+        		if(CollisionAvoidance.validatePosision(newPose)) {
+        			target = new Packet(newPose);
+        		} else {
+        			System.out.println("invalid pose");
+        		}
         	}
         	else {
 //        		System.out.println("no new value");
         	}
+        	// log
         	String line[] = {Long.toString(System.nanoTime()-start), Integer.toString(a.floatingTarget.positions[Packet.elbow]& 0xFF),
         			Integer.toString(a.oldPacket.positions[Packet.elbow]& 0xFF)};
         	log.writeLine(line);
         	a.setFloatingTarget(target);
 			a.moveToFloatingTarget(60, true);
 			System.out.println("wrote "+a.oldPacket.toString());
-//        	Thread.sleep(10);
+        	Thread.sleep(100);
         }
 
         // Remove the sample listener when done
