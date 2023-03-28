@@ -9,11 +9,11 @@ public class Packet {
 	public byte positions[];
 	public float realPositions[];
         private byte CRC;
-	private int shoulderRotation = 0;
-	private int shoulder = 1;
-	private int elbow = 2;
-	private int wristRotation = 4;
-	private int wrist = 3;
+	public static final int shoulderRotation = 0;
+	public static final int shoulder = 1;
+	public static final int elbow = 2;
+	public static final int wristRotation = 4;
+	public static final int wrist = 3;
         
         private static final int[] CRC8_TABLE = { 0x00, 0x5e, 0xbc, 0xe2, 0x61, 0x3f, 0xdd, 0x83, 0xc2, 0x9c, 0x7e,
             0x20, 0xa3, 0xfd, 0x1f, 0x41, 0x9d, 0xc3, 0x21, 0x7f, 0xfc, 0xa2, 0x40, 0x1e, 0x5f, 0x01, 0xe3, 0xbd,

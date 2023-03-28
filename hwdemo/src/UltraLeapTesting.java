@@ -7,6 +7,7 @@ import com.leapmotion.leap.Listener;
 
 import lib.Arduino;
 import lib.LRPose;
+import lib.LogFile;
 import lib.Packet;
 import lib.TransformedPose;
 import lib.UltraleapListener;
@@ -19,14 +20,13 @@ class UltraLeapTesting extends ArmTest {
 	static Packet idle = new Packet(new byte[] {90,97,0,90,90,(byte)180,(byte)180,(byte)180,(byte)180,(byte)180});
 	static Packet target = new Packet(new byte[] {90,97,0,90,90,(byte)180,(byte)180,(byte)180,(byte)180,(byte)180});
 	static Arduino a;
+	
+	static LogFile log;
 
 	
     public static void main(String[] args) throws Exception {
-    	File log = new File("log.csv");
-    	if(log.exists())
-    		log.delete();
-    	log.createNewFile();
-    	
+    	log = new LogFile("arm.csv");
+    	long start = System.nanoTime();
     	if(sim)
     		a = new Arduino(null);
     	else {
@@ -57,15 +57,18 @@ class UltraLeapTesting extends ArmTest {
 //        		if(item.right!=null)
 //        			System.out.println(item.right.toString());
         		TransformedPose newPose = new TransformedPose(item);
-        		System.out.println(newPose.toString());
+//        		System.out.println(newPose.toString());
         		target = new Packet(newPose);
         	}
         	else {
 //        		System.out.println("no new value");
         	}
-//        	a.setFloatingTarget(target);
-        	
-//			a.moveToFloatingTarget(120, true);
+        	String line[] = {Long.toString(System.nanoTime()-start), Integer.toString(a.floatingTarget.positions[Packet.elbow]& 0xFF),
+        			Integer.toString(a.oldPacket.positions[Packet.elbow]& 0xFF)};
+        	log.writeLine(line);
+        	a.setFloatingTarget(target);
+			a.moveToFloatingTarget(60, true);
+			System.out.println("wrote "+a.oldPacket.toString());
 //        	Thread.sleep(10);
         }
 

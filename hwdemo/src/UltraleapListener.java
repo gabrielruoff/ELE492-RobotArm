@@ -1,4 +1,4 @@
-package lib;
+
 import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 
@@ -10,6 +10,7 @@ import com.leapmotion.leap.Listener;
 import com.leapmotion.leap.Vector;
 
 import lib.LRPose;
+import lib.LogFile;
 import lib.Pose;
 
 public class UltraleapListener extends Listener {
@@ -90,7 +91,7 @@ public class UltraleapListener extends Listener {
 				queue.remove();
 			queue.put(new LRPose(lPose, rPose));
 			double rawWristAngle = Math.toDegrees(leftHand.arm().direction().angleTo(leftHand.palmNormal()));
-			String line[] = {Long.toString(frame.id()), Double.toString(rawWristAngle), Double.toString(lPose.wristAngle)};
+			String line[] = {Long.toString(frame.id()), Double.toString(rawWristAngle), Double.toString(lPose.getWristAngle())};
 			log.writeLine(line);
 		} catch (InterruptedException | IOException e) {
 			// TODO Auto-generated catch block

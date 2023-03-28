@@ -10,7 +10,7 @@ public class Arduino {
 	public static final int MAX_READ_ATTEMPTS = 5000;
 	public static final int WRITE_FREQUENCY = 20;
 	public static final Packet idlePosition = new Packet(new byte[] {90,97,0,90,90,(byte)180,(byte)180,(byte)180,(byte)180,(byte)180});
-	Packet floatingTarget = new Packet(new byte[] {90,97,0,90,90,(byte)180,(byte)180,(byte)180,(byte)180,(byte)180});
+	public Packet floatingTarget = new Packet(new byte[] {90,97,0,90,90,(byte)180,(byte)180,(byte)180,(byte)180,(byte)180});
 	public SerialPort serialPort;
 	public InputStream inputStream;
 	public Packet oldPacket;
@@ -143,7 +143,7 @@ public class Arduino {
 //			System.out.print(steps[i]+", ");
 		}
 //		System.out.println();
-		System.out.println("writing "+oldPacket.toString());
+//		System.out.println("writing "+oldPacket.toString());
 		if(!sim) {
 			this.write(oldPacket.compile());
 			byte rpacket[] = this.listenForAndReadPacket();

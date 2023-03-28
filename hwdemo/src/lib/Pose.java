@@ -3,8 +3,8 @@ import com.leapmotion.leap.Arm;
 import com.leapmotion.leap.Hand;
 
 public class Pose {
-	public static final double alpha = 0.6;
-	public static final double beta = 0.8;
+	public static final double alpha = 0.8;
+	public static final double beta = 0.1;
 	public static final double dt = 0.1;
 	double elbowAngle;
 	double wristAngle;

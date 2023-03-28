@@ -1,11 +1,11 @@
 package lib;
 
 public class TransformedPose {
-	private int shoulderRotation = 0;
-	private int shoulder = 1;
-	private int elbow = 2;
-	private int wristRotation = 4;
-	private int wrist = 3;
+	public static final int shoulderRotation = 0;
+	public static final int shoulder = 1;
+	public static final int elbow = 2;
+	public static final int wristRotation = 4;
+	public static final int wrist = 3;
 	public float positions[] = {90,97,0,90,90,180,180,180,180,180};
 	RangeMapping lWristToElbowJoint = new RangeMapping(40, 140);
 	RangeMapping lElbowToShoulderJoint = new RangeMapping(0, 45);
