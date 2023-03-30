@@ -7,7 +7,7 @@ public class CollisionAvoidance {
 	public static final int bicepR = 30;
 	public static final int bicepL = 300;
 	public static final int forearmL = 250;
-	public static boolean validatePosision(TransformedPose p) {
+	public static boolean validatePosition(TransformedPose p) {
 		// normalize
 		p.positions[TransformedPose.elbow]-=90;
 		

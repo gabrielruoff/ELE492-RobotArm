@@ -59,7 +59,7 @@ class UltraLeapTesting extends ArmTest {
 //        			System.out.println(item.right.toString());
         		TransformedPose newPose = new TransformedPose(item);
 //        		System.out.println(newPose.toString());
-        		if(CollisionAvoidance.validatePosision(newPose)) {
+        		if(CollisionAvoidance.validatePosition(newPose)) {
         			target = new Packet(newPose);
         		} else {
         			System.out.println("invalid pose");

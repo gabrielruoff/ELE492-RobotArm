@@ -126,7 +126,6 @@ public class Arduino {
 		if(floatingTarget.equals(oldPacket))
 			return;
 		float steps[] = new float[Packet.PACKET_LENGTH];
-//		System.out.print("steps: ");
 		for(int i=0;i<steps.length;i++)
 		{
 			float diff = byteToInt(floatingTarget.positions[i])-byteToInt(oldPacket.positions[i]);
@@ -134,16 +133,12 @@ public class Arduino {
 			if(steps[i]==0)
 				continue;
 			if(Math.abs(floatingTarget.positions[i]-oldPacket.realPositions[i]) < Math.abs(steps[i])) {
-//				System.out.println("snapping j"+i+" to final position "+packet.positions[i]);
 				oldPacket.realPositions[i] = floatingTarget.realPositions[i];
 				steps[i] = 0;
 			} else {
 				oldPacket.realPositions[i] += steps[i];
 			}
-//			System.out.print(steps[i]+", ");
 		}
-//		System.out.println();
-//		System.out.println("writing "+oldPacket.toString());
 		if(!sim) {
 			this.write(oldPacket.compile());
 			byte rpacket[] = this.listenForAndReadPacket();
