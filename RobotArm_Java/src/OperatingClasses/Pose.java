@@ -9,14 +9,17 @@ public class Pose {
 	public static final double dt = 0.1;
 	double elbowAngle;
 	double wristAngle;
-	// for logging
+	
+        // for logging
 	double rawElbowAngle;
 	double rawWristAngle;
 	int missedFrames = 0;
+        
 	AlphaBetaFilter elbowAngleFilter = null;
 	AlphaBetaFilter wristAngleFilter = null;
+        
 	public Pose(Hand h) {
-		Arm arm = h.arm();
+	Arm arm = h.arm();
     	elbowAngle = Math.toDegrees(arm.direction().pitch());
     	wristAngle = Math.toDegrees(arm.direction().angleTo(h.palmNormal()));
     	setRawAngles();
@@ -25,7 +28,7 @@ public class Pose {
 	}
 	
 	public void update(Hand h) {
-		Arm arm = h.arm();
+	Arm arm = h.arm();
     	elbowAngle = Math.toDegrees(arm.direction().pitch());
     	wristAngle = Math.toDegrees(arm.direction().angleTo(h.palmNormal()));
     	setRawAngles();
