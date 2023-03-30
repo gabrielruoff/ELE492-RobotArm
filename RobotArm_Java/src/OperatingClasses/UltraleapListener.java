@@ -46,6 +46,7 @@ public class UltraleapListener extends Listener {
     }
 
     public void onFrame(Controller controller) {
+        
         // Get the most recent frame and report some basic information
         Frame frame = controller.frame();
         /*
