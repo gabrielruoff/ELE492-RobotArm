@@ -53,6 +53,7 @@ public class Packet {
 		{
 			realPositions[i] = (float) positions[i];
 		}
+                CRC = computeCRC();
 	}
 	
 	public Packet(TransformedPose p) {
@@ -62,6 +63,7 @@ public class Packet {
 		{
 			realPositions[i] = p.positions[i];
 		}
+                CRC = computeCRC();
 	}
         
 	public byte[] compile()

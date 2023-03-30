@@ -7,5 +7,4 @@ public class LRPose {
 		left = l;
 		right = r;
 	}
-
 }

@@ -36,7 +36,7 @@ public class CollisionAvoidance {
 		System.out.println(wristPosition.toString());
 		return wristPosition.get(1,2)>PADDING;
 	}
-	
+    
 	private static SimpleMatrix createRMatrix(double theta) {
 		theta = Math.toRadians(theta);
 		SimpleMatrix rM = new SimpleMatrix(3,3);

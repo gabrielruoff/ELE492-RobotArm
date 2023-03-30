@@ -10,9 +10,6 @@ import com.leapmotion.leap.Hand;
 import com.leapmotion.leap.Listener;
 import com.leapmotion.leap.Vector;
 
-import lib.LRPose;
-import lib.Pose;
-
 public class UltraleapListener extends Listener {
 	private static final int MAX_MISSED_FRAMES = 1000;
 	Hand leftHand, rightHand;
