@@ -1,3 +1,5 @@
+package Scripts;
+
 import java.time.Clock;
 
 import lib.Arduino;

@@ -1,4 +1,4 @@
-package lib;
+package OperatingClasses;
 
 public class TransformedPose {
 	public static final int shoulderRotation = 0;

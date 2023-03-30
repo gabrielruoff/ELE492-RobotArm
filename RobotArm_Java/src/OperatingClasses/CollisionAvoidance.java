@@ -1,4 +1,4 @@
-package lib;
+package OperatingClasses;
 
 import org.ejml.simple.SimpleMatrix;
 

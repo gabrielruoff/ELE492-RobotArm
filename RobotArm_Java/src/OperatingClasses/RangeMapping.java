@@ -1,4 +1,4 @@
-package lib;
+package OperatingClasses;
 
 public class RangeMapping {
 	int l1, h1;

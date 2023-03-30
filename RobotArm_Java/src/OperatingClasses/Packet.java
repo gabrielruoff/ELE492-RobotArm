@@ -1,4 +1,5 @@
-package lib;
+package OperatingClasses;
+
 public class Packet {
 	public static final float defaultPositions[] = {90,97,0,90,90,180,180,180,180,180};
 	public static final byte START = (byte) 200;

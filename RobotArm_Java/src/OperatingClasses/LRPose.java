@@ -1,4 +1,4 @@
-package lib;
+package OperatingClasses;
 
 public class LRPose {
 	public Pose left;

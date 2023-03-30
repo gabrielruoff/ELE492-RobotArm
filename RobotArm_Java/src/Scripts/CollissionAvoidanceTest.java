@@ -1,4 +1,4 @@
-package Tests;
+package Scripts;
 
 import lib.CollisionAvoidance;
 
