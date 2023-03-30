@@ -2,8 +2,8 @@ package Scripts_Old;
 
 import java.time.Clock;
 
-import lib.Arduino;
-import lib.Packet;
+import OperatingClasses.Arduino;
+import OperatingClasses.Packet;
 
 /*
  * To change this license header, choose License Headers in Project Properties.

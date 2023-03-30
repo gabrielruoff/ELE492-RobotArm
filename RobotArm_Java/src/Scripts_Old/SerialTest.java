@@ -1,7 +1,7 @@
 package Scripts_Old;
 
-import lib.Arduino;
-import lib.Packet;
+import OperatingClasses.Arduino;
+import OperatingClasses.Packet;
 
 public class SerialTest {
 	private static final int BAUD_RATE = 115200;

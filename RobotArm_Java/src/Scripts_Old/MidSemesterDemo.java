@@ -2,8 +2,8 @@ package Scripts_Old;
 
 import java.time.Clock;
 
-import lib.Arduino;
-import lib.Packet;
+import OperatingClasses.Arduino;
+import OperatingClasses.Packet;
 
 public class MidSemesterDemo {
 	private static final int BAUD_RATE = 115200;

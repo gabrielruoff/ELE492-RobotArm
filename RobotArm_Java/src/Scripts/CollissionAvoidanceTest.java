@@ -1,6 +1,6 @@
 package Scripts;
 
-import lib.CollisionAvoidance;
+import OperatingClasses.CollisionAvoidance;
 
 public class CollissionAvoidanceTest {
 

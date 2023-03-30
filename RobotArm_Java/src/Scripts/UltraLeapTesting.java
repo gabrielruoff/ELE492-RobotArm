@@ -7,13 +7,7 @@ import java.util.concurrent.BlockingQueue;
 import com.leapmotion.leap.Controller;
 import com.leapmotion.leap.Listener;
 
-import lib.Arduino;
-import lib.CollisionAvoidance;
-import lib.LRPose;
-import lib.LogFile;
-import lib.Packet;
-import lib.TransformedPose;
-import lib.UltraleapListener;
+import OperatingClasses.*;
 
 
 class UltraLeapTesting extends ArmTest {

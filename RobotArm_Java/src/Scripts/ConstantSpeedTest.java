@@ -2,8 +2,8 @@ package Scripts;
 
 import java.time.Clock;
 
-import lib.Arduino;
-import lib.Packet;
+import OperatingClasses.Arduino;
+import OperatingClasses.Packet;
 
 public class ConstantSpeedTest extends ArmTest {
 
