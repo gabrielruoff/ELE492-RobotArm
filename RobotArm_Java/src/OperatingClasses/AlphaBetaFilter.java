@@ -1,4 +1,4 @@
-package OperatingClasses;
+package lib;
 
 public class AlphaBetaFilter {
     private double alpha;

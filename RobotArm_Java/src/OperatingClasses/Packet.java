@@ -1,6 +1,6 @@
-package OperatingClasses;
-
+package lib;
 public class Packet {
+	public static final float defaultPositions[] = {90,97,0,90,90,180,180,180,180,180};
 	public static final byte START = (byte) 200;
 	public static final byte STOP = (byte) 250;
         public static final byte BADCRC = (byte) 240;
@@ -9,11 +9,11 @@ public class Packet {
 	public byte positions[];
 	public float realPositions[];
         private byte CRC;
-	private int shoulderRotation = 0;
-	private int shoulder = 1;
-	private int elbow = 2;
-	private int wristRotation = 4;
-	private int wrist = 3;
+	public static final int shoulderRotation = 0;
+	public static final int shoulder = 1;
+	public static final int elbow = 2;
+	public static final int wristRotation = 4;
+	public static final int wrist = 3;
         
         private static final int[] CRC8_TABLE = { 0x00, 0x5e, 0xbc, 0xe2, 0x61, 0x3f, 0xdd, 0x83, 0xc2, 0x9c, 0x7e,
             0x20, 0xa3, 0xfd, 0x1f, 0x41, 0x9d, 0xc3, 0x21, 0x7f, 0xfc, 0xa2, 0x40, 0x1e, 0x5f, 0x01, 0xe3, 0xbd,
@@ -38,8 +38,8 @@ public class Packet {
 		realPositions = new float[PACKET_LENGTH];
 		for(int i=0;i<positions.length;i++)
 		{
-			realPositions[i] = 0;
-			positions[i] = 0;
+			realPositions[i] = defaultPositions[i];
+			positions[i] = (byte)defaultPositions[i];
 		}
                 CRC = 0;
 	}
@@ -52,7 +52,15 @@ public class Packet {
 		{
 			realPositions[i] = (float) positions[i];
 		}
-                CRC = computeCRC();
+	}
+	
+	public Packet(TransformedPose p) {
+		positions = new byte[PACKET_LENGTH];
+		realPositions = new float[PACKET_LENGTH];
+		for(int i =0;i<positions.length;i++)
+		{
+			realPositions[i] = p.positions[i];
+		}
 	}
         
 	public byte[] compile()
@@ -121,31 +129,26 @@ public class Packet {
 	
 	public void setShoulderRotation(float val) {
 		this.realPositions[shoulderRotation] = val;
-                this.CRC = computeCRC();
 	}
 
 	public void setShoulder(float val) {
 		this.realPositions[shoulder] = val;
-                this.CRC = computeCRC();
 	}
 
 	public void setElbow(float val) {
 		this.realPositions[elbow] = val;
-                this.CRC = computeCRC();
 	}
 
 	public void setWristRotation(float val) {
 		this.realPositions[wristRotation] = val;
-                this.CRC = computeCRC();
 	}
 
 	public void setWrist(float val) {
 		this.realPositions[wrist] = val;
-                this.CRC = computeCRC();
 	}
 	
-	public void setFinger(int index, float val) {
+	public void setFinger(int index, float val)
+	{
 		realPositions[FINGERS_OFFSET+index] = val;
-                this.CRC = computeCRC();
 	}
 }

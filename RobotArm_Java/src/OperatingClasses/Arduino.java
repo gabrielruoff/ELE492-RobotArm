@@ -1,5 +1,4 @@
-package OperatingClasses;
-
+package lib;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -11,7 +10,7 @@ public class Arduino {
 	public static final int MAX_READ_ATTEMPTS = 5000;
 	public static final int WRITE_FREQUENCY = 20;
 	public static final Packet idlePosition = new Packet(new byte[] {90,97,0,90,90,(byte)180,(byte)180,(byte)180,(byte)180,(byte)180});
-	Packet floatingTarget = new Packet(new byte[] {90,97,0,90,90,(byte)180,(byte)180,(byte)180,(byte)180,(byte)180});
+	public Packet floatingTarget = new Packet(new byte[] {90,97,0,90,90,(byte)180,(byte)180,(byte)180,(byte)180,(byte)180});
 	public SerialPort serialPort;
 	public InputStream inputStream;
 	public Packet oldPacket;
@@ -54,9 +53,14 @@ public class Arduino {
 		if(packet.equals(oldPacket))
 			return;
 		float deltas[] = new float[Packet.PACKET_LENGTH];
+		int deltaSum = 0;
+//		System.out.print("deltas: ");
 		for(int i=0;i<deltas.length;i++)
 		{
+//			System.out.println(byteToInt(packet.positions[i])+"-"+byteToInt(oldPacket.positions[i])+")/(float)"+steps);
 			deltas[i] = (byteToInt(packet.positions[i])-byteToInt(oldPacket.positions[i]))/(float)steps;
+//			System.out.print(deltas[i]+", ");
+			deltaSum+=Math.abs(deltas[i]);
 		}
 		System.out.println();
 		for(int i=1;i<=steps;i++)
@@ -68,16 +72,17 @@ public class Arduino {
 			System.out.print("Step #"+i+" ");
 			System.out.println("packet: "+packet.toString());
 			this.write(packet.compile());
-			//System.out.println("wrote packet. listening..");
+//			System.out.println("wrote packet. listening..");
 			byte rpacket[] = this.listenForAndReadPacket();
-			//System.out.println("got packet back: ");
-			//for (byte b : rpacket) {
-				//System.out.print((b & 0xFF) + ", ");
-			//}
-			//System.out.println();
+//			System.out.println("got packet back: ");
+//			for (byte b : rpacket) {
+//				System.out.print((b & 0xFF) + ", ");
+//			}
+//			System.out.println();
 			Thread.sleep(delay);
 		}
 		java.lang.System.arraycopy(packet.positions, 0, oldPacket.positions, 0, Packet.PACKET_LENGTH);
+//		this.write(packet.compile());
 	}
 	
 	public void writePacketConstantSpeed(Packet packet, float velocity) throws Exception {
@@ -85,32 +90,32 @@ public class Arduino {
 		if(packet.equals(oldPacket))
 			return;
 		float steps[] = new float[Packet.PACKET_LENGTH];
-		//System.out.print("steps: ");
+//		System.out.print("steps: ");
 		for(int i=0;i<steps.length;i++)
 		{
-                    float diff = byteToInt(packet.positions[i])-byteToInt(oldPacket.positions[i]);
-                    steps[i] = velocity*(getSign(diff))/WRITE_FREQUENCY;
-                    //System.out.print(steps[i]+", ");
+			float diff = byteToInt(packet.positions[i])-byteToInt(oldPacket.positions[i]);
+			steps[i] = velocity*(getSign(diff))/WRITE_FREQUENCY;
+//			System.out.print(steps[i]+", ");
 		}
-		//System.out.println();
+//		System.out.println();
 		while(!done(steps)) {
-                    for(int i=0;i<steps.length;i++) {
-			//System.out.println("incrementing j"+i+" by "+steps[i]+" ("+oldPacket.positions[i]+"->"+(oldPacket.positions[i]+steps[i])+")");
-			if(steps[i]==0)
-				continue;
-			// if close enough, snap position
-			if(Math.abs(packet.positions[i]-oldPacket.positions[i]) < Math.abs(steps[i])) {
-				//System.out.println("snapping j"+i+" to final position "+packet.positions[i]);
-				oldPacket.positions[i] = packet.positions[i];
-				steps[i] = 0;
-			} else {
-				oldPacket.positions[i] += steps[i];
+			for(int i=0;i<steps.length;i++) {
+//				System.out.println("incrementing j"+i+" by "+steps[i]+" ("+oldPacket.positions[i]+"->"+(oldPacket.positions[i]+steps[i])+")");
+				if(steps[i]==0)
+					continue;
+				// if close enough, snap position
+				if(Math.abs(packet.positions[i]-oldPacket.positions[i]) < Math.abs(steps[i])) {
+//					System.out.println("snapping j"+i+" to final position "+packet.positions[i]);
+					oldPacket.positions[i] = packet.positions[i];
+					steps[i] = 0;
+				} else {
+					oldPacket.positions[i] += steps[i];
+				}
+				System.out.println("writing "+oldPacket.toString());
+				this.write(oldPacket.compile());
+				byte rpacket[] = this.listenForAndReadPacket();
 			}
-			System.out.println("writing "+oldPacket.toString());
-			this.write(oldPacket.compile());
-			byte rpacket[] = this.listenForAndReadPacket();
-                    }
-                    Thread.sleep(1000/WRITE_FREQUENCY);
+			Thread.sleep(1000/WRITE_FREQUENCY);
 		}
 		System.out.println("move done");
 		java.lang.System.arraycopy(packet.positions, 0, oldPacket.positions, 0, Packet.PACKET_LENGTH);
@@ -121,7 +126,7 @@ public class Arduino {
 		if(floatingTarget.equals(oldPacket))
 			return;
 		float steps[] = new float[Packet.PACKET_LENGTH];
-		System.out.print("steps: ");
+//		System.out.print("steps: ");
 		for(int i=0;i<steps.length;i++)
 		{
 			float diff = byteToInt(floatingTarget.positions[i])-byteToInt(oldPacket.positions[i]);
@@ -135,10 +140,10 @@ public class Arduino {
 			} else {
 				oldPacket.realPositions[i] += steps[i];
 			}
-			System.out.print(steps[i]+", ");
+//			System.out.print(steps[i]+", ");
 		}
-		System.out.println();
-		System.out.println("writing "+oldPacket.toString());
+//		System.out.println();
+//		System.out.println("writing "+oldPacket.toString());
 		if(!sim) {
 			this.write(oldPacket.compile());
 			byte rpacket[] = this.listenForAndReadPacket();

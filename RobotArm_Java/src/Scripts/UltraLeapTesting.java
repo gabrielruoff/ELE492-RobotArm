@@ -1,134 +1,88 @@
-package Scripts;
-
-import OperatingClasses.*;
 import java.io.File;
-import java.io.IOException;
-import java.lang.Math;
-import com.leapmotion.leap.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
-class SampleListener2 extends Listener {
+import com.leapmotion.leap.Controller;
+import com.leapmotion.leap.Listener;
 
-    Hand leftHand, rightHand;
-    Pose lPose = null;
-    Pose rPose = null;
+import lib.Arduino;
+import lib.CollisionAvoidance;
+import lib.LRPose;
+import lib.LogFile;
+import lib.Packet;
+import lib.TransformedPose;
+import lib.UltraleapListener;
 
-    public void onInit(Controller controller) {
-        System.out.println("Initialized");
-    }
 
-    public void onConnect(Controller controller) {
-        System.out.println("Connected");
-    }
+class UltraLeapTesting extends ArmTest {
+	static boolean sim = true;
+	static BlockingQueue<LRPose> queue = new ArrayBlockingQueue<>(1);
+	
+	static Packet idle = new Packet(new byte[] {90,97,0,90,90,(byte)180,(byte)180,(byte)180,(byte)180,(byte)180});
+	static Packet target = new Packet(new byte[] {90,97,0,90,90,(byte)180,(byte)180,(byte)180,(byte)180,(byte)180});
+	static Arduino a;
+	
+	static LogFile log;
 
-    public void onDisconnect(Controller controller) {
-        //Note: not dispatched when running in a debugger.
-        System.out.println("Disconnected");
-    }
-
-    public void onExit(Controller controller) {
-        System.out.println("Exited");
-    }
-
-    public void onFrame(Controller controller) {
-        // Get the most recent frame and report some basic information
-        Frame frame = controller.frame();
-        System.out.println("Frame id: " + frame.id()
-                + ", timestamp: " + frame.timestamp()
-                + ", hands: " + frame.hands().count()
-                + ", fingers: " + frame.fingers().count());
-
-        //Get hands
-        leftHand = null;
-        rightHand = null;
-        for (Hand hand : frame.hands()) {
-            if (hand.isLeft()) {
-                leftHand = hand;
-            } 
-            else {
-                rightHand = hand;
-            }
-        }
-
-        if (leftHand != null) {
-            if (lPose == null) {
-                lPose = new Pose(leftHand);
-            } 
-            else {
-                lPose.update(leftHand);
-            }
-            System.out.println("Left:\n" + lPose.toString());
-        }
-        if (rightHand != null) {
-            if (rPose == null) {
-                rPose = new Pose(rightHand);
-            } 
-            else {
-                rPose.update(rightHand);
-            }
-            System.out.println("Right:\n" + rPose.toString());
-        }
-
-        // Sleep to allow for easier readability of output
-        try {
-            Thread.sleep(100);
-        } 
-        catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-
-        if (!frame.hands().isEmpty()) {
-            System.out.println();
-        }
-    }
-
-    public void printHandInfo(Hand h) {
-        if (h.isLeft()) {
-            System.out.print("Left ");
-        } 
-        else {
-            System.out.print("Right ");
-        }
-        System.out.println("hand:");
-        Arm arm = h.arm();
-        Vector palmNormal = h.palmNormal();
-    	//System.out.print("Palm normal "); System.out.println(palmNormal.toString());
-    	//System.out.print("Palm direction "); System.out.println(h.direction().toString());
-        double elbowAngle = Math.toDegrees(arm.direction().pitch());
-    	//System.out.println("  pitch: " + Math.toDegrees(arm.direction().pitch()) + " degrees, "
-        //+ "roll: " + Math.toDegrees(arm.direction().roll()) + " degrees, "
-        //+ "yaw: " + Math.toDegrees(arm.direction().yaw()) + " degrees");
-        System.out.print("Elbow Angle :");
-        System.out.println(elbowAngle);
-        double wristAngle = Math.toDegrees(arm.direction().angleTo(h.palmNormal()));
-        System.out.print("Angle vs Arm:");
-        System.out.println(wristAngle);
-    }
-}
-
-class UltraLeapTesting {
-
-    public static void main(String[] args) throws IOException {
-        File log = new File("log.csv");
-        if (log.exists()) {
-            log.delete();
-        }
-        log.createNewFile();
+	
+    public static void main(String[] args) throws Exception {
+    	log = new LogFile("arm.csv");
+    	long start = System.nanoTime();
+    	if(sim)
+    		a = new Arduino(null);
+    	else {
+    		a = new Arduino(Arduino.detectArduino());
+    		a.open(BAUD_RATE);
+    	}
+    	
         // Create a sample listener and controller
-        Listener listener = new SampleListener2();
+        Listener listener = new UltraleapListener(queue);
         Controller controller = new Controller();
 
         // Have the sample listener receive events from the controller
         controller.addListener(listener);
 
-        // Keep this process running until Enter is pressed
-        System.out.println("Press Enter to quit...");
-        try {
-            System.in.read();
-        } catch (IOException e) {
-            e.printStackTrace();
+        // Keep this process running until a key is pressed
+       while(true)
+        {
+    	   if(System.in.available()>0)
+			{
+				break;
+			}
+        	if(queue.peek()!=null)
+        	{
+        		LRPose item = queue.take();
+//        		System.out.println("latest value: ");
+//        		if(item.left!=null)
+//        			System.out.println(item.left.toString());
+//        		if(item.right!=null)
+//        			System.out.println(item.right.toString());
+        		TransformedPose newPose = new TransformedPose(item);
+//        		System.out.println(newPose.toString());
+        		if(CollisionAvoidance.validatePosision(newPose)) {
+        			target = new Packet(newPose);
+        		} else {
+        			System.out.println("invalid pose");
+        		}
+        	}
+        	else {
+//        		System.out.println("no new value");
+        	}
+        	// log
+        	String line[] = {Long.toString(System.nanoTime()-start), Integer.toString(a.floatingTarget.positions[Packet.elbow]& 0xFF),
+        			Integer.toString(a.oldPacket.positions[Packet.elbow]& 0xFF)};
+        	log.writeLine(line);
+        	a.setFloatingTarget(target);
+			a.moveToFloatingTarget(60, true);
+			System.out.println("wrote "+a.oldPacket.toString());
+        	Thread.sleep(100);
         }
 
         // Remove the sample listener when done
         controller.removeListener(listener);
+    }
+    
+    public static void logData(int joint, TransformedPose p, Arduino a) {
+    	
     }
 }

@@ -1,7 +1,7 @@
-package Scripts_Old;
+import java.time.Clock;
 
-import OperatingClasses.*;
-import java.time.*;
+import lib.Arduino;
+import lib.Packet;
 
 public class LatencyTest {
 	private static final int BAUD_RATE = 115200;
