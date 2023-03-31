@@ -8,7 +8,7 @@ public class Arduino {
 	private static final String PORT_ID = "Arduino Uno";
 	private static final String OSX_PORT_PATH = "/dev/cu.usbmodem11301";
 	public static final int MAX_READ_ATTEMPTS = 5000;
-	public static final int WRITE_FREQUENCY = 20;
+	public static final int WRITE_FREQUENCY = 25;
 	public static final Packet idlePosition = new Packet(new byte[] {90,97,0,90,90,(byte)180,(byte)180,(byte)180,(byte)180,(byte)180});
 	public Packet floatingTarget = new Packet(new byte[] {90,97,0,90,90,(byte)180,(byte)180,(byte)180,(byte)180,(byte)180});
 	public SerialPort serialPort;

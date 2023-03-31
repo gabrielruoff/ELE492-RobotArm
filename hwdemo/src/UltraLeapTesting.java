@@ -61,6 +61,7 @@ class UltraLeapTesting extends ArmTest {
 //        		System.out.println(newPose.toString());
         		if(CollisionAvoidance.validatePosition(newPose)) {
         			target = new Packet(newPose);
+//        		System.out.println(target.toString());
         		} else {
         			System.out.println("invalid pose");
         		}
@@ -73,9 +74,9 @@ class UltraLeapTesting extends ArmTest {
         			Integer.toString(a.oldPacket.positions[Packet.elbow]& 0xFF)};
         	log.writeLine(line);
         	a.setFloatingTarget(target);
-			a.moveToFloatingTarget(60, true);
+			a.moveToFloatingTarget(90, sim);
 			System.out.println("wrote "+a.oldPacket.toString());
-        	Thread.sleep(100);
+//        	Thread.sleep(100);
         }
 
         // Remove the sample listener when done

@@ -12,9 +12,11 @@ public class TransformedPose {
 	public TransformedPose(LRPose p) {
 		if(p.left!=null) {
 			// left elbow -> shoulder
-			setShoulder(lElbowToShoulderJoint.fit(p.left.elbowAngle));
+//			setShoulder(lElbowToShoulderJoint.fit(p.left.elbowAngle));
 			// left wrist -> elbow
-			setElbow(lWristToElbowJoint.fit(p.left.wristAngle));
+//			setElbow(lWristToElbowJoint.fit(p.left.wristAngle));
+			setShoulder(Packet.defaultPositions[shoulder]);
+			setElbow(Packet.defaultPositions[elbow]);
 		} else {
 			setShoulder(Packet.defaultPositions[shoulder]);
 			setElbow(Packet.defaultPositions[elbow]);

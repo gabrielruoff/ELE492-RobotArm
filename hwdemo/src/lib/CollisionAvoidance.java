@@ -9,11 +9,11 @@ public class CollisionAvoidance {
 	public static final int forearmL = 250;
 	public static boolean validatePosition(TransformedPose p) {
 		// normalize
-		p.positions[TransformedPose.elbow]-=90;
+		float elbowNorm = p.positions[TransformedPose.elbow]-90;
 		
 		SimpleMatrix shoulderR = createRMatrix(p.positions[TransformedPose.shoulder]);
 		SimpleMatrix shoulderT = createTMatrix(bicepL, 0);
-		SimpleMatrix elbowR = createRMatrix(p.positions[TransformedPose.elbow]);
+		SimpleMatrix elbowR = createRMatrix(elbowNorm);
 		SimpleMatrix elbowT = createTMatrix(forearmL, 0);
 //		System.out.println(shoulderR.toString());
 //		System.out.println(shoulderT.toString());
@@ -24,11 +24,11 @@ public class CollisionAvoidance {
 	
 	public static boolean validatePosision(byte positions[]) {
 		// normalize
-		positions[TransformedPose.elbow]-=90;
+		float elbowNorm = positions[TransformedPose.elbow]-90;
 		
 		SimpleMatrix shoulderR = createRMatrix(positions[TransformedPose.shoulder]);
 		SimpleMatrix shoulderT = createTMatrix(bicepL, 0);
-		SimpleMatrix elbowR = createRMatrix(positions[TransformedPose.elbow]);
+		SimpleMatrix elbowR = createRMatrix(elbowNorm);
 		SimpleMatrix elbowT = createTMatrix(forearmL, 0);
 //		System.out.println(shoulderR.toString());
 //		System.out.println(shoulderT.toString());
