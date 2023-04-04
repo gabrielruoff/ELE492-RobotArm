@@ -83,7 +83,7 @@ public class Arduino {
 //			System.out.println();
 			Thread.sleep(delay);
 		}
-		java.lang.System.arraycopy(packet.positions, 0, oldPacket.positions, 0, Packet.PACKET_LENGTH);
+		java.lang.System.arraycopy(packet.realPositions, 0, oldPacket.realPositions, 0, Packet.PACKET_LENGTH);
 //		this.write(packet.compile());
 	}
 	

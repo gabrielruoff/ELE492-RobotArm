@@ -17,8 +17,8 @@ public class ConstantSpeedTest extends ArmTest {
 			a.open(BAUD_RATE);
 		}
 		
-		neutral.setWrist(0);
-		neutral.setShoulder(80);
+		neutral.setWristRotation(0);
+//		neutral.setShoulder(80);
 		a.writePacketConstantSpeed(neutral, 90, sim);
 		
 		neutral.setWrist(180);
