@@ -48,7 +48,7 @@ public class Arduino {
 		this.write(packet.compile());
 	}
 	
-	public void writePacketVarSpeed(Packet packet, int steps, int delay) throws Exception {
+	public void writePacketVarSpeed(Packet packet, int steps, int delay, boolean sim) throws Exception {
 		System.out.println(oldPacket.toString()+" -> "+packet.toString());
 		if(packet.equals(oldPacket))
 			return;
@@ -67,13 +67,15 @@ public class Arduino {
 		{
 			for(int j=0;j<Packet.PACKET_LENGTH;j++)
 			{
-				packet.positions[j] = (byte)(oldPacket.positions[j]+(i*deltas[j]));
+				packet.realPositions[j] = oldPacket.positions[j]+(i*deltas[j]);
 			}
 			System.out.print("Step #"+i+" ");
 			System.out.println("packet: "+packet.toString());
-			this.write(packet.compile());
-//			System.out.println("wrote packet. listening..");
-			byte rpacket[] = this.listenForAndReadPacket();
+			if(!sim) {
+				this.write(packet.compile());
+	//			System.out.println("wrote packet. listening..");
+				byte rpacket[] = this.listenForAndReadPacket();
+			}
 //			System.out.println("got packet back: ");
 //			for (byte b : rpacket) {
 //				System.out.print((b & 0xFF) + ", ");
@@ -85,7 +87,7 @@ public class Arduino {
 //		this.write(packet.compile());
 	}
 	
-	public void writePacketConstantSpeed(Packet packet, float velocity) throws Exception {
+	public void writePacketConstantSpeed(Packet packet, float velocity, boolean sim) throws Exception {
 		System.out.println(oldPacket.toString()+" -> "+packet.toString());
 		if(packet.equals(oldPacket))
 			return;
@@ -104,16 +106,18 @@ public class Arduino {
 				if(steps[i]==0)
 					continue;
 				// if close enough, snap position
-				if(Math.abs(packet.positions[i]-oldPacket.positions[i]) < Math.abs(steps[i])) {
+				if(Math.abs(packet.realPositions[i]-oldPacket.positions[i]) < Math.abs(steps[i])) {
 //					System.out.println("snapping j"+i+" to final position "+packet.positions[i]);
-					oldPacket.positions[i] = packet.positions[i];
+					oldPacket.realPositions[i] = packet.positions[i];
 					steps[i] = 0;
 				} else {
-					oldPacket.positions[i] += steps[i];
+					oldPacket.realPositions[i] += steps[i];
 				}
 				System.out.println("writing "+oldPacket.toString());
-				this.write(oldPacket.compile());
-				byte rpacket[] = this.listenForAndReadPacket();
+				if(!sim) {
+					this.write(oldPacket.compile());
+					byte rpacket[] = this.listenForAndReadPacket();
+				}
 			}
 			Thread.sleep(1000/WRITE_FREQUENCY);
 		}
