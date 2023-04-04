@@ -51,17 +51,16 @@ class UltraLeapTesting extends ArmTest {
 			}
         	if(queue.peek()!=null)
         	{
-        		LRPose item = queue.take();
+        		LRPose newPose = queue.take();
 //        		System.out.println("latest value: ");
 //        		if(item.left!=null)
 //        			System.out.println(item.left.toString());
 //        		if(item.right!=null)
 //        			System.out.println(item.right.toString());
-        		TransformedPose newPose = new TransformedPose(item);
+        		TransformedPose newTPose = new TransformedPose(newPose);
 //        		System.out.println(newPose.toString());
-        		if(CollisionAvoidance.validatePosition(newPose)) {
-        			target = new Packet(newPose);
-//        		System.out.println(target.toString());
+        		if(CollisionAvoidance.validatePosition(newTPose)) {
+        			target = new Packet(newTPose);
         		} else {
         			System.out.println("invalid pose");
         		}
@@ -70,8 +69,8 @@ class UltraLeapTesting extends ArmTest {
 //        		System.out.println("no new value");
         	}
         	// log
-        	String line[] = {Long.toString(System.nanoTime()-start), Integer.toString(a.floatingTarget.positions[Packet.elbow]& 0xFF),
-        			Integer.toString(a.oldPacket.positions[Packet.elbow]& 0xFF)};
+        	String line[] = {Long.toString(System.nanoTime()-start), Integer.toString(a.floatingTarget.positions[Packet.elbow] & 0xFF),
+        			Integer.toString(a.oldPacket.positions[Packet.elbow] & 0xFF)};
         	log.writeLine(line);
         	a.setFloatingTarget(target);
 			a.moveToFloatingTarget(90, sim);
@@ -79,11 +78,7 @@ class UltraLeapTesting extends ArmTest {
 //        	Thread.sleep(100);
         }
 
-        // Remove the sample listener when done
+        // Remove the listener when done
         controller.removeListener(listener);
-    }
-    
-    public static void logData(int joint, TransformedPose p, Arduino a) {
-    	
     }
 }

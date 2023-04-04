@@ -135,9 +135,4 @@ public class UltraleapListener extends Listener {
     	System.out.print("Angle vs Arm:"); System.out.println(wristAngle);
     }
 
-public void writeToLog(double t, double unfiltered, double filtered)
-{
-	
-}
-
 }

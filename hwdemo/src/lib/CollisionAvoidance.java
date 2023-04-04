@@ -3,6 +3,7 @@ package lib;
 import org.ejml.simple.SimpleMatrix;
 
 public class CollisionAvoidance {
+	// millimeters
 	public static final int PADDING = 0;
 	public static final int bicepR = 30;
 	public static final int bicepL = 300;
