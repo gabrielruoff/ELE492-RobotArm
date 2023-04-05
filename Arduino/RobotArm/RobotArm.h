@@ -42,6 +42,7 @@ class RobotArm
     void setServoMicroseconds(int servoNum, int us);
     int clipAngle(int);
     int clipAngleShoulder(int);
+    int clipAngleElbow(int);
 
     void jointHandler(int, int, void (RobotArm::*)(int));
 };

@@ -58,7 +58,7 @@ class UltraLeapTesting extends ArmTest {
 //        		if(item.right!=null)
 //        			System.out.println(item.right.toString());
         		TransformedPose newTPose = new TransformedPose(newPose);
-//        		System.out.println(newPose.toString());
+        		System.out.println(newTPose.toString());
         		if(CollisionAvoidance.validatePosition(newTPose)) {
         			target = new Packet(newTPose);
         		} else {
@@ -74,7 +74,7 @@ class UltraLeapTesting extends ArmTest {
         	log.writeLine(line);
         	a.setFloatingTarget(target);
 			a.moveToFloatingTarget(90, sim);
-			System.out.println("wrote "+a.oldPacket.toString());
+//			System.out.println("wrote "+a.oldPacket.toString());
 //        	Thread.sleep(100);
         }
 

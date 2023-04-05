@@ -94,9 +94,10 @@ public class UltraleapListener extends Listener {
 			if(queue.remainingCapacity()==0)
 				queue.remove();
 			queue.put(new LRPose(lPose, rPose));
-			double rawWristAngle = Math.toDegrees(leftHand.arm().direction().angleTo(leftHand.palmNormal()));
-			String line[] = {Long.toString(frame.id()), Double.toString(lPose.rawWristAngle), Double.toString(lPose.wristAngle),
-					Double.toString(lPose.rawElbowAngle), Double.toString(lPose.elbowAngle)};
+//			double rawWristAngle = Math.toDegrees(leftHand.arm().direction().angleTo(leftHand.palmNormal()));
+//			String line[] = {Long.toString(frame.id()), Double.toString(lPose.rawWristAngle), Double.toString(lPose.wristAngle),
+//					Double.toString(lPose.rawElbowAngle), Double.toString(lPose.elbowAngle)};
+			String line[] = {Long.toString(frame.id()), Double.toString(rightHand.palmPosition().getX()), Double.toString(rPose.getX())};
 			log.writeLine(line);
 		} catch (InterruptedException | IOException e) {
 			// TODO Auto-generated catch block

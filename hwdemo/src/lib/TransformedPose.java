@@ -9,6 +9,7 @@ public class TransformedPose {
 	public float positions[] = {90,97,0,90,90,180,180,180,180,180};
 	RangeMapping lWristToElbowJoint = new RangeMapping(40, 140);
 	RangeMapping lElbowToShoulderJoint = new RangeMapping(0, 45);
+	RangeMapping rightXToElbowJoint = new RangeMapping(150, 600);
 	public TransformedPose(LRPose p) {
 		if(p.left!=null) {
 			// left elbow -> shoulder
@@ -16,12 +17,15 @@ public class TransformedPose {
 			// left wrist -> elbow
 //			setElbow(lWristToElbowJoint.fit(p.left.wristAngle));
 			setShoulder(Packet.defaultPositions[shoulder]);
-			setElbow(Packet.defaultPositions[elbow]);
+//			setElbow(Packet.defaultPositions[elbow]);
 		} else {
 			setShoulder(Packet.defaultPositions[shoulder]);
 			setElbow(Packet.defaultPositions[elbow]);
 		}
 		if(p.right!=null) {
+			// right X -> elbow
+//			System.out.println(p.right.x);
+			setElbow(rightXToElbowJoint.fit(p.right.x));
 			// right wrist -> wrist
 			setWrist(lWristToElbowJoint.fit(p.right.wristAngle));
 		} else {

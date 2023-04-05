@@ -121,8 +121,8 @@ void RobotArm::setShoulder(int theta)
 
 void RobotArm::setElbow(int theta)
 {
-    int pwmVal = (theta/180.0)*(FS5115M_SERVOMAX-FS5115M_SERVOMIN)+FS5115M_SERVOMIN;
-    int pwmVal2 = ((180-theta)/180.0)*(FS5115M_SERVOMAX-FS5115M_SERVOMIN)+FS5115M_SERVOMIN;
+    int pwmVal = clipAngleElbow(theta/180.0)*(FS5115M_SERVOMAX-FS5115M_SERVOMIN)+FS5115M_SERVOMIN;
+    int pwmVal2 = clipAngleElbow((180-theta)/180.0)*(FS5115M_SERVOMAX-FS5115M_SERVOMIN)+FS5115M_SERVOMIN;
     // Serial.print("usVal: "); // Serial.println(pwmVal);
     this->setServoMicroseconds(elbow_servonum, pwmVal);
     this->setServoMicroseconds(elbow_servonum2, pwmVal2);
@@ -212,6 +212,19 @@ int RobotArm::clipAngleShoulder(int theta)
     else if (theta <= 20)
     {
         return 20;
+    }
+    return theta;
+}
+
+int RobotArm::clipAngleElbow(int theta)
+{
+    if (theta >= 100)
+    {
+        return 100;
+    }
+    else if (theta <= 0)
+    {
+        return 0;
     }
     return theta;
 }
