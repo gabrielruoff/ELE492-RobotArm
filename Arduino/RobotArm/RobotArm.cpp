@@ -33,6 +33,12 @@
 #define Servo_Speed 100
 #define Servo_Angle_Steps 10
 
+// Angle ranges
+#define Shoulder_Max_Angle = 97;
+#define Shoulder_Min_Angle = 20;
+#define Elbow_Max_Angle = 100;
+#define Elbow_Min_Angle = 0;
+
 //CRC Hash Table
 int CRC8_TABLE [] = { 0x00, 0x5e, 0xbc, 0xe2, 0x61, 0x3f, 0xdd, 0x83, 0xc2, 0x9c, 0x7e,
 			0x20, 0xa3, 0xfd, 0x1f, 0x41, 0x9d, 0xc3, 0x21, 0x7f, 0xfc, 0xa2, 0x40, 0x1e, 0x5f, 0x01, 0xe3, 0xbd,
@@ -205,26 +211,26 @@ int RobotArm::clipAngle(int theta)
 
 int RobotArm::clipAngleShoulder(int theta)
 {
-    if (theta >= 160)
+    if (theta >= Shoulder_Max_Angle)
     {
-        return 160;
+        return Shoulder_Max_Angle;
     }
-    else if (theta <= 20)
+    else if (theta <= Shoulder_Min_Angle)
     {
-        return 20;
+        return Shoulder_Min_Angle;
     }
     return theta;
 }
 
 int RobotArm::clipAngleElbow(int theta)
 {
-    if (theta >= 100)
+    if (theta >= Elbow_Max_Angle)
     {
-        return 100;
+        return Elbow_Max_Angle;
     }
-    else if (theta <= 0)
+    else if (theta <= Elbow_Min_Angle)
     {
-        return 0;
+        return Elbow_Min_Angle;
     }
     return theta;
 }
