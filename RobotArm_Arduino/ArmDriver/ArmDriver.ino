@@ -6,15 +6,13 @@ RobotArm arm = RobotArm(BAUD_RATE);
 int* packet;
 
 void setup() {
+  // put your setup code here, to run once:
   Serial.begin(BAUD_RATE);
   arm.init();
 }
 
 void loop() {
-  //Read Next Packet
   packet = arm.readPacket();
-  //Update Servo Positions Internally
-  arm.updateFromPacket();
-  //Send Packet Back
+  arm.updateFromPacket(packet);
   arm.sendPacket(packet);
 }
