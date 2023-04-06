@@ -20,22 +20,24 @@ public class VarSpeedTest {
 		}
 
 		// send default
-		neutral.setWristRotation(0);
-		neutral.setElbow(130);
-		a.writePacketVarSpeed(neutral, 20, 20, sim);
+//		neutral.setWristRotation(0);
+//		neutral.setElbow(100);
+		a.writePacketVarSpeed(neutral, 40, 20, sim);
 
 		System.out.println("press enter");
 		System.in.read();
 		
 		neutral.setWristRotation(90);
-		neutral.setShoulder(40);
-		a.writePacketVarSpeed(neutral, 20, 20, sim);
+		neutral.setShoulder(120);
+                neutral.setElbow(45);
+		a.writePacketVarSpeed(neutral, 40, 20, sim);
 		
 		System.out.println("press enter");
 		System.in.read();
 		
 		neutral.setWristRotation(180);
-		a.writePacketVarSpeed(neutral, 20, 20, sim);
+                neutral.setElbow(0);
+		a.writePacketVarSpeed(neutral, 40, 20, sim);
 
 //		// rotate wrist
 //		neutral.setWristRotation(0);

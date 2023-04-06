@@ -34,10 +34,10 @@
 #define Servo_Angle_Steps 10
 
 // Angle ranges
-#define Shoulder_Max_Angle = 97;
-#define Shoulder_Min_Angle = 20;
-#define Elbow_Max_Angle = 100;
-#define Elbow_Min_Angle = 0;
+#define Shoulder_Max_Angle 97
+#define Shoulder_Min_Angle  20
+#define Elbow_Max_Angle 100
+#define Elbow_Min_Angle 0
 
 //CRC Hash Table
 int CRC8_TABLE [] = { 0x00, 0x5e, 0xbc, 0xe2, 0x61, 0x3f, 0xdd, 0x83, 0xc2, 0x9c, 0x7e,
@@ -127,8 +127,8 @@ void RobotArm::setShoulder(int theta)
 
 void RobotArm::setElbow(int theta)
 {
-    int pwmVal = clipAngleElbow(theta/180.0)*(FS5115M_SERVOMAX-FS5115M_SERVOMIN)+FS5115M_SERVOMIN;
-    int pwmVal2 = clipAngleElbow((180-theta)/180.0)*(FS5115M_SERVOMAX-FS5115M_SERVOMIN)+FS5115M_SERVOMIN;
+    int pwmVal = (theta/180.0)*(FS5115M_SERVOMAX-FS5115M_SERVOMIN)+FS5115M_SERVOMIN;
+    int pwmVal2 = ((180-theta)/180.0)*(FS5115M_SERVOMAX-FS5115M_SERVOMIN)+FS5115M_SERVOMIN;
     // Serial.print("usVal: "); // Serial.println(pwmVal);
     this->setServoMicroseconds(elbow_servonum, pwmVal);
     this->setServoMicroseconds(elbow_servonum2, pwmVal2);
