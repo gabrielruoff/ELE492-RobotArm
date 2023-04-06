@@ -1,4 +1,4 @@
-package Operating_Classes;
+package lib;
 
 public class TransformedPose {
 	public static final int shoulderRotation = 0;
@@ -9,14 +9,15 @@ public class TransformedPose {
 	public float positions[] = {90,97,0,90,90,180,180,180,180,180};
 	RangeMapping lWristToElbowJoint = new RangeMapping(40, 140);
 	RangeMapping lElbowToShoulderJoint = new RangeMapping(0, 45);
-	RangeMapping rightXToElbowJoint = new RangeMapping(150, 600);
+	RangeMapping rightXToElbowJoint = new RangeMapping(150, 500, RangeMapping.elbowMinAngle, RangeMapping.elbowMaxAngle);
+	RangeMapping leftZToShoulderJoint = new RangeMapping(-150, 200, RangeMapping.shoulderMinAngle, RangeMapping.shoulderMaxAngle);
 	public TransformedPose(LRPose p) {
 		if(p.left!=null) {
-			// left elbow -> shoulder
-//			setShoulder(lElbowToShoulderJoint.fit(p.left.elbowAngle));
+			// left z -> shoulder
+			setShoulder(leftZToShoulderJoint.fit(p.left.z));
 			// left wrist -> elbow
 //			setElbow(lWristToElbowJoint.fit(p.left.wristAngle));
-			setShoulder(Packet.defaultPositions[shoulder]);
+//			setShoulder(Packet.defaultPositions[shoulder]);
 //			setElbow(Packet.defaultPositions[elbow]);
 		} else {
 			setShoulder(Packet.defaultPositions[shoulder]);
