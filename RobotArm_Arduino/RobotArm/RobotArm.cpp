@@ -29,6 +29,9 @@
 #define Finger3_servonum 8
 #define Finger4_servonum 9
 #define Finger5_servonum 10
+//Grabber Servo
+#define MG996R_SERVOMIN 1700
+#define MG996R_SERVOMAX 2300
 //Servo Speed
 #define Servo_Speed 100
 #define Servo_Angle_Steps 10
