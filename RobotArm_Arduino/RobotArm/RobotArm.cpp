@@ -5,7 +5,7 @@
 
 #define SERVO_FREQ 50
 // shoulder rotation and elbow servo
-#define FS5115M_SERVOMIN  425
+#define FS5115M_SERVOMIN  433
 #define FS5115M_SERVOMAX  2333
 #define shoulder_rotation_servonum 0
 #define elbow_servonum 3
@@ -112,8 +112,7 @@ void RobotArm::init()
 // Servo Angle-Sets
 void RobotArm::setShoulderRotation(int theta)
 {
-    theta = theta - 90;
-    int pwmVal = (theta/180.0)*(FS5115M_SERVOMAX-FS5115M_SERVOMIN)+FS5115M_SERVOMIN;
+    int pwmVal = (clipAngle(theta) / 180.0) * (FS5115M_SERVOMAX - FS5115M_SERVOMIN) + FS5115M_SERVOMIN;
     // Serial.print("usVal: "); // Serial.println(pwmVal);
     this->setServoMicroseconds(shoulder_rotation_servonum, pwmVal);
 }

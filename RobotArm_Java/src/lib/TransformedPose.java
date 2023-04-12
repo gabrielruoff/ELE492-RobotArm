@@ -15,13 +15,13 @@ public class TransformedPose {
 	RangeMapping rightZToElbowJoint = new RangeMapping(zMin, zMax, RangeMapping.elbowMinAngle, RangeMapping.elbowMaxAngle);
 	RangeMapping leftZToShoulderJoint = new RangeMapping(zMin, zMax, RangeMapping.shoulderMinAngle, RangeMapping.shoulderMaxAngle);
 	RangeMapping rightXToWristRotation = new RangeMapping(xMin, xMax);
-	RangeMapping leftXToShoulderRotation = new RangeMapping(-xMax, -xMin);
+	RangeMapping leftXToShoulderRotation = new RangeMapping(-xMax, -xMin, 20, 160);
 	RangeMapping RightGrabStrengthToClaw = new RangeMapping(0, 1, clawMin, clawMax);
 	public TransformedPose(LRPose p) {
 		if(p.left!=null) {
 			// left x -> shoulder rotation
-//			setShoulderRotation(leftXToShoulderRotation.fit(p.left.x));
-			setShoulderRotation(Packet.defaultPositions[shoulderRotation]);
+			setShoulderRotation(leftXToShoulderRotation.fit(p.left.x));
+			//setShoulderRotation(Packet.defaultPositions[shoulderRotation]);
 			// left z -> shoulder
 			setShoulder(leftZToShoulderJoint.fit(p.left.z));
 		} else {
