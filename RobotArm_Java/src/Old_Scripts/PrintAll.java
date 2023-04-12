@@ -11,7 +11,7 @@ import com.leapmotion.leap.Hand;
 import com.leapmotion.leap.Listener;
 import com.leapmotion.leap.Vector;
 
-import lib.*;
+import lib.AlphaBetaFilter;
 
 class SampleListener1 extends Listener {
     public void onInit(Controller controller) {

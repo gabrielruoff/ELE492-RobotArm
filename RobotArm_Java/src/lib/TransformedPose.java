@@ -12,22 +12,18 @@ public class TransformedPose {
 	public static final int clawMin = 0, clawMax = 90;
 	public float positions[] = {90,97,0,90,90,180,180,180,180,180};
 	RangeMapping rWristAngleToWrist = new RangeMapping(40, 140);
-//	RangeMapping lElbowToShoulderJoint = new RangeMapping(0, 45);
-	RangeMapping rightXToElbowJoint = new RangeMapping(xMin, xMax, RangeMapping.elbowMinAngle, RangeMapping.elbowMaxAngle);
+	RangeMapping rightZToElbowJoint = new RangeMapping(zMin, zMax, RangeMapping.elbowMinAngle, RangeMapping.elbowMaxAngle);
 	RangeMapping leftZToShoulderJoint = new RangeMapping(zMin, zMax, RangeMapping.shoulderMinAngle, RangeMapping.shoulderMaxAngle);
-	RangeMapping rightZToWristRotation = new RangeMapping(zMin, zMax);
+	RangeMapping rightXToWristRotation = new RangeMapping(xMin, xMax);
 	RangeMapping leftXToShoulderRotation = new RangeMapping(-xMax, -xMin);
 	RangeMapping RightGrabStrengthToClaw = new RangeMapping(0, 1, clawMin, clawMax);
 	public TransformedPose(LRPose p) {
 		if(p.left!=null) {
 			// left x -> shoulder rotation
-			setShoulderRotation(leftXToShoulderRotation.fit(p.left.x));
+//			setShoulderRotation(leftXToShoulderRotation.fit(p.left.x));
+			setShoulderRotation(Packet.defaultPositions[shoulderRotation]);
 			// left z -> shoulder
 			setShoulder(leftZToShoulderJoint.fit(p.left.z));
-			// left wrist -> elbow
-//			setElbow(lWristToElbowJoint.fit(p.left.wristAngle));
-//			setShoulder(Packet.defaultPositions[shoulder]);
-//			setElbow(Packet.defaultPositions[elbow]);
 		} else {
 			setShoulderRotation(Packet.defaultPositions[shoulderRotation]);
 			setShoulder(Packet.defaultPositions[shoulder]);
@@ -36,11 +32,11 @@ public class TransformedPose {
 		if(p.right!=null) {
 			// right X -> elbow
 //			System.out.println(p.right.x);
-			setElbow(rightXToElbowJoint.fit(p.right.x));
+			setElbow(rightZToElbowJoint.fit(p.right.z));
 			// right wrist -> wrist
 			setWrist(rWristAngleToWrist.fit(p.right.wristAngle));
 			// right z -> wrist rotation
-			setWristRotation(rightZToWristRotation.fit(p.right.z));
+			setWristRotation(rightXToWristRotation.fit(p.right.x));
 			// grab strength -> finger1
 			setFinger(1, RightGrabStrengthToClaw.fit(p.right.grabStrength));
 		} else {

@@ -2,7 +2,8 @@ package test;
 
 import java.time.Clock;
 
-import lib.*;
+import lib.Arduino;
+import lib.Packet;
 
 public class FloatingTargetTest extends ArmTest {
 	
