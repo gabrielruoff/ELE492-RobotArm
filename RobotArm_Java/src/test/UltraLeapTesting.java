@@ -48,11 +48,6 @@ class UltraLeapTesting extends ArmTest {
         	if(queue.peek()!=null)
         	{
         		LRPose newPose = queue.take();
-//        		System.out.println("latest value: ");
-//        		if(item.left!=null)
-//        			System.out.println(item.left.toString());
-//        		if(item.right!=null)
-//        			System.out.println(item.right.toString());
         		TransformedPose newTPose = new TransformedPose(newPose);
         		System.out.println(newTPose.toString());
         		if(CollisionAvoidance.validatePosition(newTPose)) {
@@ -65,8 +60,8 @@ class UltraLeapTesting extends ArmTest {
 //        		System.out.println("no new value");
         	}
         	// log
-        	String line[] = {Long.toString(System.nanoTime()-start), Integer.toString(a.floatingTarget.positions[Packet.elbow] & 0xFF),
-        			Integer.toString(a.oldPacket.positions[Packet.elbow] & 0xFF)};
+        	String line[] = {Long.toString(System.nanoTime()-start), Integer.toString(Arduino.byteToInt(a.floatingTarget.positions[Packet.elbow])),
+        			Integer.toString(Arduino.byteToInt(a.oldPacket.positions[Packet.elbow]))};
         	log.writeLine(line);
         	a.setFloatingTarget(target);
 			a.moveToFloatingTarget(90, sim);

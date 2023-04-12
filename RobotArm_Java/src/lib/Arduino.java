@@ -225,7 +225,7 @@ public class Arduino {
 		return inputPackets;
 	}
 	
-	private int byteToInt(byte b)
+	public static int byteToInt(byte b)
 	{
 		return (b & 0xFF);
 	}

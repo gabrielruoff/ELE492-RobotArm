@@ -8,34 +8,33 @@ public class CollisionAvoidance {
 	public static final int bicepR = 30;
 	public static final int bicepL = 300;
 	public static final int forearmL = 250;
+	public static final int wristL = 80;
 	public static boolean validatePosition(TransformedPose p) {
-		// normalize
-		float elbowNorm = p.positions[TransformedPose.elbow]-90;
-		
-		SimpleMatrix shoulderR = createRMatrix(p.positions[TransformedPose.shoulder]);
-		SimpleMatrix shoulderT = createTMatrix(bicepL, 0);
-		SimpleMatrix elbowR = createRMatrix(elbowNorm);
-		SimpleMatrix elbowT = createTMatrix(forearmL, 0);
-//		System.out.println(shoulderR.toString());
-//		System.out.println(shoulderT.toString());
-		SimpleMatrix wristPosition = shoulderR.mult(shoulderT).mult(elbowR).mult(elbowT);
-//		System.out.println(wristPosition.toString());
-		return wristPosition.get(1,2)>PADDING;
+		byte pos[] = new byte[p.positions.length];
+		for(int i=0;i<p.positions.length;i++) {
+			pos[i] = (byte)p.positions[i];
+		}
+		return validatePosition(pos);
 	}
 	
-	public static boolean validatePosision(byte positions[]) {
+	public static boolean validatePosition(byte positions[]) {
 		// normalize
-		float elbowNorm = positions[TransformedPose.elbow]-90;
+		float elbowNorm = Arduino.byteToInt(positions[TransformedPose.elbow])-90;
+		float wristNorm = Arduino.byteToInt(positions[TransformedPose.wrist])-90;
 		
 		SimpleMatrix shoulderR = createRMatrix(positions[TransformedPose.shoulder]);
 		SimpleMatrix shoulderT = createTMatrix(bicepL, 0);
 		SimpleMatrix elbowR = createRMatrix(elbowNorm);
 		SimpleMatrix elbowT = createTMatrix(forearmL, 0);
+		SimpleMatrix wristR = createRMatrix(wristNorm);
+		SimpleMatrix wristT = createTMatrix(wristL, 0);
 //		System.out.println(shoulderR.toString());
 //		System.out.println(shoulderT.toString());
-		SimpleMatrix wristPosition = shoulderR.mult(shoulderT).mult(elbowR).mult(elbowT);
-		System.out.println(wristPosition.toString());
-		return wristPosition.get(1,2)>PADDING;
+//		System.out.println(wristR.toString());
+		SimpleMatrix clawPosition = shoulderR.mult(shoulderT).mult(elbowR).mult(elbowT)
+				.mult(wristR).mult(wristT);
+//		System.out.println(clawPosition.toString());
+		return clawPosition.get(1,2)>PADDING;
 	}
 	
 	private static SimpleMatrix createRMatrix(double theta) {
