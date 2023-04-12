@@ -1,6 +1,6 @@
 package Old_Scripts;
 
-import Operating_Classes.*;
+import lib.*;
 
 public class SerialTest {
 	private static final int BAUD_RATE = 115200;

@@ -1,4 +1,4 @@
-package Test_Scripts;
+package test;
 
 import java.io.File;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -7,11 +7,11 @@ import java.util.concurrent.BlockingQueue;
 import com.leapmotion.leap.Controller;
 import com.leapmotion.leap.Listener;
 
-import Operating_Classes.*;
+import lib.*;
 
 
 class UltraLeapTesting extends ArmTest {
-	static boolean sim = false;
+	static boolean sim = true;
 	static BlockingQueue<LRPose> queue = new ArrayBlockingQueue<>(1);
 	
 	static Packet idle = new Packet(new byte[] {90,97,0,90,90,(byte)180,(byte)180,(byte)180,(byte)180,(byte)180});
@@ -54,7 +54,7 @@ class UltraLeapTesting extends ArmTest {
 //        		if(item.right!=null)
 //        			System.out.println(item.right.toString());
         		TransformedPose newTPose = new TransformedPose(newPose);
-//        		System.out.println(newTPose.toString());
+        		System.out.println(newTPose.toString());
         		if(CollisionAvoidance.validatePosition(newTPose)) {
         			target = new Packet(newTPose);
         		} else {
@@ -70,7 +70,7 @@ class UltraLeapTesting extends ArmTest {
         	log.writeLine(line);
         	a.setFloatingTarget(target);
 			a.moveToFloatingTarget(90, sim);
-			System.out.println("wrote "+a.oldPacket.toString());
+//			System.out.println("wrote "+a.oldPacket.toString());
 //        	Thread.sleep(100);
         }
 

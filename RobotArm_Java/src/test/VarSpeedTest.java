@@ -1,8 +1,8 @@
-package Test_Scripts;
+package test;
 
 import java.time.Clock;
 
-import Operating_Classes.*;
+import lib.*;
 
 public class VarSpeedTest {
 	private static final int BAUD_RATE = 115200;

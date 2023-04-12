@@ -1,4 +1,4 @@
-package Operating_Classes;
+package lib;
 
 public class RangeMapping {
 	public static final int shoulderMinAngle = 20;

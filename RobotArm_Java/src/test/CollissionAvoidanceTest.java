@@ -1,6 +1,6 @@
-package Test_Scripts;
+package test;
 
-import Operating_Classes.*;
+import lib.*;
 
 public class CollissionAvoidanceTest {
 

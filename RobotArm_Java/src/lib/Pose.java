@@ -1,4 +1,4 @@
-package Operating_Classes;
+package lib;
 import com.leapmotion.leap.Arm;
 import com.leapmotion.leap.Hand;
 
@@ -12,21 +12,26 @@ public class Pose {
 	// for logging
 	double rawElbowAngle;
 	double rawWristAngle;
+	double grabStrength;
 	int missedFrames = 0;
 	AlphaBetaFilter elbowAngleFilter;
 	AlphaBetaFilter wristAngleFilter;
 	AlphaBetaFilter xFilter, zFilter;
+	AlphaBetaFilter grabStrengthFilter;
 	public Pose(Hand h) {
 		Arm arm = h.arm();
     	elbowAngle = Math.toDegrees(arm.direction().pitch());
     	wristAngle = Math.toDegrees(arm.direction().angleTo(h.palmNormal()));
     	x = h.palmPosition().getX();
     	z = h.palmPosition().getZ();
+    	grabStrength = h.grabStrength();
     	setRawAngles();
+    	// create filters
     	elbowAngleFilter =  new AlphaBetaFilter(alpha, beta, elbowAngle);
     	wristAngleFilter =  new AlphaBetaFilter(alpha, beta, wristAngle);
     	xFilter = new AlphaBetaFilter(alpha, beta, x);
     	zFilter = new AlphaBetaFilter(alpha, beta, z);
+    	grabStrengthFilter = new AlphaBetaFilter(alpha, beta, grabStrength);
 //    	System.out.println(h.palmPosition().toString());
 	}
 	
@@ -36,11 +41,14 @@ public class Pose {
     	wristAngle = Math.toDegrees(arm.direction().angleTo(h.palmNormal()));
     	x = h.palmPosition().getX();
     	z = h.palmPosition().getZ();
+    	grabStrength = h.grabStrength();
     	setRawAngles();
+    	// apply filters
     	elbowAngle = elbowAngleFilter.filter(elbowAngle, dt);
     	wristAngle = wristAngleFilter.filter(wristAngle, dt);
     	x = xFilter.filter(x, dt);
     	z = zFilter.filter(z, dt);
+    	grabStrength = grabStrengthFilter.filter(grabStrength, dt);
     	missedFrames = 0;
 //    	System.out.println(h.palmPosition().toString());
 	}
