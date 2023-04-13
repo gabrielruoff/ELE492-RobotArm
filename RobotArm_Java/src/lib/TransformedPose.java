@@ -20,6 +20,7 @@ public class TransformedPose {
 	RangeMapping leftXToShoulderRotation = new RangeMapping(-xMax, -xMin, 90, 180);
 	RangeMapping RightGrabStrengthToClaw = new RangeMapping(0, 1, clawMin, clawMax);
 	RangeMapping fingers = new RangeMapping(3, 0);
+	RangeMapping thumb = new RangeMapping(1,0);
 	public TransformedPose(LRPose p) {
 		if(p.left!=null) {
 			// left x -> shoulder rotation
@@ -43,7 +44,7 @@ public class TransformedPose {
 			// right grab strength -> finger1
 			setFinger(1, RightGrabStrengthToClaw.fit(p.right.grabStrength));
 			// right fingers -> fingers
-//			setFinger(1, fingers.fit(p.right.fingerAngles.get(Finger.Type.TYPE_THUMB)));
+//			setFinger(1, thumb.fit(p.right.fingerAngles.get(Finger.Type.TYPE_THUMB)));
 			setFinger(2, fingers.fit(p.right.fingerAngles.get(Finger.Type.TYPE_INDEX)));
 			setFinger(3, fingers.fit(p.right.fingerAngles.get(Finger.Type.TYPE_MIDDLE)));
 			setFinger(4, fingers.fit(p.right.fingerAngles.get(Finger.Type.TYPE_RING)));

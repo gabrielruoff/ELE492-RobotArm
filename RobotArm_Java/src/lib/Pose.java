@@ -54,7 +54,8 @@ public class Pose {
     	grabStrength = h.grabStrength();
     	// fingers
     	for(Finger f : h.fingers()) {
-    		fingerAngles.put(f.type(), getFingerAngle(f));
+    		fingerAngles.put(f.type(), getFingerAngle(h, f));
+//    		System.out.println(f.type());
     	}
 	}
 	
@@ -82,9 +83,15 @@ public class Pose {
     	}
 	}
 	
-	private double getFingerAngle(Finger f) {
-		Bone metacarpal = f.bone(Bone.Type.TYPE_METACARPAL);
+	private double getFingerAngle(Hand h, Finger f) {
 		Bone distal = f.bone(Bone.Type.TYPE_DISTAL);
+		if(f.type().equals(Finger.Type.TYPE_THUMB)) {
+			Bone proximal = f.bone(Bone.Type.TYPE_PROXIMAL);
+			return proximal.direction().angleTo(distal.direction());
+//			return h.palmNormal().angleTo(intermediate.direction());
+		}
+		Bone metacarpal = f.bone(Bone.Type.TYPE_METACARPAL);
+		
 		return metacarpal.direction().angleTo(distal.direction());
 	}
 	
@@ -124,7 +131,7 @@ public class Pose {
 
 	@Override
 	public String toString() {
-		String s = "Elbow angle: "+elbowAngle+"\nWrist angle: "+wristAngle+"\n "+"\nIndex: "+fingerAngles.get(Finger.Type.TYPE_INDEX)+"\nMiddle: "+fingerAngles.get(Finger.Type.TYPE_MIDDLE)+"\nRing: "
+		String s = "Elbow angle: "+elbowAngle+"\nWrist angle: "+wristAngle+"\nThumb: "+fingerAngles.get(Finger.Type.TYPE_THUMB)+"\nIndex: "+fingerAngles.get(Finger.Type.TYPE_INDEX)+"\nMiddle: "+fingerAngles.get(Finger.Type.TYPE_MIDDLE)+"\nRing: "
 				+fingerAngles.get(Finger.Type.TYPE_RING)
 				+"\nPinky: "+fingerAngles.get(Finger.Type.TYPE_PINKY);
 		return s;
