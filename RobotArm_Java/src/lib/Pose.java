@@ -1,8 +1,5 @@
 package lib;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.ListIterator;
 import java.util.Map;
 
 import com.leapmotion.leap.Arm;

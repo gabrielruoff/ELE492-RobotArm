@@ -16,7 +16,8 @@ import lib.UltraleapListener;
 
 
 class UltraLeapTesting extends ArmTest {
-	static boolean sim = true;
+	static boolean sim = false;
+	static int mode = TransformedPose.
 	static BlockingQueue<LRPose> queue = new ArrayBlockingQueue<>(1);
 	
 	static Packet idle = new Packet(new byte[] {90,97,0,90,90,(byte)180,(byte)180,(byte)180,(byte)180,(byte)180});
@@ -53,7 +54,7 @@ class UltraLeapTesting extends ArmTest {
         	if(queue.peek()!=null)
         	{
         		LRPose newPose = queue.take();
-        		TransformedPose newTPose = new TransformedPose(newPose);
+        		TransformedPose newTPose = new TransformedPose(newPose, mode);
         		System.out.println(newTPose.toString());
         		if(CollisionAvoidance.validatePosition(newTPose)) {
         			target = new Packet(newTPose);

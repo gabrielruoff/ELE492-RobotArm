@@ -32,6 +32,7 @@
 //Grabber Servo
 #define MG996R_SERVOMIN 1700
 #define MG996R_SERVOMAX 2300
+#define claw_servonum 14
 //Servo Speed
 #define Servo_Speed 100
 #define Servo_Angle_Steps 10
