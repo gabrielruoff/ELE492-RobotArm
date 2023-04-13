@@ -1,5 +1,13 @@
 package lib;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.ListIterator;
+import java.util.Map;
+
 import com.leapmotion.leap.Arm;
+import com.leapmotion.leap.Bone;
+import com.leapmotion.leap.Finger;
 import com.leapmotion.leap.Hand;
 
 public class Pose {
@@ -18,39 +26,71 @@ public class Pose {
 	AlphaBetaFilter wristAngleFilter;
 	AlphaBetaFilter xFilter, zFilter;
 	AlphaBetaFilter grabStrengthFilter;
+	Map<Finger.Type, Double> fingerAngles = new HashMap<Finger.Type, Double>();
+	Map<Finger.Type, AlphaBetaFilter> fingerFilters = new HashMap<Finger.Type, AlphaBetaFilter>();
 	public Pose(Hand h) {
-		Arm arm = h.arm();
-    	elbowAngle = Math.toDegrees(arm.direction().pitch());
-    	wristAngle = Math.toDegrees(arm.direction().angleTo(h.palmNormal()));
-    	x = h.palmPosition().getX();
-    	z = h.palmPosition().getZ();
-    	grabStrength = h.grabStrength();
-    	setRawAngles();
+		getData(h);
+    	setRawData();
     	// create filters
-    	elbowAngleFilter =  new AlphaBetaFilter(alpha, beta, elbowAngle);
-    	wristAngleFilter =  new AlphaBetaFilter(alpha, beta, wristAngle);
-    	xFilter = new AlphaBetaFilter(alpha, beta, x);
-    	zFilter = new AlphaBetaFilter(alpha, beta, z);
-    	grabStrengthFilter = new AlphaBetaFilter(alpha, beta, grabStrength);
+    	initFilters();
 //    	System.out.println(h.palmPosition().toString());
 	}
 	
 	public void update(Hand h) {
+		getData(h);
+    	setRawData();
+    	// apply filters
+    	filterData();
+    	missedFrames = 0;
+//    	System.out.println(h.palmPosition().toString());
+	}
+	
+	private void getData(Hand h) {
 		Arm arm = h.arm();
     	elbowAngle = Math.toDegrees(arm.direction().pitch());
     	wristAngle = Math.toDegrees(arm.direction().angleTo(h.palmNormal()));
     	x = h.palmPosition().getX();
     	z = h.palmPosition().getZ();
     	grabStrength = h.grabStrength();
-    	setRawAngles();
-    	// apply filters
-    	elbowAngle = elbowAngleFilter.filter(elbowAngle, dt);
+    	// fingers
+    	for(Finger f : h.fingers()) {
+    		fingerAngles.put(f.type(), getFingerAngle(f));
+    	}
+	}
+	
+	private void initFilters() {
+		elbowAngleFilter =  new AlphaBetaFilter(alpha, beta, elbowAngle);
+    	wristAngleFilter =  new AlphaBetaFilter(alpha, beta, wristAngle);
+    	xFilter = new AlphaBetaFilter(alpha, beta, x);
+    	zFilter = new AlphaBetaFilter(alpha, beta, z);
+    	grabStrengthFilter = new AlphaBetaFilter(alpha, beta, grabStrength);
+    	for(Finger.Type t : Finger.Type.values()) {
+    		fingerFilters.put(t, new AlphaBetaFilter(alpha, beta, fingerAngles.get(t)));
+    	}
+	}
+	
+	private void filterData() {
+		elbowAngle = elbowAngleFilter.filter(elbowAngle, dt);
     	wristAngle = wristAngleFilter.filter(wristAngle, dt);
     	x = xFilter.filter(x, dt);
     	z = zFilter.filter(z, dt);
     	grabStrength = grabStrengthFilter.filter(grabStrength, dt);
-    	missedFrames = 0;
-//    	System.out.println(h.palmPosition().toString());
+    	// fingers
+    	for(Finger.Type t : Finger.Type.values()) {
+    		double value = fingerAngles.get(t);
+    		fingerAngles.put(t, fingerFilters.get(t).filter(value, dt));
+    	}
+	}
+	
+	private double getFingerAngle(Finger f) {
+		Bone metacarpal = f.bone(Bone.Type.TYPE_METACARPAL);
+		Bone distal = f.bone(Bone.Type.TYPE_DISTAL);
+		return metacarpal.direction().angleTo(distal.direction());
+	}
+	
+	private void setRawData() {
+		rawElbowAngle = elbowAngle;
+		rawWristAngle = wristAngle;
 	}
 	
 	public double getElbowAngle() {
@@ -84,12 +124,12 @@ public class Pose {
 
 	@Override
 	public String toString() {
-		return "Elbow angle: "+elbowAngle+"\nWrist angle: "+wristAngle;
-	}
-
-	private void setRawAngles() {
-		rawElbowAngle = elbowAngle;
-		rawWristAngle = wristAngle;
+		String s = "Elbow angle: "+elbowAngle+"\nWrist angle: "+wristAngle+"\n ";
+		ListIterator<Collection<Double>> fingers = Arrays.asList(fingerAngles.values()).listIterator();
+		while(fingers.hasNext()) {
+			s+="Finger"+(fingers.nextIndex()+1)+": "+fingers.next();
+		}
+		return s;
 	}
 	
 }
