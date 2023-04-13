@@ -124,11 +124,9 @@ public class Pose {
 
 	@Override
 	public String toString() {
-		String s = "Elbow angle: "+elbowAngle+"\nWrist angle: "+wristAngle+"\n ";
-		ListIterator<Collection<Double>> fingers = Arrays.asList(fingerAngles.values()).listIterator();
-		while(fingers.hasNext()) {
-			s+="Finger"+(fingers.nextIndex()+1)+": "+fingers.next()+"\n";
-		}
+		String s = "Elbow angle: "+elbowAngle+"\nWrist angle: "+wristAngle+"\n "+"\nIndex: "+fingerAngles.get(Finger.Type.TYPE_INDEX)+"\nMiddle: "+fingerAngles.get(Finger.Type.TYPE_MIDDLE)+"\nRing: "
+				+fingerAngles.get(Finger.Type.TYPE_RING)
+				+"\nPinky: "+fingerAngles.get(Finger.Type.TYPE_PINKY);
 		return s;
 	}
 	
