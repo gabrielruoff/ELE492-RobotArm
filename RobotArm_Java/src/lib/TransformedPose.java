@@ -44,6 +44,9 @@ public class TransformedPose {
 			setFinger(1, RightGrabStrengthToClaw.fit(p.right.grabStrength));
 			// right fingers -> fingers
 //			setFinger(1, fingers.fit(p.right.fingerAngles.get(Finger.Type.TYPE_THUMB)));
+			for(Double d : p.right.fingerAngles.values()) {
+				System.out.println(d);
+			}
 			setFinger(2, fingers.fit(p.right.fingerAngles.get(Finger.Type.TYPE_INDEX)));
 			setFinger(3, fingers.fit(p.right.fingerAngles.get(Finger.Type.TYPE_MIDDLE)));
 			setFinger(4, fingers.fit(p.right.fingerAngles.get(Finger.Type.TYPE_RING)));
@@ -83,7 +86,8 @@ public class TransformedPose {
 	@Override
 	public String toString() {
 		return "ShoulderRotation: "+positions[shoulderRotation]+"\nShoulder: "+positions[shoulder]+"\nElbow: "+positions[elbow]+"\nWristRotation: "+positions[wristRotation]+"\nWrist: "+positions[wrist]+"\nClaw: "+positions[FINGERS_OFFSET+1]
-				+"\nThumb: "+positions[FINGERS_OFFSET+1]+"\nIndex: "+positions[FINGERS_OFFSET+2]+"\nMiddle: "+positions[FINGERS_OFFSET+3]+"\nRing: "+positions[FINGERS_OFFSET+4]
+//				+"\nThumb: "+positions[FINGERS_OFFSET+1]+
+				+"\nIndex: "+positions[FINGERS_OFFSET+2]+"\nMiddle: "+positions[FINGERS_OFFSET+3]+"\nRing: "+positions[FINGERS_OFFSET+4]
 				+"\nPinky: "+positions[FINGERS_OFFSET+5];
 	}
 
