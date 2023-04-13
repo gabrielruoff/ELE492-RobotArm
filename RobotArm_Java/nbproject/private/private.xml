@@ -5,7 +5,9 @@
         <group>
             <file>file:/C:/Users/denja/Desktop/Semester%204/ELE_492/ELE492-RobotArm/RobotArm_Java/src/lib/Arduino.java</file>
             <file>file:/C:/Users/denja/Desktop/Semester%204/ELE_492/ELE492-RobotArm/RobotArm_Java/src/lib/TransformedPose.java</file>
+            <file>file:/C:/Users/denja/Desktop/Semester%204/ELE_492/ELE492-RobotArm/RobotArm_Java/src/lib/UltraleapListener.java</file>
             <file>file:/C:/Users/denja/Desktop/Semester%204/ELE_492/ELE492-RobotArm/RobotArm_Java/src/lib/Packet.java</file>
+            <file>file:/C:/Users/denja/Desktop/Semester%204/ELE_492/ELE492-RobotArm/RobotArm_Java/src/lib/Pose.java</file>
             <file>file:/C:/Users/denja/Desktop/Semester%204/ELE_492/ELE492-RobotArm/RobotArm_Java/src/test/UltraLeapTesting.java</file>
             <file>file:/C:/Users/denja/Desktop/Semester%204/ELE_492/ELE492-RobotArm/RobotArm_Java/src/test/ConstantSpeedTest.java</file>
         </group>

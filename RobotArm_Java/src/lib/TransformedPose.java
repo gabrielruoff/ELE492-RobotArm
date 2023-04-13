@@ -52,11 +52,13 @@ public class TransformedPose {
 			setWrist(Packet.defaultPositions[wrist]);
 			setWristRotation(Packet.defaultPositions[wristRotation]);
 			// right fingers -> fingers
+                        if(p.right != null) {
 			setFinger(1, thumb.fit(p.right.fingerAngles.get(Finger.Type.TYPE_THUMB)));
 			setFinger(2, fingers.fit(p.right.fingerAngles.get(Finger.Type.TYPE_INDEX)));
 			setFinger(3, fingers.fit(p.right.fingerAngles.get(Finger.Type.TYPE_MIDDLE)));
 			setFinger(4, fingers.fit(p.right.fingerAngles.get(Finger.Type.TYPE_RING)));
 			setFinger(5, fingers.fit(p.right.fingerAngles.get(Finger.Type.TYPE_PINKY)));
+                        }
 		}
 	}
 
