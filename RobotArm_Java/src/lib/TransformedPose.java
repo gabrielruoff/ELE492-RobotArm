@@ -1,5 +1,7 @@
 package lib;
 
+import com.leapmotion.leap.Finger;
+
 public class TransformedPose {
 	public static final int shoulderRotation = 0;
 	public static final int shoulder = 1;
@@ -17,6 +19,7 @@ public class TransformedPose {
 	RangeMapping rightXToWristRotation = new RangeMapping(xMin, xMax);
 	RangeMapping leftXToShoulderRotation = new RangeMapping(-xMax, -xMin, 90, 180);
 	RangeMapping RightGrabStrengthToClaw = new RangeMapping(0, 1, clawMin, clawMax);
+	RangeMapping fingers = new RangeMapping(3, 0);
 	public TransformedPose(LRPose p) {
 		if(p.left!=null) {
 			// left x -> shoulder rotation
@@ -37,8 +40,14 @@ public class TransformedPose {
 			setWrist(rWristAngleToWrist.fit(p.right.wristAngle));
 			// right z -> wrist rotation
 			setWristRotation(rightXToWristRotation.fit(p.right.x));
-			// grab strength -> finger1
+			// right grab strength -> finger1
 			setFinger(1, RightGrabStrengthToClaw.fit(p.right.grabStrength));
+			// right fingers -> fingers
+			setFinger(1, fingers.fit(p.right.fingerAngles.get(Finger.Type.TYPE_THUMB)));
+			setFinger(2, fingers.fit(p.right.fingerAngles.get(Finger.Type.TYPE_INDEX)));
+			setFinger(3, fingers.fit(p.right.fingerAngles.get(Finger.Type.TYPE_MIDDLE)));
+			setFinger(4, fingers.fit(p.right.fingerAngles.get(Finger.Type.TYPE_RING)));
+			setFinger(5, fingers.fit(p.right.fingerAngles.get(Finger.Type.TYPE_PINKY)));
 		} else {
 			setElbow(Packet.defaultPositions[elbow]);
 			setWrist(Packet.defaultPositions[wrist]);

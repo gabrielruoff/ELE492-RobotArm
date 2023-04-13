@@ -9,6 +9,7 @@ public class CollisionAvoidance {
 	public static final int bicepL = 300;
 	public static final int forearmL = 250;
 	public static final int wristL = 80;
+	public static final int clawL = 80;
 	public static boolean validatePosition(TransformedPose p) {
 		byte pos[] = new byte[p.positions.length];
 		for(int i=0;i<p.positions.length;i++) {
@@ -27,7 +28,7 @@ public class CollisionAvoidance {
 		SimpleMatrix elbowR = createRMatrix(elbowNorm);
 		SimpleMatrix elbowT = createTMatrix(forearmL, 0);
 		SimpleMatrix wristR = createRMatrix(wristNorm);
-		SimpleMatrix wristT = createTMatrix(wristL, 0);
+		SimpleMatrix wristT = createTMatrix(wristL+clawL, 0);
 //		System.out.println(shoulderR.toString());
 //		System.out.println(shoulderT.toString());
 //		System.out.println(wristR.toString());

@@ -26,7 +26,7 @@ public class Pose {
 	AlphaBetaFilter wristAngleFilter;
 	AlphaBetaFilter xFilter, zFilter;
 	AlphaBetaFilter grabStrengthFilter;
-	Map<Finger.Type, Double> fingerAngles = new HashMap<Finger.Type, Double>();
+	public Map<Finger.Type, Double> fingerAngles = new HashMap<Finger.Type, Double>();
 	Map<Finger.Type, AlphaBetaFilter> fingerFilters = new HashMap<Finger.Type, AlphaBetaFilter>();
 	public Pose(Hand h) {
 		getData(h);
@@ -127,7 +127,7 @@ public class Pose {
 		String s = "Elbow angle: "+elbowAngle+"\nWrist angle: "+wristAngle+"\n ";
 		ListIterator<Collection<Double>> fingers = Arrays.asList(fingerAngles.values()).listIterator();
 		while(fingers.hasNext()) {
-			s+="Finger"+(fingers.nextIndex()+1)+": "+fingers.next();
+			s+="Finger"+(fingers.nextIndex()+1)+": "+fingers.next()+"\n";
 		}
 		return s;
 	}
