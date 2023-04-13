@@ -27,7 +27,10 @@ public class RangeMapping {
 	}
 	
 	private float clip(float val) {
-		return Math.max(l1, Math.min(h1, val));
+		if(l1<h1)
+			return Math.max(l1, Math.min(h1, val));
+		else
+			return Math.max(h1, Math.min(l1, val));
 	}
 
 }

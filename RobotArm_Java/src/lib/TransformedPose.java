@@ -44,9 +44,6 @@ public class TransformedPose {
 			setFinger(1, RightGrabStrengthToClaw.fit(p.right.grabStrength));
 			// right fingers -> fingers
 //			setFinger(1, fingers.fit(p.right.fingerAngles.get(Finger.Type.TYPE_THUMB)));
-			for(Double d : p.right.fingerAngles.values()) {
-				System.out.println(d);
-			}
 			setFinger(2, fingers.fit(p.right.fingerAngles.get(Finger.Type.TYPE_INDEX)));
 			setFinger(3, fingers.fit(p.right.fingerAngles.get(Finger.Type.TYPE_MIDDLE)));
 			setFinger(4, fingers.fit(p.right.fingerAngles.get(Finger.Type.TYPE_RING)));
