@@ -70,7 +70,7 @@ class UltraLeapTesting extends ArmTest {
         			Integer.toString(Arduino.byteToInt(a.oldPacket.positions[Packet.elbow]))};
         	log.writeLine(line);
         	a.setFloatingTarget(target);
-			a.moveToFloatingTarget(90, sim);
+			a.moveToFloatingTarget(360, sim);
 //			System.out.println("wrote "+a.oldPacket.toString());
 //        	Thread.sleep(100);
         }
