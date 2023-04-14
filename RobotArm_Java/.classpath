@@ -6,27 +6,27 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/GEruo/OneDrive/Documents/GitHub/ELE492-RobotArm/RobotArm_Java/src/libraries/LeapJava.jar">
+	<classpathentry kind="lib" path="C:/Users/denja/OneDrive/Desktop/ELE492-RobotArm/RobotArm_Java/src/libraries/LeapJava.jar">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Users/GEruo/OneDrive/Documents/GitHub/ELE492-RobotArm/RobotArm_Java/src/libraries"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Users/denja/OneDrive/Desktop/ELE492-RobotArm/RobotArm_Java/src/libraries"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/GEruo/OneDrive/Documents/GitHub/ELE492-RobotArm/RobotArm_Java/src/libraries/jSerialComm-2.9.3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/GEruo/Downloads/ejml-v0.42-libs/ejml-v0.42-libs/ejml-cdense-0.42.jar"/>
-	<classpathentry kind="lib" path="C:/Users/GEruo/Downloads/ejml-v0.42-libs/ejml-v0.42-libs/ejml-cdense-0.42-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/GEruo/Downloads/ejml-v0.42-libs/ejml-v0.42-libs/ejml-core-0.42.jar"/>
-	<classpathentry kind="lib" path="C:/Users/GEruo/Downloads/ejml-v0.42-libs/ejml-v0.42-libs/ejml-core-0.42-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/GEruo/Downloads/ejml-v0.42-libs/ejml-v0.42-libs/ejml-ddense-0.42.jar"/>
-	<classpathentry kind="lib" path="C:/Users/GEruo/Downloads/ejml-v0.42-libs/ejml-v0.42-libs/ejml-ddense-0.42-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/GEruo/Downloads/ejml-v0.42-libs/ejml-v0.42-libs/ejml-dsparse-0.42.jar"/>
-	<classpathentry kind="lib" path="C:/Users/GEruo/Downloads/ejml-v0.42-libs/ejml-v0.42-libs/ejml-dsparse-0.42-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/GEruo/Downloads/ejml-v0.42-libs/ejml-v0.42-libs/ejml-experimental-0.42.jar"/>
-	<classpathentry kind="lib" path="C:/Users/GEruo/Downloads/ejml-v0.42-libs/ejml-v0.42-libs/ejml-experimental-0.42-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/GEruo/Downloads/ejml-v0.42-libs/ejml-v0.42-libs/ejml-fdense-0.42.jar"/>
-	<classpathentry kind="lib" path="C:/Users/GEruo/Downloads/ejml-v0.42-libs/ejml-v0.42-libs/ejml-fdense-0.42-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/GEruo/Downloads/ejml-v0.42-libs/ejml-v0.42-libs/ejml-simple-0.42.jar"/>
-	<classpathentry kind="lib" path="C:/Users/GEruo/Downloads/ejml-v0.42-libs/ejml-v0.42-libs/ejml-simple-0.42-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/GEruo/Downloads/ejml-v0.42-libs/ejml-v0.42-libs/ejml-zdense-0.42.jar"/>
-	<classpathentry kind="lib" path="C:/Users/GEruo/Downloads/ejml-v0.42-libs/ejml-v0.42-libs/ejml-zdense-0.42-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/denja/OneDrive/Desktop/ELE492-RobotArm/RobotArm_Java/src/libraries/jSerialComm-2.9.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/denja/OneDrive/Desktop/ELE492-RobotArm/RobotArm_Java/src/libraries/ejml-v0.42-libs/ejml-cdense-0.42.jar"/>
+	<classpathentry kind="lib" path="C:/Users/denja/OneDrive/Desktop/ELE492-RobotArm/RobotArm_Java/src/libraries/ejml-v0.42-libs/ejml-cdense-0.42-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/denja/OneDrive/Desktop/ELE492-RobotArm/RobotArm_Java/src/libraries/ejml-v0.42-libs/ejml-core-0.42.jar"/>
+	<classpathentry kind="lib" path="C:/Users/denja/OneDrive/Desktop/ELE492-RobotArm/RobotArm_Java/src/libraries/ejml-v0.42-libs/ejml-core-0.42-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/denja/OneDrive/Desktop/ELE492-RobotArm/RobotArm_Java/src/libraries/ejml-v0.42-libs/ejml-ddense-0.42.jar"/>
+	<classpathentry kind="lib" path="C:/Users/denja/OneDrive/Desktop/ELE492-RobotArm/RobotArm_Java/src/libraries/ejml-v0.42-libs/ejml-ddense-0.42-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/denja/OneDrive/Desktop/ELE492-RobotArm/RobotArm_Java/src/libraries/ejml-v0.42-libs/ejml-dsparse-0.42.jar"/>
+	<classpathentry kind="lib" path="C:/Users/denja/OneDrive/Desktop/ELE492-RobotArm/RobotArm_Java/src/libraries/ejml-v0.42-libs/ejml-dsparse-0.42-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/denja/OneDrive/Desktop/ELE492-RobotArm/RobotArm_Java/src/libraries/ejml-v0.42-libs/ejml-experimental-0.42.jar"/>
+	<classpathentry kind="lib" path="C:/Users/denja/OneDrive/Desktop/ELE492-RobotArm/RobotArm_Java/src/libraries/ejml-v0.42-libs/ejml-experimental-0.42-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/denja/OneDrive/Desktop/ELE492-RobotArm/RobotArm_Java/src/libraries/ejml-v0.42-libs/ejml-fdense-0.42.jar"/>
+	<classpathentry kind="lib" path="C:/Users/denja/OneDrive/Desktop/ELE492-RobotArm/RobotArm_Java/src/libraries/ejml-v0.42-libs/ejml-fdense-0.42-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/denja/OneDrive/Desktop/ELE492-RobotArm/RobotArm_Java/src/libraries/ejml-v0.42-libs/ejml-simple-0.42.jar"/>
+	<classpathentry kind="lib" path="C:/Users/denja/OneDrive/Desktop/ELE492-RobotArm/RobotArm_Java/src/libraries/ejml-v0.42-libs/ejml-simple-0.42-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/denja/OneDrive/Desktop/ELE492-RobotArm/RobotArm_Java/src/libraries/ejml-v0.42-libs/ejml-zdense-0.42.jar"/>
+	<classpathentry kind="lib" path="C:/Users/denja/OneDrive/Desktop/ELE492-RobotArm/RobotArm_Java/src/libraries/ejml-v0.42-libs/ejml-zdense-0.42-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
