@@ -9,7 +9,7 @@ public class CollisionAvoidance {
 	public static final int bicepL = 300;
 	public static final int forearmL = 250;
 	public static final int wristL = 80;
-	public static final int clawL = 80;
+	public static final int clawL = 100;
 	public static boolean validatePosition(TransformedPose p) {
 		byte pos[] = new byte[p.positions.length];
 		for(int i=0;i<p.positions.length;i++) {
