@@ -45,8 +45,8 @@ public class TransformedPose {
 			setWrist(rWristAngleToWrist.fit(p.right.wristAngle));
 			// right z -> wrist rotation
 			setWristRotation(rightXToWristRotation.fit(p.right.x));
-			// right grab strength -> finger1
-			setFinger(1, RightGrabStrengthToClaw.fit(p.right.grabStrength));
+			// right grab strength -> finger5
+			setFinger(5, RightGrabStrengthToClaw.fit(p.right.grabStrength));
 		} else {
 			setElbow(Packet.defaultPositions[elbow]);
 			setWrist(Packet.defaultPositions[wrist]);
