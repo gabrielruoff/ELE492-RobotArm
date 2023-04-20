@@ -23,7 +23,7 @@ public class TransformedPose {
 	RangeMapping leftXToShoulderRotation = new RangeMapping(-xMax, -xMin, 90, 180);
 	RangeMapping RightGrabStrengthToClaw = new RangeMapping(1, 0, clawMin, clawMax);
 	RangeMapping fingers = new RangeMapping(3, 0);
-	RangeMapping thumb = new RangeMapping(1, 0);
+	RangeMapping thumb = new RangeMapping(1, 0);s
 	public static int MODE_ARM = 0, MODE_HAND = 1;
 
 	public TransformedPose(LRPose p, int mode) {
