@@ -1,2 +1,6 @@
 /hwdemo/ELE492_RobotArm/nbproject/private/
 **/.DS_Store
+/hwdemo/nbproject/private/
+/RobotArm_Java/build/
+/hwdemo/bin/
+/RobotArm_Java/dist/
