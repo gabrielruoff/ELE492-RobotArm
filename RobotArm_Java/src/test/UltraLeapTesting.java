@@ -16,7 +16,7 @@ import lib.UltraleapListener;
 
 
 class UltraLeapTesting extends ArmTest {
-	static boolean sim = false;
+	static boolean sim = true;
 	static int mode = TransformedPose.MODE_HAND;
 	static BlockingQueue<LRPose> queue = new ArrayBlockingQueue<>(1);
 	

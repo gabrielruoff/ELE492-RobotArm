@@ -9,6 +9,7 @@ public class TransformedPose {
 	public static final int wristRotation = 4;
 	public static final int wrist = 3;
 	public static final int FINGERS_OFFSET = 4;
+	public static final int claw = 10;
 	public static final int xMax = 500, xMin = 150;
 	public static final int zMax = 200, zMin = -150;
 	public static final int clawMin = 0, clawMax = 90;
@@ -45,8 +46,8 @@ public class TransformedPose {
 			setWrist(rWristAngleToWrist.fit(p.right.wristAngle));
 			// right z -> wrist rotation
 			setWristRotation(rightXToWristRotation.fit(p.right.x));
-			// right grab strength -> finger5
-			setFinger(5, RightGrabStrengthToClaw.fit(p.right.grabStrength));
+			// right grab strength -> claw
+			setClaw(RightGrabStrengthToClaw.fit(p.right.grabStrength));
 		} else {
 			setElbow(Packet.defaultPositions[elbow]);
 			setWrist(Packet.defaultPositions[wrist]);
@@ -85,13 +86,18 @@ public class TransformedPose {
 	public void setFinger(int index, float val) {
 		this.positions[FINGERS_OFFSET + index] = val;
 	}
+	
+	public void setClaw(float val)
+	{
+		this.positions[claw] = val;
+	}
 
 	@Override
 	public String toString() {
 		return "ShoulderRotation: " + positions[shoulderRotation] + "\nShoulder: " + positions[shoulder] + "\nElbow: "
 				+ positions[elbow] + "\nWristRotation: " + positions[wristRotation] + "\nWrist: " + positions[wrist]
-				+ "\nClaw: " + positions[FINGERS_OFFSET + 1]
-//				+"\nThumb: "+positions[FINGERS_OFFSET+1]+
+				+ "\nClaw: " + positions[claw]
+				+"\nThumb: "+positions[FINGERS_OFFSET+1]
 				+ "\nIndex: " + positions[FINGERS_OFFSET + 2] + "\nMiddle: " + positions[FINGERS_OFFSET + 3]
 				+ "\nRing: " + positions[FINGERS_OFFSET + 4] + "\nPinky: " + positions[FINGERS_OFFSET + 5];
 	}

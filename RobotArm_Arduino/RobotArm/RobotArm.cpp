@@ -62,8 +62,8 @@ int CRC8_TABLE [] = { 0x00, 0x5e, 0xbc, 0xe2, 0x61, 0x3f, 0xdd, 0x83, 0xc2, 0x9c
 			0xe8, 0x0a, 0x54, 0xd7, 0x89, 0x6b, 0x35 };
 
 //Current Value and Previous Value Holders
-int values[11];
-int prevvalues[11];
+int values[12];
+int prevvalues[12];
 
 // int shoulderRotation = 0, shoulder = 0, elbow = 0, wirstRotation=0, wrist=0;
 // int finger1 = 0, int finger2 = 0; int finger3 = 0; int finger4 = 0; int finger5 = 0;
@@ -93,10 +93,11 @@ void RobotArm::init()
     values[7] = 180;
     values[8] = 180;
     values[9] = 180;
+    values[10] = 90;
     //CRC Bit
-    values[10] = 202;
+    values[11] = 202;
     //Initialize previous values to intial angles
-    for (int i = 0; i < 11; i++) {
+    for (int i = 0; i < PACKET_LENGTH; i++) {
         prevvalues[i] = values[i];
     }
 
@@ -111,6 +112,13 @@ void RobotArm::init()
 
 // Servo-Specific Functions
 // Servo Angle-Sets
+void RobotArm::setClaw(int theta)
+{
+    int pwmVal = (clipAngle(theta) / 180.0) * (MG996R_SERVOMAX - MG996R_SERVOMIN) + MG996R_SERVOMIN;
+    // Serial.print("usVal: "); // Serial.println(pwmVal);
+    this->setServoMicroseconds(claw_servonum, pwmVal);
+}
+
 void RobotArm::setShoulderRotation(int theta)
 {
     int pwmVal = (clipAngle(theta) / 180.0) * (FS5115M_SERVOMAX - FS5115M_SERVOMIN) + FS5115M_SERVOMIN;
@@ -305,7 +313,7 @@ void RobotArm::waitForPacketEnd()
 
 bool RobotArm::verifyPacketCRC()
 {
-    int readCRC = values[10];
+    int readCRC = values[PACKET_LENGTH];
     int crc = this->calculateCRC();
     if (crc == readCRC) {
         return true;
@@ -350,7 +358,7 @@ int* RobotArm::readPacket()
 			values[i] = PACKET_BADCRC;
 		}
 		//CRC for BAD_PACKET
-		values[10] = (byte)169;
+		values[PACKET_LENGTH] = (byte)169;
 	}
 	//Else CRC is GOOD, return values
     return values;
@@ -358,11 +366,11 @@ int* RobotArm::readPacket()
 
 void RobotArm::updateFromPacket(int* packet)
 {
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < PACKET_LENGTH; i++) {
         prevvalues[i] = values[i];
     }
         //Update Angle Values from packet
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < PACKET_LENGTH; i++) {
             values[i] = packet[i];
         }
     updateArm();
@@ -381,9 +389,10 @@ void RobotArm::updateArm()
         &setFinger2,
         &setFinger3,
         &setFinger4,
-        &setFinger5
+        &setFinger5,
+        &setClaw
     };
-    for(int j=0;j<10;j++)
+    for(int j=0;j<PACKET_LENGTH;j++)
     {
         (this->*functions[j])(values[j]);
     }

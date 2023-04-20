@@ -1,10 +1,10 @@
 package lib;
 public class Packet {
-	public static final float defaultPositions[] = {90,97,0,90,90,180,180,180,180,180};
+	public static final float defaultPositions[] = {90,97,0,90,90,180,180,180,180,180, 90};
 	public static final byte START = (byte) 200;
 	public static final byte STOP = (byte) 250;
         public static final byte BADCRC = (byte) 240;
-	public static final int PACKET_LENGTH = 10;
+	public static final int PACKET_LENGTH = 11;
 	private static final int FINGERS_OFFSET = 4;
 	public byte positions[];
 	public float realPositions[];
@@ -14,6 +14,7 @@ public class Packet {
 	public static final int elbow = 2;
 	public static final int wristRotation = 4;
 	public static final int wrist = 3;
+	public static final int claw = 10;
         
         private static final int[] CRC8_TABLE = { 0x00, 0x5e, 0xbc, 0xe2, 0x61, 0x3f, 0xdd, 0x83, 0xc2, 0x9c, 0x7e,
             0x20, 0xa3, 0xfd, 0x1f, 0x41, 0x9d, 0xc3, 0x21, 0x7f, 0xfc, 0xa2, 0x40, 0x1e, 0x5f, 0x01, 0xe3, 0xbd,
@@ -47,6 +48,7 @@ public class Packet {
 	public Packet(byte packetData[])
 	{
 		this.positions = packetData;
+		System.out.println(positions.length);
 		realPositions = new float[PACKET_LENGTH];
 		for(int i =0;i<positions.length;i++)
 		{
@@ -73,8 +75,8 @@ public class Packet {
 		{
 			bytes[i+1] = (byte)positions[i];
 		}
-		bytes[11] = CRC;
-                bytes[12] = STOP;
+		bytes[12] = CRC;
+                bytes[13] = STOP;
 		return bytes;
 	}
         
@@ -150,5 +152,10 @@ public class Packet {
 	public void setFinger(int index, float val)
 	{
 		realPositions[FINGERS_OFFSET+index] = val;
+	}
+	
+	public void setClaw(int val)
+	{
+		realPositions[claw] = val;
 	}
 }

@@ -8,13 +8,14 @@
 class RobotArm
 {
   public:
-	int PACKET_LENGTH = 10;
+	int PACKET_LENGTH = 11;
     byte PACKET_START = (byte)200;
     byte PACKET_STOP = (byte)250;
 	byte PACKET_BADCRC = (byte)240;
     RobotArm(int);
     void setShoulderRotation(int);
     void init(void);
+    void setClaw(int);
     void setShoulder(int);
     void setElbow(int);
     void setWrist(int);
