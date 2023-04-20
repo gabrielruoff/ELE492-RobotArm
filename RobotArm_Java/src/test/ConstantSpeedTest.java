@@ -8,7 +8,7 @@ import lib.Packet;
 public class ConstantSpeedTest extends ArmTest {
 
 	public static void main(String[] args) throws Exception {
-		boolean sim = true;
+		boolean sim = false;
 		Packet neutral = new Packet(new byte[] {90,97,0,90,90,(byte)180,(byte)180,(byte)180,(byte)180,(byte)180, 90});
 		Clock clock = Clock.systemDefaultZone();
 		Arduino a;
@@ -21,7 +21,7 @@ public class ConstantSpeedTest extends ArmTest {
 		
 //		neutral.setWristRotation(0);
 //		neutral.setShoulder(80);
-		neutral.setClaw(80);
+		neutral.setClaw(180);
 		a.writePacketConstantSpeed(neutral, 90, sim);
 //		
 //		neutral.setWrist(180);

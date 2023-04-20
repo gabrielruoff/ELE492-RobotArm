@@ -16,12 +16,12 @@ import lib.UltraleapListener;
 
 
 class UltraLeapTesting extends ArmTest {
-	static boolean sim = true;
-	static int mode = TransformedPose.MODE_HAND;
+	static boolean sim = false;
+	static int mode = TransformedPose.MODE_ARM;
 	static BlockingQueue<LRPose> queue = new ArrayBlockingQueue<>(1);
 	
-	static Packet idle = new Packet(new byte[] {90,97,0,90,90,(byte)180,(byte)180,(byte)180,(byte)180,(byte)180});
-	static Packet target = new Packet(new byte[] {90,97,0,90,90,(byte)180,(byte)180,(byte)180,(byte)180,(byte)180});
+	static Packet idle = new Packet(new byte[] {90,97,0,90,90,(byte)180,(byte)180,(byte)180,(byte)180,(byte)180, 90});
+	static Packet target = new Packet(new byte[] {90,97,0,90,90,(byte)180,(byte)180,(byte)180,(byte)180,(byte)180, 90});
 	static Arduino a;
 	
 	static LogFile log;
@@ -70,7 +70,7 @@ class UltraLeapTesting extends ArmTest {
         			Integer.toString(Arduino.byteToInt(a.oldPacket.positions[Packet.elbow]))};
         	log.writeLine(line);
         	a.setFloatingTarget(target);
-			a.moveToFloatingTarget(360, sim);
+			a.moveToFloatingTarget(90, sim);
 			System.out.println("wrote "+a.oldPacket.toString());
 //        	Thread.sleep(100);
         }

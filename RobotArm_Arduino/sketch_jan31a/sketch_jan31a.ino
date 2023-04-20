@@ -26,11 +26,11 @@
 RobotArm arm = RobotArm(BAUD_RATE);
 
 // called this way, it uses the default address 0x40
-//Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(0x40);
+Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(0x40);
 // you can also call it with a different address you want
 //Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(0x41);
 // you can also call it with a different address and I2C interface
-//Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(0x40, Wire);
+// Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(0x40, Wire);
 
 // Depending on your servo make, the pulse width min and max may vary, you 
 // want these to be as small/large as possible without hitting the hard stop
@@ -51,85 +51,25 @@ int testWrist = 0;
 void setup() {
   Serial.begin(115200);
   arm.init();
-//  pwm.begin();
-//  pwm.setOscillatorFrequency(27000000);
-//  pwm.setPWMFreq(SERVO_FREQ);  // Analog servos run at ~50 Hz updates
+ pwm.begin();
+ pwm.setOscillatorFrequency(27000000);
+ pwm.setPWMFreq(SERVO_FREQ);  // Analog servos run at ~50 Hz updates
 //
   delay(1000);
 }
 
 void loop() {
   // Drive each servo one at a time using setPWM()
-  if (testElbow == 1) {
-    for(int i=0;i<=180; i+=30)
-    {
-      arm.setElbow(i);
-      delay(500);
-    }
-      for(int i=180;i>=0; i-=30)
-    {
-      arm.setElbow(i);
-      delay(500);
-    }
-  }
-  if (testHand == 1) {
-    if(Serial.available()>0)
-    {
-      int i =Serial.parseInt();
-      Serial.println(i);
-      arm.setFinger1(i);
-      arm.setFinger2(i);
-      arm.setFinger3(i);
-      arm.setFinger4(i);
-      arm.setFinger5(i);
-    }
-//    for(int i=0;i<=180; i+=5)  {
-//      arm.setFinger1(i);
-//      arm.setFinger2(i);
-//      arm.setFinger3(i);
-//      arm.setFinger4(i);
-//      arm.setFinger5(i);
-//      arm.setWristRotation(i);
-//      delay(20);
-//    }
-//      for(int i=180;i>=0; i-=5)  {
-//      arm.setFinger1(i);
-//      arm.setFinger2(i);
-//      arm.setFinger3(i);
-//      arm.setFinger4(i);
-//      arm.setFinger5(i);
-//      arm.setWristRotation(i);
-//      delay(20);
-//    }
-  }
-  if (testWrist == 1) {
-    //arm.setWrist(90);
-    
-    for(int i=0;i<=180; i+=5)
-    {
-      arm.setWrist(i);
-      delay(20);
-    }
-      for(int i=180;i>=0; i-=5)
-    {
-      arm.setWrist(i);
-      delay(20);
-    }
-    if(Serial.available())
-    {
-      arm.setWrist(Serial.parseInt());
-    }
-  }
   
-//  int i = 0;
-//  if(Serial.available())
-//  {
-//    i = Serial.parseInt();
-//      Serial.println(i);
-////      arm.setElbow(i);
-////      arm.setShoulderRotation(i);
+ int i = 0;
+ if(Serial.available())
+ {
+   i = Serial.parseInt();
+     Serial.println(i);
 //      arm.setElbow(i);
-////      pwm.writeMicroseconds(1, i);
-//  }
+//      arm.setShoulderRotation(i);
+    //  arm.setElbow(i);
+     pwm.writeMicroseconds(14, i);
+ }
 
 }

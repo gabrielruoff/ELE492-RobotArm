@@ -34,31 +34,31 @@ public class CollisionAvoidance {
 //		System.out.println(shoulderR.toString());
 //		System.out.println(shoulderT.toString());
 //		System.out.println(wristR.toString());
-		System.out.println(shoulderR.mult(shoulderT).toString());
+//		System.out.println(shoulderR.mult(shoulderT).toString());
 		SimpleMatrix elbowTipPosition = shoulderR.mult(shoulderT).mult(elbowR).mult(elbowT);
-		System.out.println(elbowTipPosition.toString());
+//		System.out.println(elbowTipPosition.toString());
 		SimpleMatrix clawPosition = elbowTipPosition.mult(wristR).mult(wristT);
-		System.out.println(clawPosition.toString());
+//		System.out.println(clawPosition.toString());
 		return tableCollisionCheck(elbowTipPosition) && tableCollisionCheck(clawPosition) && limbCollisionCheck(clawPosition, shoulderR);
 	}
 	
 	private static boolean limbCollisionCheck(SimpleMatrix clawPosition, SimpleMatrix shoulderR) {
-		SimpleMatrix rotateMinus90 = createRMatrix(-90);
-		SimpleMatrix bicepW = createTMatrix(bicepR, 0);
-		// point A
-		SimpleMatrix edgePoint = shoulderR.mult(rotateMinus90).mult(bicepW);
-		double edgeLine[] = new double[] {edgePoint.get(0, 2), edgePoint.get(1,2), Math.tan(Math.acos(shoulderR.get(0, 0)))};
-		System.out.println("Parallel line at (Y-"+edgeLine[1]+") = "+edgeLine[2]+"*(X-"+edgeLine[0]);
-		// point B
-		double XAtYIsZero = xPointFromLineEq(edgeLine, 0);
-		// determinant of vectors AB (between both line points) and AQ (between point A and query point)
-		double determinant = (XAtYIsZero - edgeLine[0]) * (clawPosition.get(1, 2) - edgeLine[1]) - (0 - edgeLine[1]) * (clawPosition.get(0, 2) - edgeLine[0]);
-		System.out.println("Point A ("+edgePoint.get(0, 2)+","+edgePoint.get(1,2)+") Point B ("+XAtYIsZero+",0)");
-		System.out.println("determinant "+determinant);
+//		SimpleMatrix rotateMinus90 = createRMatrix(-90);
+//		SimpleMatrix bicepW = createTMatrix(bicepR, 0);
+//		// point A
+//		SimpleMatrix edgePoint = shoulderR.mult(rotateMinus90).mult(bicepW);
+//		double edgeLine[] = new double[] {edgePoint.get(0, 2), edgePoint.get(1,2), Math.tan(Math.acos(shoulderR.get(0, 0)))};
+//		System.out.println("Parallel line at (Y-"+edgeLine[1]+") = "+edgeLine[2]+"*(X-"+edgeLine[0]);
+//		// point B
+//		double XAtYIsZero = xPointFromLineEq(edgeLine, 0);
+//		// determinant of vectors AB (between both line points) and AQ (between point A and query point)
+//		double determinant = (XAtYIsZero - edgeLine[0]) * (clawPosition.get(1, 2) - edgeLine[1]) - (0 - edgeLine[1]) * (clawPosition.get(0, 2) - edgeLine[0]);
+//		System.out.println("Point A ("+edgePoint.get(0, 2)+","+edgePoint.get(1,2)+") Point B ("+XAtYIsZero+",0)");
+//		System.out.println("determinant "+determinant);
 		Boolean valid = true;
-		if(determinant > 0) {
-			valid = clawPosition.get(1,2)>bicepL*Math.sin(Math.acos(shoulderR.get(0, 0)));
-		}
+//		if(determinant > 0) {
+//			valid = clawPosition.get(1,2)>bicepL*Math.sin(Math.acos(shoulderR.get(0, 0)));
+//		}
 		return valid;
 	}
 	

@@ -13,15 +13,15 @@ public class TransformedPose {
 	public static final int xMax = 500, xMin = 150;
 	public static final int zMax = 200, zMin = -150;
 	public static final int clawMin = 0, clawMax = 90;
-	public float positions[] = { 90, 97, 0, 90, 90, 180, 180, 180, 180, 180 };
-	RangeMapping rWristAngleToWrist = new RangeMapping(40, 140);
-	RangeMapping rightZToElbowJoint = new RangeMapping(zMin, zMax, RangeMapping.elbowMinAngle,
+	public float positions[] = { 90, 97, 0, 90, 90, 180, 180, 180, 180, 180, 90 };
+	RangeMapping rWristAngleToWrist = new RangeMapping(140, 40);
+	RangeMapping rightZToElbowJoint = new RangeMapping(zMax, zMin, RangeMapping.elbowMinAngle,
 			RangeMapping.elbowMaxAngle);
 	RangeMapping leftZToShoulderJoint = new RangeMapping(zMin, zMax, RangeMapping.shoulderMinAngle,
 			RangeMapping.shoulderMaxAngle);
 	RangeMapping rightXToWristRotation = new RangeMapping(xMin, xMax);
 	RangeMapping leftXToShoulderRotation = new RangeMapping(-xMax, -xMin, 90, 180);
-	RangeMapping RightGrabStrengthToClaw = new RangeMapping(0, 1, clawMin, clawMax);
+	RangeMapping RightGrabStrengthToClaw = new RangeMapping(1, 0, clawMin, clawMax);
 	RangeMapping fingers = new RangeMapping(3, 0);
 	RangeMapping thumb = new RangeMapping(1, 0);
 	public static int MODE_ARM = 0, MODE_HAND = 1;
@@ -32,11 +32,15 @@ public class TransformedPose {
 			setShoulderRotation(leftXToShoulderRotation.fit(p.left.x));
 			// setShoulderRotation(Packet.defaultPositions[shoulderRotation]);
 			// left z -> shoulder
-			setShoulder(leftZToShoulderJoint.fit(p.left.z));
+//			setShoulder(leftZToShoulderJoint.fit(p.left.z));
+			setShoulder(Packet.defaultPositions[shoulder]);
+			// left grab strength -> claw
+			setClaw(RightGrabStrengthToClaw.fit(p.left.grabStrength));
 		} else {
 			setShoulderRotation(Packet.defaultPositions[shoulderRotation]);
 			setShoulder(Packet.defaultPositions[shoulder]);
 			setElbow(Packet.defaultPositions[elbow]);
+			setClaw(Packet.defaultPositions[claw]);
 		}
 		if (p.right != null && mode == MODE_ARM) {
 			// right X -> elbow
@@ -46,8 +50,8 @@ public class TransformedPose {
 			setWrist(rWristAngleToWrist.fit(p.right.wristAngle));
 			// right z -> wrist rotation
 			setWristRotation(rightXToWristRotation.fit(p.right.x));
-			// right grab strength -> claw
-			setClaw(RightGrabStrengthToClaw.fit(p.right.grabStrength));
+//			// right grab strength -> claw
+//			setClaw(RightGrabStrengthToClaw.fit(p.right.grabStrength));
 		} else {
 			setElbow(Packet.defaultPositions[elbow]);
 			setWrist(Packet.defaultPositions[wrist]);
