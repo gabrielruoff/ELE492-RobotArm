@@ -201,9 +201,9 @@ public class Arduino {
 	}
         
         public boolean validateCRC(byte inputPackets[]) throws IOException {
-		byte readCRC = inputPackets[10];
-                byte packetData[] = new byte[10];
-                System.arraycopy(inputPackets, 0, packetData, 0, 10);
+		byte readCRC = inputPackets[Packet.PACKET_LENGTH];
+                byte packetData[] = new byte[Packet.PACKET_LENGTH];
+                System.arraycopy(inputPackets, 0, packetData, 0, Packet.PACKET_LENGTH);
                 Packet crosscheck  = new Packet(packetData);
                 crosscheck.setCRC();
                 byte calcCRC = crosscheck.getCRC();
