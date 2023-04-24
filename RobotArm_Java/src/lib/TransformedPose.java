@@ -12,7 +12,7 @@ public class TransformedPose {
 	public static final int claw = 10;
 	public static final int xMax = 500, xMin = 150;
 	public static final int zMax = 200, zMin = -150;
-	public static final int clawMin = 0, clawMax = 90;
+	public static final int clawMin = 0, clawMax = 150;
 	public float positions[] = { 90, 97, 0, 90, 90, 180, 180, 180, 180, 180, 90 };
 	RangeMapping rWristAngleToWrist = new RangeMapping(140, 40);
 	RangeMapping rightZToElbowJoint = new RangeMapping(zMax, zMin, RangeMapping.elbowMinAngle,
@@ -23,7 +23,7 @@ public class TransformedPose {
 	RangeMapping leftXToShoulderRotation = new RangeMapping(-xMax, -xMin, 90, 180);
 	RangeMapping RightGrabStrengthToClaw = new RangeMapping(1, 0, clawMin, clawMax);
 	RangeMapping fingers = new RangeMapping(3, 0);
-	RangeMapping thumb = new RangeMapping(1, 0);s
+	RangeMapping thumb = new RangeMapping(1, 0);
 	public static int MODE_ARM = 0, MODE_HAND = 1;
 
 	public TransformedPose(LRPose p, int mode) {
@@ -32,8 +32,8 @@ public class TransformedPose {
 			setShoulderRotation(leftXToShoulderRotation.fit(p.left.x));
 			// setShoulderRotation(Packet.defaultPositions[shoulderRotation]);
 			// left z -> shoulder
-//			setShoulder(leftZToShoulderJoint.fit(p.left.z));
-			setShoulder(Packet.defaultPositions[shoulder]);
+			setShoulder(leftZToShoulderJoint.fit(p.left.z));
+//			setShoulder(Packet.defaultPositions[shoulder]);
 			// left grab strength -> claw
 			setClaw(RightGrabStrengthToClaw.fit(p.left.grabStrength));
 		} else {
