@@ -20,7 +20,7 @@ public class TransformedPose {
 	RangeMapping leftZToShoulderJoint = new RangeMapping(zMin, zMax, RangeMapping.shoulderMinAngle,
 			RangeMapping.shoulderMaxAngle);
 	RangeMapping rightXToWristRotation = new RangeMapping(xMin, xMax);
-	RangeMapping leftXToShoulderRotation = new RangeMapping(-xMax, -xMin, 90, 180);
+	RangeMapping leftXToShoulderRotation = new RangeMapping(-xMax, -xMin, 135, 45);
 	RangeMapping RightGrabStrengthToClaw = new RangeMapping(1, 0, clawMin, clawMax);
 	RangeMapping fingers = new RangeMapping(3, 0);
 	RangeMapping thumb = new RangeMapping(1, 0);

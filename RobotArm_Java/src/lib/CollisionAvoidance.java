@@ -6,12 +6,12 @@ import org.ejml.simple.SimpleMatrix;
 
 public class CollisionAvoidance {
 	// millimeters
-	public static final int PADDING = -50;
+	public static final int PADDING = -100;
 	public static final int bicepR = 30;
 	public static final int bicepL = 300;
 	public static final int forearmL = 250;
 	public static final int wristL = 80;
-	public static final int clawL = 80;
+	public static final int clawL = 120;
 	public static boolean validatePosition(TransformedPose p) {
 		byte pos[] = new byte[p.positions.length];
 		for(int i=0;i<p.positions.length;i++) {
