@@ -20,8 +20,8 @@ class UltraLeapTesting extends ArmTest {
 	static int mode = TransformedPose.MODE_ARM;
 	static BlockingQueue<LRPose> queue = new ArrayBlockingQueue<>(1);
 	
-	static Packet idle = new Packet(new byte[] {90,97,0,90,90,(byte)180,(byte)180,(byte)180,(byte)180,(byte)180, 90});
-	static Packet target = new Packet(new byte[] {90,97,0,90,90,(byte)180,(byte)180,(byte)180,(byte)180,(byte)180, 90});
+	static Packet idle = Packet.getDefaultPacket();
+	static Packet target = Packet.getDefaultPacket();
 	static Arduino a;
 	
 	static LogFile log;

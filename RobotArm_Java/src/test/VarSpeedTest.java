@@ -1,17 +1,13 @@
 package test;
 
-import java.time.Clock;
-
 import lib.Arduino;
 import lib.Packet;
 
-public class VarSpeedTest {
-	private static final int BAUD_RATE = 115200;
+public class VarSpeedTest extends ArmTest {
 
 	public static void main(String[] args) throws Exception {
-		boolean sim = false;
-		Packet neutral = new Packet(new byte[] {90,97,0,90,90,(byte)180,(byte)180,(byte)180,(byte)180,(byte)180});
-		Clock clock = Clock.systemDefaultZone();
+		boolean sim = true;
+		Packet neutral = Packet.getDefaultPacket();
 		Arduino a;
 		if(sim)
 			a = new Arduino(null);
@@ -21,8 +17,6 @@ public class VarSpeedTest {
 		}
 
 		// send default
-//		neutral.setWristRotation(0);
-//		neutral.setElbow(100);
 		a.writePacketVarSpeed(neutral, 40, 20, sim);
 
 		System.out.println("press enter");

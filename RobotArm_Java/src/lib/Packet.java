@@ -1,6 +1,6 @@
 package lib;
 public class Packet {
-	public static final float defaultPositions[] = {90,97,0,90,90,180,180,180,180,180, 90};
+	public static final byte defaultPositions[] = {90,97,0,90,90,(byte)180,(byte)180,(byte)180,(byte)180,(byte)180, (byte)180};
 	public static final byte START = (byte) 200;
 	public static final byte STOP = (byte) 250;
         public static final byte BADCRC = (byte) 240;
@@ -63,6 +63,10 @@ public class Packet {
 		{
 			realPositions[i] = p.positions[i];
 		}
+	}
+	
+	public static Packet getDefaultPacket() {
+		return new Packet(Packet.defaultPositions);
 	}
         
 	public byte[] compile()

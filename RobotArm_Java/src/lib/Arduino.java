@@ -95,7 +95,7 @@ public class Arduino {
 //		System.out.print("steps: ");
 		for(int i=0;i<steps.length;i++)
 		{
-			float diff = byteToInt(packet.positions[i])-byteToInt(oldPacket.positions[i]);
+			float diff = packet.realPositions[i]-oldPacket.realPositions[i];
 			steps[i] = velocity*(getSign(diff))/WRITE_FREQUENCY;
 //			System.out.print(steps[i]+", ");
 		}
@@ -106,7 +106,7 @@ public class Arduino {
 				if(steps[i]==0)
 					continue;
 				// if close enough, snap position
-				if(Math.abs(packet.realPositions[i]-oldPacket.positions[i]) < Math.abs(steps[i])) {
+				if(Math.abs(packet.realPositions[i]-oldPacket.realPositions[i]) < Math.abs(steps[i])) {
 //					System.out.println("snapping j"+i+" to final position "+packet.positions[i]);
 					oldPacket.realPositions[i] = packet.positions[i];
 					steps[i] = 0;
