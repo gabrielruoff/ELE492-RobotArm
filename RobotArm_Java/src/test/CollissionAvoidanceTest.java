@@ -5,7 +5,7 @@ import lib.CollisionAvoidance;
 public class CollissionAvoidanceTest {
 
 	public static void main(String[] args) {
-		byte p[] = new byte[] {90,97,100,45,90,(byte)180,(byte)180,(byte)180,(byte)180,(byte)180, 90};
+		byte p[] = new byte[] {72, 37, 62, (byte)179, 10, (byte)180, (byte)180,(byte) 180, (byte)180, (byte)180, (byte)147, (byte)161};
 		// TODO Auto-generated method stub
 		System.out.println(CollisionAvoidance.validatePosition(p));
 	}

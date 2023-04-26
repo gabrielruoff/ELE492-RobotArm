@@ -38,12 +38,14 @@ public class CollisionAvoidance {
 		SimpleMatrix wristPosition = elbowTipPosition.mult(wristR).mult(wristT);
 		SimpleMatrix clawPosition = wristPosition.mult(clawT);
 		
-//		printXY(shoulderPosition); System.out.print(",");
-//		printXY(elbowTipPosition); System.out.print(",");
-//		printXY(wristPosition); System.out.print(",");
-//		printXY(clawPosition);
+		//System.out.println(clawPosition.toString());
 		
-		return tableCollisionCheck(elbowTipPosition) && tableCollisionCheck(clawPosition) && limbCollisionCheck(clawPosition, shoulderR);
+		//printXY(shoulderPosition); System.out.print(",");
+		//printXY(elbowTipPosition); System.out.print(",");
+		//printXY(wristPosition); System.out.print(",");
+		//printXY(clawPosition);
+		
+		return tableCollisionCheck(clawPosition) && limbCollisionCheck(clawPosition, shoulderR);
 	}
 	
 	private static void printXY(SimpleMatrix m) {
