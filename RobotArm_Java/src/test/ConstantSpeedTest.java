@@ -6,7 +6,7 @@ import lib.Packet;
 public class ConstantSpeedTest extends ArmTest {
 
 	public static void main(String[] args) throws Exception {
-		boolean sim = true;
+		boolean sim = false;
 		Packet neutral = Packet.getDefaultPacket();
 		Arduino a;
 		if(sim)
@@ -16,18 +16,18 @@ public class ConstantSpeedTest extends ArmTest {
 			a.open(BAUD_RATE);
 		}
 		
-		neutral.setShoulder(180);
+//		neutral.setShoulder(180);
 		neutral.setClaw(0);
 		a.writePacketConstantSpeed(neutral, 200, sim);
 		System.in.read();
 		
-		neutral.setShoulder(0);
-		neutral.setClaw(0);
+//		neutral.setShoulder(0);
+		neutral.setClaw(90);
 		a.writePacketConstantSpeed(neutral, 200, sim);
 		
-		System.in.read();
-		neutral.setShoulder(180);
-		neutral.setClaw(0);
-		a.writePacketConstantSpeed(neutral, 200, sim);
+//		System.in.read();
+////		neutral.setShoulder(180);
+//		neutral.setClaw(0);
+//		a.writePacketConstantSpeed(neutral, 200, sim);
 	}
 }

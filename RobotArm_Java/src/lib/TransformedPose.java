@@ -12,7 +12,7 @@ public class TransformedPose {
 	public static final int claw = 10;
 	public static final int xMax = 500, xMin = 150;
 	public static final int zMax = 200, zMin = -150;
-	public static final int clawMin = 0, clawMax = 150;
+	public static final int clawMin = 0, clawMax = 70;
 	public float positions[] = { 90, 97, 0, 90, 90, 180, 180, 180, 180, 180, 90 };
 	RangeMapping rWristAngleToWrist = new RangeMapping(140, 40);
 	RangeMapping rightZToElbowJoint = new RangeMapping(zMax, zMin, RangeMapping.elbowMinAngle,

@@ -32,7 +32,7 @@
 //Grabber Servo
 #define MG996R_SERVOMIN 1700
 #define MG996R_SERVOMAX 2300
-#define claw_servonum 14
+#define claw_servonum 12
 //Servo Speed
 #define Servo_Speed 100
 #define Servo_Angle_Steps 10
@@ -114,7 +114,7 @@ void RobotArm::init()
 // Servo Angle-Sets
 void RobotArm::setClaw(int theta)
 {
-    int pwmVal = (clipAngle(theta) / 180.0) * (MG996R_SERVOMAX - MG996R_SERVOMIN) + MG996R_SERVOMIN;
+    int pwmVal = (clipAngle(theta) / 180.0) * (FS5115M_SERVOMAX - FS5115M_SERVOMIN) + FS5115M_SERVOMIN;
     // Serial.print("usVal: "); // Serial.println(pwmVal);
     this->setServoMicroseconds(claw_servonum, pwmVal);
 }
