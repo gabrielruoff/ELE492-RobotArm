@@ -1,12 +1,11 @@
 package lib;
 
-import java.util.Vector;
-
 import org.ejml.simple.SimpleMatrix;
 
 public class CollisionAvoidance {
 	// millimeters
-	public static final int PADDING = -100;
+	public static final int PADDING = -50;
+	public static final int baseHeight = 100;
 	public static final int bicepR = 30;
 	public static final int bicepL = 300;
 	public static final int forearmL = 250;
@@ -25,21 +24,34 @@ public class CollisionAvoidance {
 		float elbowNorm = Arduino.byteToInt(positions[TransformedPose.elbow])-150;
 		float wristNorm = Arduino.byteToInt(positions[TransformedPose.wrist])-90;
 		System.out.println(elbowNorm);
+		SimpleMatrix baseT = createTMatrix(0, baseHeight);
 		SimpleMatrix shoulderR = createRMatrix(positions[TransformedPose.shoulder]);
 		SimpleMatrix shoulderT = createTMatrix(bicepL, 0);
 		SimpleMatrix elbowR = createRMatrix(elbowNorm);
 		SimpleMatrix elbowT = createTMatrix(forearmL, 0);
 		SimpleMatrix wristR = createRMatrix(wristNorm);
-		SimpleMatrix wristT = createTMatrix(wristL+clawL, 0);
-//		System.out.println(shoulderR.toString());
-//		System.out.println(shoulderT.toString());
-//		System.out.println(wristR.toString());
-//		System.out.println(shoulderR.mult(shoulderT).toString());
-		SimpleMatrix elbowTipPosition = shoulderR.mult(shoulderT).mult(elbowR).mult(elbowT);
-//		System.out.println(elbowTipPosition.toString());
-		SimpleMatrix clawPosition = elbowTipPosition.mult(wristR).mult(wristT);
-//		System.out.println(clawPosition.toString());
+		SimpleMatrix wristT = createTMatrix(wristL, 0);
+		SimpleMatrix clawT = createTMatrix(clawL, 0);
+
+		SimpleMatrix shoulderPosition = baseT.mult(shoulderR).mult(shoulderT);
+		SimpleMatrix elbowTipPosition = shoulderPosition.mult(elbowR).mult(elbowT);
+		SimpleMatrix wristPosition = elbowTipPosition.mult(wristR).mult(wristT);
+		SimpleMatrix clawPosition = wristPosition.mult(clawT);
+		
+//		printXY(shoulderPosition); System.out.print(",");
+//		printXY(elbowTipPosition); System.out.print(",");
+//		printXY(wristPosition); System.out.print(",");
+//		printXY(clawPosition);
+		
 		return tableCollisionCheck(elbowTipPosition) && tableCollisionCheck(clawPosition) && limbCollisionCheck(clawPosition, shoulderR);
+	}
+	
+	private static void printXY(SimpleMatrix m) {
+		System.out.print("("+round(m.get(0,2),2)+","+round(m.get(1,2), 2)+")");
+	}
+	
+	private static double round(double n, int d) {
+		return Math.round(n*Math.pow(10, d))/Math.pow(10, d);
 	}
 	
 	private static boolean limbCollisionCheck(SimpleMatrix clawPosition, SimpleMatrix shoulderR) {
@@ -72,13 +84,13 @@ public class CollisionAvoidance {
 	
 	private static SimpleMatrix createRMatrix(double theta) {
 		theta = Math.toRadians(theta);
-		SimpleMatrix rM = new SimpleMatrix(3,3);
-		rM.set(0, 0, Math.cos(theta));
-		rM.set(0, 1, -Math.sin(theta));
-		rM.set(1, 0, Math.sin(theta));
-		rM.set(1, 1, Math.cos(theta));
-		rM.set(2,2,1);
-		return rM;
+		SimpleMatrix m = new SimpleMatrix(3,3);
+		m.set(0, 0, Math.cos(theta));
+		m.set(0, 1, -Math.sin(theta));
+		m.set(1, 0, Math.sin(theta));
+		m.set(1, 1, Math.cos(theta));
+		m.set(2,2,1);
+		return m;
 	}
 	
 	private static SimpleMatrix createTMatrix(double dx, double dy) {
